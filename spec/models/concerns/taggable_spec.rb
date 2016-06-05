@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Taggable do
   before(:all) do
     ActiveRecord::Schema.define do
