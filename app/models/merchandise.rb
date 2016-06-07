@@ -3,8 +3,8 @@ class Merchandise < ActiveRecord::Base
 
   belongs_to :artwork
 
-  has_many :merchandise_purchases
-  has_many :purchases, through: :merchandise_transactions
+  has_many :merchandise_sales
+  has_many :sales, through: :merchandise_sales
 
   validates :name, presence: true
   validates :artwork, presence: true

@@ -1,13 +1,13 @@
-class Purchase < ActiveRecord::Base
+class Sale < ActiveRecord::Base
   include Taggable
 
-  has_many :merchandise_purchases
-  has_many :merchandises, through: :merchandise_purchases
+  has_many :merchandise_sales
+  has_many :merchandises, through: :merchandise_sales
 
   belongs_to :event
 
   validates :sale_price, presence: true
-  validates :merchandise_purchases, length: { minimum: 1 }
+  validates :merchandise_sales, length: { minimum: 1 }
 
   validate :during_event
 

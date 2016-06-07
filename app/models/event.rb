@@ -7,7 +7,7 @@ class Event < ActiveRecord::Base
 
   validate :starts_before_ends
 
-  has_many :purchases
+  has_many :sales
 
   def time_period
     started_at..ended_at

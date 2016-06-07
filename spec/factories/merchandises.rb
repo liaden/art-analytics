@@ -4,9 +4,9 @@ FactoryGirl.define do
     tags ['12x18', 'canvas']
     artwork { create(:artwork) }
 
-    trait :with_purchase do
+    trait :with_sale do
       after(:create) do
-        purchases { [create(:purchase)] }
+        sales { [create(:sale)] }
       end
     end
   end

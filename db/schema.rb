@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 20160606140205) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "merchandise_purchases", force: :cascade do |t|
+  create_table "merchandise_sales", force: :cascade do |t|
     t.integer "merchandise_id"
-    t.integer "purchase_id"
+    t.integer "sale_id"
   end
 
   create_table "merchandises", force: :cascade do |t|
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20160606140205) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "purchases", force: :cascade do |t|
+  create_table "sales", force: :cascade do |t|
     t.integer  "sale_price"
     t.integer  "list_price"
     t.date     "sold_on"

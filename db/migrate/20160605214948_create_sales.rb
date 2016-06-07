@@ -1,6 +1,6 @@
-class CreatePurchases < ActiveRecord::Migration
+class CreateSales < ActiveRecord::Migration
   def change
-    create_table :purchases do |t|
+    create_table :sales do |t|
       t.integer :sale_price
       t.integer :list_price
       t.date :sold_on

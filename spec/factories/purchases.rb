@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :purchase do
+  factory :sale do
     sale_price 2500
     list_price 2500
     sold_on "2016-06-05"
