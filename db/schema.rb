@@ -11,13 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160605215032) do
+ActiveRecord::Schema.define(version: 20160606140205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "artworks", force: :cascade do |t|
     t.string   "name"
+    t.jsonb    "tags"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string   "name"
+    t.date     "started_at"
+    t.date     "ended_at"
     t.jsonb    "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -45,6 +54,7 @@ ActiveRecord::Schema.define(version: 20160605215032) do
     t.text     "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "event_id"
   end
 
 end
