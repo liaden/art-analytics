@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   include Taggable
+  include Importable
 
   validates :name, presence: true
   validates :started_at, presence: true

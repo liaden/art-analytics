@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606140205) do
+ActiveRecord::Schema.define(version: 20160613030925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20160606140205) do
     t.jsonb    "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "import_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -30,6 +31,14 @@ ActiveRecord::Schema.define(version: 20160606140205) do
     t.jsonb    "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "import_id"
+  end
+
+  create_table "imports", force: :cascade do |t|
+    t.text     "note"
+    t.text     "import_file_data"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "merchandise_sales", force: :cascade do |t|
@@ -44,6 +53,7 @@ ActiveRecord::Schema.define(version: 20160606140205) do
     t.date     "released_on"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "import_id"
   end
 
   create_table "sales", force: :cascade do |t|

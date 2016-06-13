@@ -1,5 +1,6 @@
 class Merchandise < ActiveRecord::Base
   include Taggable
+  include Importable
 
   belongs_to :artwork
 
