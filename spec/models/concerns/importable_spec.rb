@@ -1,10 +1,8 @@
 describe Importable do
-  before(:all) do
-    silence_stream(STDOUT) do
-      ActiveRecord::Schema.define do
-        create_table :importable_classes, force: true do |t|
-          t.integer :import_id
-        end
+  silence_stream(STDOUT) do
+    ActiveRecord::Schema.define do
+      create_table :importable_classes, force: true do |t|
+        t.integer :import_id
       end
     end
   end

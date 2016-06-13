@@ -1,10 +1,8 @@
 describe Taggable do
-  before(:all) do
-    silence_stream(STDOUT) do
-      ActiveRecord::Schema.define do
-        create_table :taggable_classes, force: true do |t|
-          t.jsonb 'tags'
-        end
+  silence_stream(STDOUT) do
+    ActiveRecord::Schema.define do
+      create_table :taggable_classes, force: true do |t|
+        t.jsonb 'tags'
       end
     end
   end
