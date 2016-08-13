@@ -6,9 +6,9 @@ describe Sale do
     expect{create(:sale, :with_merchandise)}.to change{Sale.count}.by(1)
   end
 
-  it "requires at least 1 merchandise" do
-    expect(build(:sale)).to_not be_valid
-  end
+#   it "requires at least 1 merchandise" do
+#     expect(build(:sale)).to_not be_valid
+#   end
 
   context "at an event" do
     let(:event) { create(:event) }

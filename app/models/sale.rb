@@ -7,7 +7,7 @@ class Sale < ActiveRecord::Base
   belongs_to :event
 
   validates :sale_price, presence: true
-  validates :merchandise_sales, length: { minimum: 1 }
+  #validates :merchandise_sales, length: { minimum: 1, too_short: "must have at least one asociated sold item" }
 
   validate :during_event
 
