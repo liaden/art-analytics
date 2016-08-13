@@ -33,6 +33,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'mutations'
 gem 'activerecord-import'
 
+gem 'haml'
+
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
