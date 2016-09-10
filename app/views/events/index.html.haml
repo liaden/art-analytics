@@ -1,0 +1,16 @@
+.page-header
+  %h1
+    Events
+    %small
+      =link_to 'Import New Event', new_event_path, class: 'btn btn-primary pull-right'
+
+%table.table.table-bordered.table-hover
+  %tr
+    %th Event Name
+    %th Start Date
+  - @events.each do |event|
+    %tr
+      %td
+        = event.name
+      %td
+        = event.started_at
