@@ -1,0 +1,16 @@
+%nav.navbar.navbar-default{role: "navigation"}
+  .navbar-header
+    %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", type: "button"}
+      %span.sr-only Toggle navigation
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    %a.navbar-brand{href: "#"} Control Panel
+  .collapse.navbar-collapse.navbar-ex1-collapse
+    %ul.nav.navbar-nav
+      %li{class: navbar_activity_class('event')}
+        %a{href: "#"} Events
+      %li{class: navbar_activity_class('artwork')}
+        %a{href: "#"} Artworks
+      %li{class: navbar_activity_class('merchandise')}
+        %a{href: "#"} Merchandise
