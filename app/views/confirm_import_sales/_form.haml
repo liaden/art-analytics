@@ -1,0 +1,3 @@
+= form_tag event_confirm_import_sales_path, method: :post do |f|
+  = hidden_field_tag :import_id, @import.id
+  = submit_tag 'Confirm'

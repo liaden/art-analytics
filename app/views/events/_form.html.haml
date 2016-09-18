@@ -6,8 +6,10 @@
     = f.label :started_at, 'Started At', class: 'col-sm-2'
     = f.text_field :started_at, data: { provide: 'datepicker' }
   .form-group
-    = f.label :ended_at, 'Ended At', class: 'col-sm-2'
-    = f.text_field :ended_at, data: { provide: 'datepicker' }
+    = label_tag :duration, 'Duration', class: 'col-sm-2'
+    = text_field_tag :duration
+    .help-block.col-sm-offset-2
+      Length of event in days
   .form-group
     = f.label :tags, class: 'col-sm-2'
     = f.text_field :tags

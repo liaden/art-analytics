@@ -36,6 +36,8 @@ class ImportSales < Mutations::Command
       end
 
       Sale.import! @sales, recursive: true
+
+      raise ActiveRecord::Rollback if dry_run
     end
 
     { new_merchandises: @new_merchandises, new_artworks: @new_artworks, sales: @sales }

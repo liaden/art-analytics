@@ -1,0 +1,12 @@
+- if @errors.present?
+  %h2 Errors During Import:
+  %ul
+    - @errors.each do |err|
+      %li
+        = err
+
+= form_tag(event_import_sales_path,  multipart: true) do |f|
+  = hidden_field_tag 'dry_run', true
+  = file_field_tag 'spreadsheet'
+  = submit_tag 'Continue'
+

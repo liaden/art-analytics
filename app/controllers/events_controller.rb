@@ -12,7 +12,7 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
 
     if @event.save
-      redirect_to new_import_sale_path
+      redirect_to new_event_import_sale_path(@event)
     else
       render 'new'
     end
@@ -28,8 +28,9 @@ class EventsController < ApplicationController
 
   def ended_at
     if params[:event][:started_at]
-      # params[:event][:duration] being nil and converting to 0 is intentional
-      params[:event][:started_at].to_date + (params[:event][:duration].to_i).days
+      # include start day in the duration when computing ended_at
+      duration = [params[:duration].to_i - 1, 0].max
+      params[:event][:started_at].to_date + duration.days
     end
   end
 end

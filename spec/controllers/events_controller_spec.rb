@@ -22,12 +22,12 @@ describe EventsController do
 
     context 'with a duration' do
       it 'computes ended_at' do
-        attributes = attributes_for(:event).merge(duration: 7)
+        attributes = attributes_for(:event)
 
-        post :create, event: attributes
+        post :create, event: attributes, duration: 7
 
         event = Event.last
-        expect(event.ended_at).to eq attributes[:started_at] + 7.days
+        expect(event.ended_at).to eq attributes[:started_at] + 6.days
       end
     end
 
@@ -53,7 +53,8 @@ describe EventsController do
       it 'redirects to import sales' do
         post :create, event: attributes_for(:event)
 
-        expect(response).to redirect_to(new_import_sale_path)
+        expect(response.status).to eq 302
+        expect(response.header["Location"]).to match(/import_sales\/new/)
       end
 
       it 'saves event to database' do

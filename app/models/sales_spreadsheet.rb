@@ -4,11 +4,12 @@ class SalesSpreadsheet
   LEADING_COLUMNS = ['total', 'sold on']
   TRAILING_COLUMNS = ['tags']
 
-  class EmptyHeaders < StandardError; end
-  class MismatchedHeaders < StandardError; end
-  class DuplicateHeaderSubheader < StandardError; end
-  class UnexpectedColumn < StandardError; end
-  class BadRow < StandardError; end
+  class ValidationException < StandardError; end
+  class EmptyHeaders < ValidationException; end
+  class MismatchedHeaders < ValidationException; end
+  class DuplicateHeaderSubheader < ValidationException; end
+  class UnexpectedColumn < ValidationException; end
+  class BadRow < ValidationException; end
 
   def self.load(file = 'dummy_file.csv')
     if file.is_a? String

@@ -1,0 +1,32 @@
+%h2 New Artworks (#{@new_artworks.size} items)
+
+%table
+  %tr
+    %th Name
+    %th Tags
+
+  - @new_artworks.each do |new_art|
+    %tr
+      %td
+        = new_art.name
+      %td
+        = new_art.tags
+
+%h2 New Merchandise (#{@new_merchandises.size} items)
+
+%table
+  %tr
+    %th Artwork
+    %th Merch Name
+    %th Tags
+
+  - @new_merchandises.each do |new_merch|
+    %tr
+      %td
+        = new_merch.artwork.name
+      %td
+        = new_merch.name
+      %td
+        = new_merch.tags
+
+= render 'confirm_import_sales/form'
