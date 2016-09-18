@@ -8,12 +8,28 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(params[:event])
+    params[:event][:ended_at] = ended_at
+    @event = Event.new(event_params)
 
     if @event.save
-      redirect_to :import_sales
+      redirect_to new_import_sale_path
     else
       render 'new'
+    end
+  end
+
+  private
+
+  def event_params
+    params
+      .require(:event)
+      .permit(:name, :started_at, :ended_at, :tags)
+  end
+
+  def ended_at
+    if params[:event][:started_at]
+      # params[:event][:duration] being nil and converting to 0 is intentional
+      params[:event][:started_at].to_date + (params[:event][:duration].to_i).days
     end
   end
 end
