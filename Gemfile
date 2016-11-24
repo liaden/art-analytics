@@ -4,6 +4,7 @@ gem 'rails', '4.2.5.1'
 gem 'pg', '~> 0.15'
 
 gem 'less-rails-bootstrap'
+gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails'
 gem 'sprockets', '~> 3.6.0'
 gem 'uglifier', '>= 1.3.0'
