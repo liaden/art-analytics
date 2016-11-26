@@ -10,6 +10,9 @@ class Event < ActiveRecord::Base
 
   has_many :sales
 
+  has_many :event_inventory_items
+  has_many :merchandises, through: :event_inventory_items
+
   def time_period
     started_at..ended_at
   end

@@ -37,10 +37,12 @@ class ImportSales < Mutations::Command
 
       Sale.import! @sales, recursive: true
 
+      create_event_inventory_list(event, artworks.values.flat_map(&:merchandises))
+
       raise ActiveRecord::Rollback if dry_run
     end
 
-    { new_merchandises: @new_merchandises, new_artworks: @new_artworks, sales: @sales }
+    { new_merchandises: @new_merchandises, new_artworks: @new_artworks, sales: @sales, inventory_list: @inventory_list }
   end
 
   private
@@ -79,5 +81,10 @@ class ImportSales < Mutations::Command
   def merchandise_lookup(art_name, merch_name)
     @merchandise_lookup ||= artworks.values.each_with_object({}) { |art, hash| hash[art.name] = art.merchandises.index_by(&:name) }
     @merchandise_lookup[art_name][merch_name]
+  end
+
+  def create_event_inventory_list(event, merchandises)
+    @inventory_list = merchandises.map { |merch| EventInventoryItem.new(event: event, merchandise: merch) }
+    EventInventoryItem.import @inventory_list, validate: false
   end
 end

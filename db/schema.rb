@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160613031115) do
+ActiveRecord::Schema.define(version: 20161125043331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,13 @@ ActiveRecord::Schema.define(version: 20160613031115) do
     t.datetime "updated_at", null: false
     t.integer  "import_id"
   end
+
+  create_table "event_inventory_items", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "merchandise_id"
+  end
+
+  add_index "event_inventory_items", ["event_id", "merchandise_id"], name: "index_event_inventory_items_on_event_id_and_merchandise_id", unique: true, using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "name"

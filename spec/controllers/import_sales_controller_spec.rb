@@ -59,6 +59,10 @@ describe ImportSalesController do
         it 'includes import_id' do
           is_expected.to include('import_id')
         end
+
+        it 'includes inventory list' do
+          is_expected.to include('artwork1 8x10')
+        end
       end
 
       it 'does not create new merchandise sales' do

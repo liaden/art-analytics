@@ -29,4 +29,9 @@
       %td
         = new_merch.tags
 
+%h2 Inventory List at #{@event.name}
+%ul
+  - @inventory_list.each do |inventory_item|
+    %li= MerchandiseDecorator.new(inventory_item.merchandise).full_name
+
 = render 'confirm_import_sales/form'

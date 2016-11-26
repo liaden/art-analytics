@@ -21,6 +21,7 @@ class ImportSalesController < ApplicationController
       @new_merchandises = result.result[:new_merchandises]
       @new_artworks = result.result[:new_artworks]
       @sales_data = result.result[:sales_data]
+      @inventory_list = result.result[:inventory_list]
 
       render 'confirm_import_sales/new'
     else

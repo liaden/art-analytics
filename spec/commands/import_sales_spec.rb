@@ -75,8 +75,12 @@ describe ImportSales do
     end
 
     context 'with empty spreadsheet' do
-      it 'creates no MerchandiseSales' do
+      it 'creates no Sales' do
         expect {run(args)}.to_not change{Sale.count}
+      end
+
+      it 'creates the event inventory' do
+        expect {run(args)}.to change{EventInventoryItem.count}.by(1)
       end
     end
 
@@ -129,9 +133,18 @@ describe ImportSales do
       end
     end
 
-    describe 'with one sale' do
-
+    context 'with one sale' do
       context 'of one merchandise' do
+        [:sales, :inventory_list].each do |key|
+          it "returns a #{key}" do
+            args.merge!(spreadsheet: single_sale_spreadsheet)
+
+            data = result
+
+            expect(data.key?(key)).to eq true
+            expect(data[key]).to_not be_empty
+          end
+        end
       end
 
       context 'of multiple merchandises' do
