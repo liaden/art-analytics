@@ -32,6 +32,7 @@ gem 'activerecord-import'
 
 gem 'haml'
 
+gem 'gon'
 gem "d3-rails"
 
 group :development, :test do
