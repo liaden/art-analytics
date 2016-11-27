@@ -4,7 +4,7 @@ class ConfirmImportSalesController < ApplicationController
     result = ImportSales.run(event: event, import: @import, spreadsheet: SalesSpreadsheet.load(spreadsheet_file), dry_run: false)
 
     if result.success?
-      redirect_to events_path(event)
+      redirect_to event_path(event)
     else
       # this shouldn't happen since it was successful to get here
 

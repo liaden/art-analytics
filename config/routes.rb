@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :events, only: [ :index, :create, :new] do
+  resources :events, only: [ :index, :create, :new, :show] do
     resources :import_sales, only: [:new, :create]
     resources :confirm_import_sales, only: [:create]
   end

@@ -6,14 +6,18 @@ FactoryGirl.define do
     note "MyText"
 
     trait :with_merchandise do
-      after(:build) do |sale|
-        sale.merchandise_sales = create_list :merchandise_sale, 1, sale: sale
+      transient do
+        quantity 1
+      end
+      after(:build) do |sale, evaluator|
+        sale.merchandise_sales = create_list :merchandise_sale, 1, sale: sale, quantity: evaluator.quantity
       end
     end
 
     trait :with_event do
-      after(:create) do |sale|
-        event { create(:event) }
+      after(:build) do |sale|
+        sale.event = create(:event)
+        sale.sold_on = sale.event.started_at.to_date
       end
     end
   end

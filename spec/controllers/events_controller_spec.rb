@@ -80,4 +80,33 @@ describe EventsController do
       end
     end
   end
+
+  describe '#show' do
+    subject(:page) do
+      get :show, id: event.id
+      response.body.downcase
+    end
+
+    let(:sale) { create(:sale, :with_event, :with_merchandise, quantity: 25) }
+    let(:event) { sale.event }
+
+    it "adds quantities for same merch across sales" do
+      sale2 = create(:sale, :with_merchandise, event: event, quantity: 411, sold_on: event.started_at)
+
+      expect(page).to include('436')
+    end
+
+    context 'single sale' do
+      it { is_expected.to include(event.name.downcase) }
+      it { is_expected.to include(event.started_at.year.to_s) }
+
+      it "includes merchandise name" do
+        is_expected.to include(sale.merchandises.first.name)
+      end
+
+      it "includes quantity sold" do
+        is_expected.to include(sale.merchandise_sales.first.quantity.to_s)
+      end
+    end
+  end
 end
