@@ -4,7 +4,7 @@
     %h3= @event.time_period
 
 .row
-  .col-xs-6.col.col-sm-offset-1
+  .col-xs-5.col-sm-offset-1
     %table.table.table-bordered.table-hover.table-condensed
       %tr
         %th
@@ -16,3 +16,16 @@
 
           - @merchandise_names.each do |merch_name|
             %td= @art_merch_to_sold_count[[merch_name, artwork_name]]
+
+.row
+  #all-items-chart
+
+.row
+  #totals-by-merch-type
+
+.row
+  #totals-by-day
+
+:javascript
+  bar_chart_init('#all-items-chart', gon.merch_quantities);
+  bar_chart_init('#totals-by-merch-type', gon.totals_by_merch_type);
