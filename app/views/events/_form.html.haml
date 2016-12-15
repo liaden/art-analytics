@@ -1,10 +1,13 @@
+- if @event.errors.any?
+  %p
+    = @event.errors.inspect
 = form_for(@event) do |f|
   .form-group
     = f.label :name, class: 'col-sm-2'
     = f.text_field :name
   .form-group
     = f.label :started_at, 'Started At', class: 'col-sm-2'
-    = f.text_field :started_at, data: { provide: 'datepicker' }
+    = f.text_field :started_at, "data-provide" => 'datepicker', "data-date-format" => 'M d, yyyy'
   .form-group
     = label_tag :duration, 'Duration', class: 'col-sm-2'
     = text_field_tag :duration

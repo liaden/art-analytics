@@ -11,9 +11,11 @@ describe EventsController do
   end
 
   describe '#create' do
+    let(:params) { {event: attributes_for(:event, ended_at: nil)} }
+
     context 'without a duration' do
       it 'ended_at == started_at' do
-        post :create, event: attributes_for(:event)
+        post :create, params
 
         event = Event.last
         expect(event.ended_at).to eq event.started_at
@@ -24,7 +26,7 @@ describe EventsController do
       it 'computes ended_at' do
         attributes = attributes_for(:event)
 
-        post :create, event: attributes, duration: 7
+        post :create, params.merge!(duration: 7)
 
         event = Event.last
         expect(event.ended_at).to eq attributes[:started_at] + 6.days
@@ -32,33 +34,29 @@ describe EventsController do
     end
 
     context 'invalid data' do
-      let(:attributes) do
-        attrs = FactoryGirl.attributes_for(:event)
-        attrs.delete(:name)
-        { event: attrs }
-      end
+      before { params[:event].delete(:name) }
 
       it 'renders event form' do
-        post :create, event: attributes
+        post :create, params
 
         expect(response.body).to include('New Event')
       end
 
       it 'does not save to database' do
-        expect{post :create, attributes}.to_not change{Event.count}
+        expect{post :create, params}.to_not change{Event.count}
       end
     end
 
     context 'valid data' do
       it 'redirects to import sales' do
-        post :create, event: attributes_for(:event)
+        post :create, params
 
         expect(response.status).to eq 302
         expect(response.header["Location"]).to match(/import_sales\/new/)
       end
 
       it 'saves event to database' do
-        expect{post :create, event: attributes_for(:event)}.to change{Event.count}.by(1)
+        expect{post :create, params}.to change{Event.count}.by(1)
       end
     end
   end

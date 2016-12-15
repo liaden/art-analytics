@@ -9,6 +9,8 @@ class EventsController < ApplicationController
 
   def create
     params[:event][:ended_at] = ended_at
+    params[:event][:started_at] = started_at_date
+
     @event = Event.new(event_params)
 
     if @event.save
@@ -42,7 +44,13 @@ class EventsController < ApplicationController
     if params[:event][:started_at]
       # include start day in the duration when computing ended_at
       duration = [params[:duration].to_i - 1, 0].max
-      params[:event][:started_at].to_date + duration.days
+      started_at_date + duration.days
     end
+  end
+
+  def started_at_date
+    params[:event][:started_at].to_date
+  rescue ArgumentError
+    Date.strptime(params[:event][:started_at], '%m/%d/%Y')
   end
 end
