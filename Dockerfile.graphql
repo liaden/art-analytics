@@ -1,0 +1,9 @@
+FROM node:latest
+
+ENV APP_HOME /graphql
+
+WORKDIR $APP_HOME
+
+RUN npm install postgraphql
+
+ENV PATH="${APP_HOME}/node_modules/.bin:${PATH}"

@@ -12,5 +12,16 @@ services:
       - "3000:3000"
     links:
       - db
+      - graphql
     volumes:
       - .:/art-analytics
+
+  graphql:
+    build:
+      context: .
+      dockerfile: Dockerfile.graphql
+    command: postgraphql -c postgres://postgres@db:5432/art_analytics_development -w --host 0.0.0.0
+    ports:
+      - "5000:5000"
+    links:
+      - db
