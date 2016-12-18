@@ -1,6 +1,14 @@
 var bar_chart_init = function(element, data) {
-  var margin = {top: 20, right: 20, bottom: 30, left: 40},
-      width = 960 - margin.left - margin.right,
+  var longest = data.reduce(function(biggest, current) {
+      if(biggest.name.length < current.name.length) {
+        return current;
+      } else {
+        return biggest;
+      }
+  });
+
+  var margin = {top: 20, right: 20, bottom: 15+longest.name.length*5, left: 40},
+      width = 35*data.length - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
   // set the ranges
@@ -31,7 +39,7 @@ var bar_chart_init = function(element, data) {
 
   // append the rectangles for the bar chart
   svg.selectAll(".bar")
-      .data(data)
+    .data(data)
     .enter().append("rect")
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.name); })
@@ -42,9 +50,15 @@ var bar_chart_init = function(element, data) {
   // add the x Axis
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+        .attr("y", 0)
+        .attr("x", 9)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(90)")
+        .style("text-anchor", "start");
 
   // add the y Axis
   svg.append("g")
-      .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y));
 }

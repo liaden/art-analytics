@@ -22,15 +22,6 @@ svg {
   fill: #666;
 }
 
-.birthyear,
-.age {
-  text-anchor: middle;
-}
-
-.birthyear {
-  fill: #fff;
-}
-
 rect {
   fill-opacity: .6;
   fill: #e377c2;
