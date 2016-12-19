@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require bootstrap-datepicker
-//= require d3
+//= require Chart.bundle
+//= require chartkick
 //= require_tree .

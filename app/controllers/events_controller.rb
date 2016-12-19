@@ -21,7 +21,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = EventDecorator.new(Event.find(params[:id]))
+    @event = Event.includes(merchandises: :artwork).find(params[:id])
 
     sold_count_by_merchandise_id = MerchandiseSale.
       joins(:sale).
@@ -34,24 +34,30 @@ class EventsController < ApplicationController
       where(id: sold_count_by_merchandise_id.keys).
       select('merchandises.id,merchandises.name,artworks.name as artworks_name')
 
-    @merchandise_names = merchandises.map(&:name).uniq
-    @artwork_names = merchandises.map { |merch| merch.artworks_name }.uniq
+    if params[:slim].present?
+      @merchandise_names = merchandises.map(&:name).uniq
+      @artwork_names = merchandises.map { |merch| merch.artworks_name }.uniq
+    else
+      @merchandise_names = @event.merchandises.map(&:name).uniq
+      @artwork_names = @event.merchandises.map { |m| m.artwork.name }.uniq
+    end
 
     @art_merch_to_sold_count = merchandises.map do |merch|
       [[merch.name, merch.artworks_name], sold_count_by_merchandise_id[merch.id]]
     end.to_h
 
-    gon.merch_quantities = merchandises.map do |merch|
-      { name: "#{merch.artworks_name} #{merch.name}", value: sold_count_by_merchandise_id[merch.id] }
+    @merch_quantities = merchandises.map do |merch|
+      [ "#{merch.artworks_name} #{merch.name}", sold_count_by_merchandise_id[merch.id] ]
     end
 
-    gon.totals_by_merch_type = MerchandiseSale.
+    @totals_by_merch_type = MerchandiseSale.
       joins(:sale).
       where(sales: { event_id: params[:id] }).
       joins(:merchandise).
       group('merchandises.name').
-      sum('quantity').
-      map { |k,v| {name: k, value: v} }
+      sum('quantity')
+
+    @totals_by_day = MerchandiseSale.joins(:sale).where(sales: { event_id: params[:id]}).group_by_day('sales.sold_on').sum('merchandise_sales.quantity')
   end
 
   private

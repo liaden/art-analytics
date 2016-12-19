@@ -34,6 +34,8 @@ gem 'haml'
 
 gem 'gon'
 gem "d3-rails"
+gem 'chartkick'
+gem 'groupdate'
 
 group :development, :test do
   gem 'byebug'

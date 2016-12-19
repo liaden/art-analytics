@@ -4,7 +4,7 @@
     %h3= @event.time_period
 
 .row
-  .col-xs-5.col-sm-offset-1
+  .col-xs-5
     %table.table.table-bordered.table-hover.table-condensed
       %tr
         %th
@@ -19,13 +19,11 @@
 
 .row
   #all-items-chart
+    = column_chart @merch_quantities
 
 .row
-  #totals-by-merch-type
+  #totals-by-merch-type.col-xs-6
+    = column_chart @totals_by_merch_type
 
-.row
-  #totals-by-day
-
-:javascript
-  bar_chart_init('#all-items-chart', gon.merch_quantities);
-  bar_chart_init('#totals-by-merch-type', gon.totals_by_merch_type);
+  #totals-by-day.col-xs-6
+    = column_chart @totals_by_day
