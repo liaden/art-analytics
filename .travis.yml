@@ -1,0 +1,15 @@
+sudo: required
+
+services:
+  - docker
+  - postgresql
+
+before_install:
+  - docker-compose build
+  - docker-compose up -d && docker ps
+env:
+  - RAILS_ENV=test
+
+script:
+  - docker exec artanalytics_web_1 bin/bundle exec rake db:create db:schema:load
+  - docker exec artanalytics_web_1 bin/bundle exec rspec
