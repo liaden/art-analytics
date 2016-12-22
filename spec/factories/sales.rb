@@ -9,6 +9,7 @@ FactoryGirl.define do
       transient do
         quantity 1
       end
+
       after(:build) do |sale, evaluator|
         sale.merchandise_sales = create_list :merchandise_sale, 1, sale: sale, quantity: evaluator.quantity
       end

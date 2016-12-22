@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ImportSalesController do
   render_views
 
-  let!(:event) { create(:event, ended_at: 2.days.from_now) }
+  let!(:event) { create(:event) }
 
   def datafile(file = 'testdata')
     Rack::Test::UploadedFile.new("spec/support/sales_sheets/#{file}.csv")

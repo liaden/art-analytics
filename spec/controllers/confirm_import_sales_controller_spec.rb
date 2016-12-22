@@ -5,7 +5,7 @@ describe ConfirmImportSalesController do
     File.read("spec/support/sales_sheets/#{file}.csv")
   end
 
-  let(:event) { create(:event, ended_at: 2.days.from_now) }
+  let(:event) { create(:event) }
   let(:import) { create(:import, import_file_data: import_data, event: event) }
 
   it 'saves the data' do
