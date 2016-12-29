@@ -47,6 +47,7 @@ end
 
 group :test do
   gem 'shoulda'
+  gem 'simplecov', require: false
 end
 
 group :development do
