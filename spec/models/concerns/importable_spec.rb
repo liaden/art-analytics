@@ -1,5 +1,5 @@
 describe Importable do
-  silence_stream(STDOUT) do
+  ActiveRecord::Migration.suppress_messages do
     ActiveRecord::Schema.define do
       create_table :importable_classes, force: true do |t|
         t.integer :import_id

@@ -1,5 +1,5 @@
 describe Taggable do
-  silence_stream(STDOUT) do
+  ActiveRecord::Migration.suppress_messages do
     ActiveRecord::Schema.define do
       create_table :taggable_classes, force: true do |t|
         t.jsonb 'tags'
