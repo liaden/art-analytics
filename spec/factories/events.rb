@@ -11,5 +11,39 @@ FactoryGirl.define do
       started_at { 1.year.ago.to_date.friday }
       ended_at { 1.year.ago.to_date.friday + 2.days }
     end
+
+    trait :with_complex_sales do
+      after(:create) do |event, evaluator|
+        sale = create(:sale, :with_merchandise)
+        event.sales += [ sale,
+          create(:sale, :with_merchandise, sale_price: 500),
+          create(:sale, :with_merchandise, event: event, day_n: 1),
+          create(:sale, :with_merchandise, number_of_merch: 2)
+        ]
+        event.sales << create(:sale, of_merchandise: sale.merchandises.first, quantity: 2)
+      end
+    end
+
+    trait :with_sale do
+      transient do
+        day_n nil
+      end
+
+      after(:create) do |event, evaluator|
+        event.sales << create(:sale, :with_merchandise, day_n: evaluator.day_n)
+      end
+    end
+
+    trait :with_sale_of_many do
+      after(:create) do |event, evaluator|
+        event.sales << create(:sale, :with_merchandise, number_of_merch: 3)
+      end
+    end
+
+    trait :with_huge_price do
+      after(:create) do |event, evaluator|
+        event.sales << create(:sale, :with_merchandise, sale_price: 123456789)
+      end
+    end
   end
 end
