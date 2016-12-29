@@ -1,4 +1,4 @@
-FROM ruby:2.2.0
+FROM ruby:2.4.0
 
 # destination folder and permissions are unlikely to change
 
