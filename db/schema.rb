@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -27,9 +26,8 @@ ActiveRecord::Schema.define(version: 20161216023059) do
   create_table "event_inventory_items", force: :cascade do |t|
     t.integer "event_id"
     t.integer "merchandise_id"
+    t.index ["event_id", "merchandise_id"], name: "index_event_inventory_items_on_event_id_and_merchandise_id", unique: true, using: :btree
   end
-
-  add_index "event_inventory_items", ["event_id", "merchandise_id"], name: "index_event_inventory_items_on_event_id_and_merchandise_id", unique: true, using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "name"
