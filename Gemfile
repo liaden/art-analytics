@@ -48,6 +48,7 @@ end
 
 group :test do
   gem 'shoulda'
+  gem 'rails-controller-testing'
   gem 'simplecov', require: false
 end
 
