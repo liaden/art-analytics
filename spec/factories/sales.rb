@@ -5,6 +5,8 @@ FactoryGirl.define do
     sold_on { Date.today.friday }
     note "MyText"
 
+    event
+
     transient do
       quantity 1
       day_n nil

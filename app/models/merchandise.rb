@@ -8,5 +8,4 @@ class Merchandise < ActiveRecord::Base
   has_many :sales, through: :merchandise_sales
 
   validates :name, presence: true
-  validates :artwork, presence: true
 end
