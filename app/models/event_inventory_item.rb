@@ -1,4 +1,4 @@
-class EventInventoryItem < ActiveRecord::Base
+class EventInventoryItem < ApplicationRecord
   belongs_to :event
   belongs_to :merchandise
 end

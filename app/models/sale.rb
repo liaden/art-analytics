@@ -1,4 +1,4 @@
-class Sale < ActiveRecord::Base
+class Sale < ApplicationRecord
   include Taggable
 
   has_many :merchandise_sales

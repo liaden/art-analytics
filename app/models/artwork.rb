@@ -1,4 +1,4 @@
-class Artwork < ActiveRecord::Base
+class Artwork < ApplicationRecord
   include Taggable
   include Importable
 

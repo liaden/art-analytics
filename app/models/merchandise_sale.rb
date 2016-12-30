@@ -1,4 +1,4 @@
-class MerchandiseSale < ActiveRecord::Base
+class MerchandiseSale < ApplicationRecord
   belongs_to :merchandise
   belongs_to :sale
 

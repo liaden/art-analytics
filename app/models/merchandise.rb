@@ -1,4 +1,4 @@
-class Merchandise < ActiveRecord::Base
+class Merchandise < ApplicationRecord
   include Taggable
   include Importable
 
