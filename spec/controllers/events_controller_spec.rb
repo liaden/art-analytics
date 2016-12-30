@@ -15,7 +15,7 @@ describe EventsController do
 
     context 'without a duration' do
       it 'ended_at == started_at' do
-        post :create, params
+        post :create, params: params
 
         event = Event.last
         expect(event.ended_at).to eq event.started_at
@@ -26,7 +26,7 @@ describe EventsController do
       it 'computes ended_at' do
         attributes = attributes_for(:event)
 
-        post :create, params.merge!(duration: 7)
+        post :create, params: params.merge!(duration: 7)
 
         event = Event.last
         expect(event.ended_at).to eq attributes[:started_at] + 6.days
@@ -37,26 +37,26 @@ describe EventsController do
       before { params[:event].delete(:name) }
 
       it 'renders event form' do
-        post :create, params
+        post :create, params: params
 
         expect(response.body).to include('New Event')
       end
 
       it 'does not save to database' do
-        expect{post :create, params}.to_not change{Event.count}
+        expect{post :create, params: params}.to_not change{Event.count}
       end
     end
 
     context 'valid data' do
       it 'redirects to import sales' do
-        post :create, params
+        post :create, params: params
 
         expect(response.status).to eq 302
         expect(response.header["Location"]).to match(/import_sales\/new/)
       end
 
       it 'saves event to database' do
-        expect{post :create, params}.to change{Event.count}.by(1)
+        expect{post :create, params: params}.to change{Event.count}.by(1)
       end
     end
   end
@@ -81,7 +81,7 @@ describe EventsController do
 
   describe '#show' do
     subject(:page) do
-      get :show, id: event.id
+      get :show, params: { id: event.id }
       response.body.downcase
     end
 
@@ -89,7 +89,7 @@ describe EventsController do
     let(:event) { sale.event }
 
     it "adds quantities for same merch across sales" do
-      sale2 = create(:sale, :with_merchandise, event: event, quantity: 411, sold_on: event.started_at)
+      create(:sale, :with_merchandise, event: event, quantity: 411, sold_on: event.started_at)
 
       expect(page).to include('436')
     end

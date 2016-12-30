@@ -11,7 +11,7 @@ describe ImportSalesController do
 
   describe '#new' do
     it 'is nested under an event' do
-      get :new, event_id: event.id
+        get :new, params: { event_id: event.id }
       expect(response.status).to eq 200
     end
   end
@@ -19,12 +19,12 @@ describe ImportSalesController do
   describe '#create' do
     context 'on failure' do
       it 'renders new form' do
-        post :create, event_id: event.id, spreadsheet: datafile('invalid')
+        post :create, params: { event_id: event.id, spreadsheet: datafile('invalid') }
         expect(response.body).to include('spreadsheet')
       end
 
       it 'reports error in spreadsheet' do
-        post :create, event_id: event.id, spreadsheet: datafile('invalid')
+        post :create, params: { event_id: event.id, spreadsheet: datafile('invalid') }
         expect(response.body).to include('sold on')
       end
     end
@@ -32,7 +32,7 @@ describe ImportSalesController do
     context 'dry run' do
       describe 'page' do
         subject do
-          post :create, event_id: event.id, spreadsheet: datafile
+          post :create, params: { event_id: event.id, spreadsheet: datafile }
           response.body.downcase
         end
 
@@ -67,14 +67,14 @@ describe ImportSalesController do
 
       it 'does not create new merchandise sales' do
         expect {
-          post :create, event_id: event.id, spreadsheet: datafile
+          post :create, params: { event_id: event.id, spreadsheet: datafile }
         }.to_not change{MerchandiseSale.count}
       end
     end
 
     context 'success' do
       it 'redirects to event path' do
-        post :create, event_id: event.id, spreadsheet: datafile, confirmed: true
+        post :create, params: { event_id: event.id, spreadsheet: datafile, confirmed: true }
         expect(response).to redirect_to(events_path(event))
       end
     end

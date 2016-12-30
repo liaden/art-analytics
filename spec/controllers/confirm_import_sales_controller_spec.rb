@@ -12,7 +12,7 @@ describe ConfirmImportSalesController do
     expect {
       expect {
         expect {
-          post :create, event_id: event.id, import_id: import.id
+          post :create, params: { event_id: event.id, import_id: import.id }
         }.to change{MerchandiseSale.count}.by(29)
       }.to change{Artwork.count}.by(5)
     }.to change{Merchandise.count}.by(9)
