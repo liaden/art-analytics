@@ -12,8 +12,7 @@ describe PerEventMerchandiseSales do
     expect(events_to_values.size).to eq query_results.keys.size
 
     events_to_values.each do |e,value|
-      expect(query_results[[e.id, e.name]]).to_not be_nil
-      expect(query_results[[e.id, e.name]]).to eq value
+      expect(query_results[e.reload.full_name]).to eq value
     end
   end
 
@@ -22,13 +21,15 @@ describe PerEventMerchandiseSales do
   end
 
   def daily_results(results, event)
+    event.reload # refresh for full_name
+
     days = [:mon, :tues, :wed, :thurs, :fri, :sat, :sun ]
     result = {}
-    #
+
     # key is [event.id, event.name, indexed_day_of_week]
     results.each do |key, value|
-      if key[0] == event.id
-        day = days[key[2]]
+      if key.first == event.full_name
+        day = days[key.last]
         result[day] = value
       end
     end
@@ -44,7 +45,7 @@ describe PerEventMerchandiseSales do
       let(:query_results) { query.total_revenue }
 
       it 'computes revenue across two sales' do
-        e = create(:event, :with_sale, :with_huge_price).reload
+        e = create(:event, :with_sale, :with_huge_price)
         expect(e.sales.size).to eq 2
         expect(e.sales.map(&:sale_price).reduce(:+)).to eq query_results.values.first
       end
@@ -62,7 +63,7 @@ describe PerEventMerchandiseSales do
       end
 
       it 'handles event without sales' do
-        e = create(:event)
+        create(:event)
         expect(query_results).to be_empty
       end
     end
@@ -78,7 +79,7 @@ describe PerEventMerchandiseSales do
       end
 
       it 'handles event without sales' do
-        e = create(:event)
+        create(:event)
         expect(query_results).to be_empty
       end
     end
@@ -94,7 +95,7 @@ describe PerEventMerchandiseSales do
       end
 
       it 'handles event without custoemrs' do
-        e = create(:event)
+        create(:event)
         expect(query_results).to be_empty
       end
     end

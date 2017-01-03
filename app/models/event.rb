@@ -2,6 +2,14 @@ class Event < ApplicationRecord
   include Taggable
   include Importable
 
+  trigger.before(:insert) do
+    "NEW.full_name :=  NEW.name || '-' || EXTRACT(year from NEW.started_at);"
+  end
+
+  trigger.before(:update).of(:name, :started_at) do
+    "NEW.full_name :=  NEW.name || '-' || EXTRACT(year from NEW.started_at);"
+  end
+
   validates :name, presence: true
   validates :started_at, presence: true
   validates :ended_at, presence: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161216023059) do
+ActiveRecord::Schema.define(version: 20161231152541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20161216023059) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "import_id"
+    t.string   "full_name"
+    t.index ["full_name"], name: "index_events_on_full_name", unique: true, using: :btree
   end
 
   create_table "imports", force: :cascade do |t|
@@ -82,4 +84,36 @@ ActiveRecord::Schema.define(version: 20161216023059) do
   add_foreign_key "merchandises", "artworks"
   add_foreign_key "merchandises", "imports"
   add_foreign_key "sales", "events"
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE OR REPLACE FUNCTION public.events_before_insert_row_tr()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+    NEW.full_name :=  NEW.name || '-' || EXTRACT(year from NEW.started_at);
+    RETURN NEW;
+END;
+$function$
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute("CREATE TRIGGER events_before_insert_row_tr BEFORE INSERT ON \"events\" FOR EACH ROW EXECUTE PROCEDURE events_before_insert_row_tr()")
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE OR REPLACE FUNCTION public.events_before_update_of_name_started_at_row_tr()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+    NEW.full_name :=  NEW.name || '-' || EXTRACT(year from NEW.started_at);
+    RETURN NEW;
+END;
+$function$
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute("CREATE TRIGGER events_before_update_of_name_started_at_row_tr BEFORE UPDATE OF name, started_at ON events FOR EACH ROW EXECUTE PROCEDURE events_before_update_of_name_started_at_row_tr()")
+
 end
