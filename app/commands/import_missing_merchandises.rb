@@ -40,7 +40,7 @@ class ImportMissingMerchandises < Mutations::Command
   def check_parallel_data_structure
     artwork_names = artworks.map(&:name)
 
-    if merchandise_by_artwork_name.keys != artwork_names
+    if merchandise_by_artwork_name.keys.sort != artwork_names.sort
       add_error(:artworks_and_merchandises, :mismatched_data, "Mismatch between artworks and merchandise data:\n#{artwork_names}\n#{merchandise_by_artwork_name.keys}")
     end
   end

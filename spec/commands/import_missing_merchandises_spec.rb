@@ -46,11 +46,20 @@ describe ImportMissingMerchandises do
       args.merge!(artworks: [a_art])
       expect(error['artworks_and_merchandises']).to_not be_nil
     end
+
+    it "does not require a specific order" do
+      args[:artworks] << a_art
+      args[:merchandise_by_artwork_name]['a'] = ['1']
+      expect(error).to be_nil
+
+      args[:artworks].reverse!
+      expect(error).to be_nil
+    end
   end
 
   describe ".run" do
     it "does not create duplicate merchandise" do
-      merch = create_merch_for(b_art)
+      create_merch_for(b_art)
       expect { ImportMissingMerchandises.run(args) }.to_not change{Merchandise.count}
     end
 
@@ -67,7 +76,7 @@ describe ImportMissingMerchandises do
 
   describe "#result" do
     it "does not include previously existing" do
-      merch = create_merch_for(b_art)
+      create_merch_for(b_art)
 
       expect(ImportMissingMerchandises.run(args).result).to be_empty
     end
