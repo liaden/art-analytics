@@ -1,4 +1,20 @@
 /*
  *= require custom_bootstrap/custom_bootstrap
  *= require bootstrap-datepicker3
+ *= require nv.d3
  */
+
+svg {
+  display: block;
+}
+
+#chart, svg {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+.row > #chart {
+  height: 500px;
+}

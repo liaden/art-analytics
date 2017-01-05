@@ -36,7 +36,7 @@ gem 'activerecord-import'
 gem 'haml'
 
 gem 'gon'
-gem "d3-rails"
+gem 'novus-nvd3-rails'
 gem 'chartkick'
 gem 'groupdate'
 
