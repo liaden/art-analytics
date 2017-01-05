@@ -120,6 +120,12 @@ describe PerEventMerchandiseSales do
 
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 2500, sat: 5000))
       end
+
+      it 'handles sale of multiple merchandise' do
+        e = create(:event, :with_complex_sales)
+
+        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 8000, sat: 2500))
+      end
     end
 
     describe '#sold_items_per_day' do
