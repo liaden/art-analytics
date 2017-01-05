@@ -27,9 +27,6 @@ gem 'json', '~> 2.0'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 gem 'mutations'
 gem 'activerecord-import'
 
@@ -39,6 +36,8 @@ gem 'gon'
 gem 'novus-nvd3-rails'
 gem 'chartkick'
 gem 'groupdate'
+
+gem 'money-rails'
 
 group :development, :test do
   gem 'byebug'

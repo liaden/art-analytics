@@ -16,7 +16,7 @@ FactoryGirl.define do
       after(:create) do |event, evaluator|
         sale = create(:sale, :with_merchandise)
         event.sales += [ sale,
-          create(:sale, :with_merchandise, sale_price: 500),
+          create(:sale, :with_merchandise, sale_price: 5),
           create(:sale, :with_merchandise, event: event, day_n: 1),
           create(:sale, :with_merchandise, number_of_merch: 2)
         ]
@@ -42,7 +42,7 @@ FactoryGirl.define do
 
     trait :with_huge_price do
       after(:create) do |event, evaluator|
-        event.sales << create(:sale, :with_merchandise, sale_price: 123456789)
+        event.sales << create(:sale, :with_merchandise, sale_price: 12345)
       end
     end
   end

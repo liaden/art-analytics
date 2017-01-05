@@ -6,10 +6,13 @@ class Sale < ApplicationRecord
 
   belongs_to :event
 
-  validates :sale_price, presence: true
+  monetize :sale_price_cents
+
+  validates :sale_price_cents, presence: true
   #validates :merchandise_sales, length: { minimum: 1, too_short: "must have at least one asociated sold item" }
 
   validate :during_event
+
 
   private
 

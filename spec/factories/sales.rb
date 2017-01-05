@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :sale do
-    sale_price 2500
+    sale_price 25
     list_price 2500
     sold_on { Date.today.friday }
     note "MyText"

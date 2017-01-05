@@ -45,14 +45,14 @@ describe PerEventMerchandiseSales do
       it 'computes revenue across two sales' do
         e = create(:event, :with_sale, :with_huge_price)
         expect(e.sales.size).to eq 2
-        expect(e.sales.map(&:sale_price).reduce(:+)).to eq query_results.values.first
+        expect(e.sales.map(&:sale_price_cents).reduce(:+)).to eq query_results.values.first
       end
 
       it 'includes all events' do
         e1 = create(:event, :with_sale)
         e2 = create(:event, :with_huge_price)
 
-        result_matches_exactly(e1 => 2500, e2 =>123456789)
+        result_matches_exactly(e1 => 2500, e2 =>1234500)
       end
 
       it 'adds multiple sales at event' do
@@ -109,14 +109,14 @@ describe PerEventMerchandiseSales do
 
       it 'handles multiple sales in a day' do
         e = create(:event, :with_sale)
-        create(:sale, :with_merchandise, event: e, sale_price: 5000)
+        create(:sale, :with_merchandise, event: e, sale_price: 50)
 
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 7500))
       end
 
       it 'handles sales over different days' do
         e = create(:event, :with_sale)
-        create(:sale, :with_merchandise, sold_on: Date.today.friday+1.day, event: e, sale_price: 5000)
+        create(:sale, :with_merchandise, sold_on: Date.today.friday+1.day, event: e, sale_price: 50)
 
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 2500, sat: 5000))
       end

@@ -61,7 +61,7 @@ class ImportSales < Mutations::Command
   def build_sale(data)
     Sale.new(
       sold_on: event.started_at + data[:sold_on].days,
-      sale_price: data[:total],
+      sale_price: BigDecimal.new(data[:total]),
       tags: data[:tags],
       event: event
     )

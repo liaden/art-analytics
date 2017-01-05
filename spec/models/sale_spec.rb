@@ -1,5 +1,5 @@
 describe Sale do
-  it { is_expected.to validate_presence_of(:sale_price) }
+  it { is_expected.to validate_presence_of(:sale_price_cents) }
   it { is_expected.to belong_to(:event) }
 
   it "persists to the database" do

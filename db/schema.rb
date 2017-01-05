@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161231152541) do
+ActiveRecord::Schema.define(version: 20170105031459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,14 +65,14 @@ ActiveRecord::Schema.define(version: 20161231152541) do
   end
 
   create_table "sales", force: :cascade do |t|
-    t.integer  "sale_price"
     t.integer  "list_price"
     t.date     "sold_on"
     t.jsonb    "tags"
     t.text     "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "event_id"
+    t.integer  "sale_price_cents", default: 0, null: false
   end
 
   add_foreign_key "artworks", "imports"

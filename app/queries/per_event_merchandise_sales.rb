@@ -6,7 +6,7 @@ class PerEventMerchandiseSales
   end
 
   def total_revenue
-    Sale.joins(:event).group(:full_name).sum('sales.sale_price')
+    Sale.joins(:event).group(:full_name).sum(:sale_price_cents)
   end
 
   def total_sold_items
@@ -18,7 +18,7 @@ class PerEventMerchandiseSales
   end
 
   def revenue_per_day
-    transform_keys(Sale.joins(:event).group(:full_name).group_by_day_of_week(:sold_on).sum(:sale_price))
+    transform_keys(Sale.joins(:event).group(:full_name).group_by_day_of_week(:sold_on).sum(:sale_price_cents))
   end
 
   def sold_items_per_day
