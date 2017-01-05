@@ -23,14 +23,12 @@ describe PerEventMerchandiseSales do
   def daily_results(results, event)
     event.reload # refresh for full_name
 
-    days = [:mon, :tues, :wed, :thurs, :fri, :sat, :sun ]
     result = {}
 
-    # key is [event.id, event.name, indexed_day_of_week]
+    # key is [event.full_name, :day_of_week]
     results.each do |key, value|
       if key.first == event.full_name
-        day = days[key.last]
-        result[day] = value
+        result[key.last] = value
       end
     end
     result
