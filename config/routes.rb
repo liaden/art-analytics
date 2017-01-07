@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  resources :events, only: [ :index, :create, :new, :show] do
+  resources :events, only: [:index, :create, :new, :show] do
     resources :import_sales, only: [:new, :create]
     resources :confirm_import_sales, only: [:create]
   end
+
+  resources :events_chart, only: [:new, :create]
 
   resource :control_panel, only: [:index]
 

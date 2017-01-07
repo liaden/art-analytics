@@ -40,24 +40,25 @@ describe PerEventMerchandiseSales do
 
   context 'unfiltered' do
     describe '#total_revenue' do
+      before { no_sales_per_day.transform_values! { |_x| "0.0" } }
       let(:query_results) { query.total_revenue }
 
       it 'computes revenue across two sales' do
         e = create(:event, :with_sale, :with_huge_price)
         expect(e.sales.size).to eq 2
-        expect(e.sales.map(&:sale_price_cents).reduce(:+)).to eq query_results.values.first
+        expect(e.sales.map(&:sale_price).reduce(:+).dollars.to_s).to eq query_results.values.first
       end
 
       it 'includes all events' do
         e1 = create(:event, :with_sale)
         e2 = create(:event, :with_huge_price)
 
-        result_matches_exactly(e1 => 2500, e2 =>1234500)
+        result_matches_exactly(e1 => "25.0", e2 =>"12345.0")
       end
 
       it 'adds multiple sales at event' do
         e = create(:event, :with_sale, :with_sale_of_many)
-        result_matches_exactly(e => 5000)
+        result_matches_exactly(e => "50.0")
       end
 
       it 'handles event without sales' do
@@ -100,31 +101,32 @@ describe PerEventMerchandiseSales do
 
     describe '#revenue_per_day' do
       let(:query_results) { query.revenue_per_day }
+      before { no_sales_per_day.transform_values! { |_x| "0.0" } }
 
       it 'handles simple case' do
         e = create(:event, :with_sale)
 
-        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 2500))
+        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: "25.0"))
       end
 
       it 'handles multiple sales in a day' do
         e = create(:event, :with_sale)
         create(:sale, :with_merchandise, event: e, sale_price: 50)
 
-        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 7500))
+        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: "75.0"))
       end
 
       it 'handles sales over different days' do
         e = create(:event, :with_sale)
         create(:sale, :with_merchandise, sold_on: Date.today.friday+1.day, event: e, sale_price: 50)
 
-        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 2500, sat: 5000))
+        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: "25.0", sat: "50.0"))
       end
 
       it 'handles sale of multiple merchandise' do
         e = create(:event, :with_complex_sales)
 
-        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 8000, sat: 2500))
+        expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: "80.0", sat: "25.0"))
       end
     end
 
@@ -189,6 +191,24 @@ describe PerEventMerchandiseSales do
         expect(daily_results_on(e1)).to eq(no_sales_per_day.merge(fri: 1))
         expect(daily_results_on(e2)).to eq(no_sales_per_day.merge(fri: 4, sat: 1))
       end
+    end
+  end
+
+  describe '#run' do
+    it 'does not run invalid method' do
+      expect(query).to_not receive(:send)
+
+      expect(query.run(:not, :real)).to be_empty
+    end
+
+    it 'runs per_day grouping' do
+      expect(query).to receive(:sold_items_per_day)
+      query.run(:per_day, :sold_items)
+    end
+
+    it 'runs total grouping' do
+      expect(query).to receive(:total_sold_items)
+      query.run(:total, :sold_items)
     end
   end
 end
