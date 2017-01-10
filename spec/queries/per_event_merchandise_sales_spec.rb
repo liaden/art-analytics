@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe PerEventMerchandiseSales do
-  let(:query) { PerEventMerchandiseSales.new(event_tag_filter: event_filter, merchandise_tag_filter: merchandise_filter, artwork_tag_filter: artwork_filter) }
+  let(:chart_config) { build(:event_chart_config) }
+  let(:query) { PerEventMerchandiseSales.new(chart_config) }
 
   let(:artwork_filter) { nil }
   let(:merchandise_filter) { nil }
@@ -196,19 +197,28 @@ describe PerEventMerchandiseSales do
 
   describe '#run' do
     it 'does not run invalid method' do
+      chart_config.grouping = :not
+      chart_config.metric = :real
+
       expect(query).to_not receive(:send)
 
-      expect(query.run(:not, :real)).to be_empty
+      expect(query.run).to be_empty
     end
 
     it 'runs per_day grouping' do
+      chart_config.grouping = :per_day
+      chart_config.metric = :sold_items
+
       expect(query).to receive(:sold_items_per_day)
-      query.run(:per_day, :sold_items)
+      query.run
     end
 
     it 'runs total grouping' do
+      chart_config.grouping = :total
+      chart_config.metric = :sold_items
+
       expect(query).to receive(:total_sold_items)
-      query.run(:total, :sold_items)
+      query.run
     end
   end
 end

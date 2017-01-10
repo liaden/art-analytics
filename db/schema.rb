@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105031459) do
+ActiveRecord::Schema.define(version: 20170107230527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(version: 20170105031459) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "import_id"
+  end
+
+  create_table "event_chart_configs", force: :cascade do |t|
+    t.string   "grouping",    null: false
+    t.string   "metric",      null: false
+    t.string   "name"
+    t.datetime "date_after",  null: false
+    t.datetime "date_before", null: false
   end
 
   create_table "event_inventory_items", force: :cascade do |t|

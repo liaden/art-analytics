@@ -1,0 +1,71 @@
+%h2 Customize Graph
+= form_for(@controls, url: chart_url) do |f|
+  .form-group
+    %label.control-label
+      Grouping of Data
+    .radio.col-sm-offset-1
+      = f.radio_button 'grouping', 'per_day'
+      = f.label 'grouping', 'Per Day', value: 'per_day'
+    .radio.col-sm-offset-1
+      = f.radio_button 'grouping', 'total'
+      = f.label 'grouping', 'Totals (no grouping)', value: 'total'
+
+  .form-group
+    %label.control-label
+      Desired Metric
+    .radio.col-sm-offset-1
+      = f.radio_button :metric, :revenue
+      = f.label :metric, 'Revenue', value: :revenue
+    .radio.col-sm-offset-1
+      = f.radio_button :metric, :sold_items
+      = f.label :metric, 'Items Sold Count', value: :sold_items
+    .radio.col-sm-offset-1
+      = f.radio_button :metric, :customers
+      = f.label :metric, 'Customers', value: :customers
+
+  .form-group
+    = f.label 'Start Date', class: 'control-label'
+    = f.text_field :date_after, "value" => @controls.date_after.strftime("%b %d, %Y"), "data-provide" => 'datepicker', "data-date-format" => 'M d, yyyy'
+
+    = f.label 'End Date', class: 'control-label'
+    = f.text_field :date_before, "value" => @controls.date_before.strftime("%b %d, %Y"), "data-provide" => 'datepicker', "data-date-format" => 'M d, yyyy'
+
+  .form-group
+    = f.submit 'View'
+
+#chartrow.row
+  #chart.with-3d-shadow.with-transitions
+    %svg
+
+:javascript
+
+   var chart;
+   nv.addGraph(function() {
+       chart = nv.models.multiBarChart()
+           .x(function(d) { return d.label; })
+           .y(function(d) { return +d.value; })
+           .duration(300)
+           .margin({bottom: 100, left: 70})
+           .rotateLabels(45)
+           .groupSpacing(0.1)
+       ;
+       chart.reduceXTicks(false).staggerLabels(true);
+       chart.xAxis
+           .axisLabel("Days of the Week")
+           .axisLabelDistance(35)
+           .showMaxMin(false)
+       ;
+       chart.yAxis
+           .axisLabel("Revenue")
+           .axisLabelDistance(-5)
+           .tickFormat(d3.format(',.01f'))
+       ;
+       chart.dispatch.on('renderEnd', function(){
+           nv.log('Render Complete');
+       });
+       d3.select('#chart svg')
+           .datum(gon.data)
+           .call(chart);
+       nv.utils.windowResize(chart.update);
+       return chart;
+   });
