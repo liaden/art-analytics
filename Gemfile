@@ -4,6 +4,7 @@ gem 'rails', '~> 5.0.0'
 
 gem 'pg', '~> 0.15'
 gem 'hairtrigger'
+gem 'activerecord-import'
 
 gem 'less-rails-bootstrap'
 gem 'bootstrap-datepicker-rails'
@@ -28,7 +29,6 @@ gem 'json', '~> 2.0'
 # gem 'unicorn'
 
 gem 'mutations'
-gem 'activerecord-import'
 
 gem 'haml'
 
@@ -54,6 +54,7 @@ group :test do
 end
 
 group :development do
+  gem 'brakeman', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 
