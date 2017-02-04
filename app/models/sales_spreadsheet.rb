@@ -90,7 +90,7 @@ class SalesSpreadsheet
   end
 
   def transform_sales_data_to_hash!(data)
-    hash = { total: data.shift.to_d, sold_on: data.shift.to_i, tags: CSV.parse(data.pop || '').flatten }
+    hash = { total: data.shift.to_d, sold_on: data.shift.to_i, merchandise_sold: [], tags: CSV.parse(data.pop || '').flatten }
 
     headers.each.with_index do |grouped_header,index|
       header, subheader = *grouped_header
@@ -98,7 +98,7 @@ class SalesSpreadsheet
       quantity = data[index].to_i
       raise BadRow.new("On row #{index}: negative quantity is not permitted: #{quantity}") if quantity < 0
 
-      hash[[header,subheader]] = quantity
+      hash[:merchandise_sold] << { artwork_name: header, merch_name: subheader, quantity: quantity }
     end
 
     hash

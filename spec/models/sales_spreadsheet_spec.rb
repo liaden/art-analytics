@@ -130,15 +130,17 @@ describe SalesSpreadsheet do
       end
 
       it "defaults nil to 0" do
+        sales_data = instantiate(['0', '0', nil, nil, "1", nil, "c,s,v"]).sales_data
         expect(
-          instantiate(['0', '0', nil, nil, "1", nil, "c,s,v"]).sales_data.first[['h1', 's11']]
-        ).to eq 0
+          sales_data.first[:merchandise_sold].first
+        ).to eq({artwork_name: 'h1', merch_name: 's11', quantity: 0})
       end
 
       it "converts to integers" do
+        sales_data = instantiate(['0', '0', nil, nil, "1", nil, "c,s,v"]).sales_data
         expect(
-          instantiate(['0', '0', nil, nil, "1", nil, "c,s,v"]).sales_data.first[['h2', 's21']]
-        ).to eq 1
+          sales_data.first[:merchandise_sold][2]
+        ).to eq({artwork_name: 'h2', merch_name: 's21', quantity: 1})
       end
     end
 

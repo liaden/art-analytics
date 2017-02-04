@@ -32,7 +32,7 @@ class ImportSales < Mutations::Command
       @artworks = nil
 
       @sales = spreadsheet.sales_data.map do |sale_data|
-        attach_merchandise(build_sale(sale_data), sale_data)
+        attach_merchandise(build_sale(sale_data), sale_data[:merchandise_sold])
       end
 
       Sale.import! @sales, recursive: true
@@ -68,10 +68,14 @@ class ImportSales < Mutations::Command
   end
 
   def attach_merchandise(record, merchandise_data)
-    record.merchandise_sales = spreadsheet.headers.map do |art_name, merch_name|
-      instances_sold = merchandise_data[[art_name, merch_name]]
-      if instances_sold.to_i > 0
-        MerchandiseSale.new(merchandise_id: merchandise_lookup(art_name, merch_name).id, quantity: instances_sold)
+    record.merchandise_sales = merchandise_data.map do |data|
+      merch = merchandise_lookup(data[:artwork_name], data[:merch_name])
+
+      if data[:quantity] > 0
+        MerchandiseSale.new(
+          merchandise_id: merch.id,
+          quantity: data[:quantity]
+        )
       end
     end.compact
 
