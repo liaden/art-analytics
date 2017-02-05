@@ -6,6 +6,8 @@ class Sale < ApplicationRecord
 
   belongs_to :event
 
+  scope :unknown_items, -> { joins(:merchandises).where(merchandises: { unknown_item: true }) }
+
   monetize :sale_price_cents
 
   validates :sale_price_cents, presence: true

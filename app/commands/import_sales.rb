@@ -22,7 +22,6 @@ class ImportSales < Mutations::Command
 
   def execute
     Event.transaction do
-
       import_missing_artworks = ImportMissingArtworks.new(names: spreadsheet.artwork_names, import: import)
       @new_artworks = import_missing_artworks.run!
 
@@ -59,6 +58,7 @@ class ImportSales < Mutations::Command
       sold_at: sold_at,
       sale_price: data[:total].to_d,
       tags: data[:tags],
+      third_party_transaction_id: data[:third_party_transaction_id],
       event: event
     )
   end
@@ -79,12 +79,18 @@ class ImportSales < Mutations::Command
   end
 
   def merchandise_lookup(art_name, merch_name)
-    @merchandise_lookup ||= artworks.values.each_with_object({}) { |art, hash| hash[art.name] = art.merchandises.index_by(&:name) }
-    @merchandise_lookup[art_name][merch_name]
+    @merchandise_lookup ||=
+      artworks.values
+        .each_with_object({}) { |art, hash| hash[art.name] = art.merchandises.index_by(&:name) }
+        .tap { |hash| hash['']  = { '' => Merchandise.unknown_artwork_item } }
+
+    # nil merch_name will convert to an unknown_item
+    # nil art_name will  convert to the global unknown_item
+    @merchandise_lookup[art_name.to_s][merch_name.to_s]
   end
 
   def create_event_inventory_list(event, merchandises)
-    @inventory_list = merchandises.map { |merch| EventInventoryItem.new(event: event, merchandise: merch) }
+    @inventory_list = merchandises.select(&:known_item?).map { |merch| EventInventoryItem.new(event: event, merchandise: merch) }
     EventInventoryItem.import @inventory_list, validate: false
   end
 end
