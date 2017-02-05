@@ -13,7 +13,7 @@ describe Sale do
   context "at an event" do
     let(:event) { create(:event) }
     it "must occur during event" do
-      expect(build(:sale, :with_merchandise, sold_on: event.started_at - 1.day, event: event)).to be_invalid
+      expect(build(:sale, :with_merchandise, sold_at: event.started_at - 1.day, event: event)).to be_invalid
     end
   end
 end

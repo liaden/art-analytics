@@ -1,6 +1,6 @@
 require 'csv'
 
-class SalesSpreadsheet
+class SalesSpreadsheet < EventSalesData
   LEADING_COLUMNS = ['total', 'sold on']
   TRAILING_COLUMNS = ['tags']
 
@@ -56,6 +56,21 @@ class SalesSpreadsheet
 
   def valid?
     return @errors.empty?
+  end
+
+  def data_source
+    'manual'
+  end
+
+  def merchandise_by_artwork_name
+    # if first time indexing an artwork, return back empty array to mutate with append
+    result = Hash.new { |h, k| h[k] = [] }
+
+    headers.each do |artwork_name, merchandise_name|
+      result[artwork_name] << merchandise_name
+    end
+
+    result
   end
 
   private

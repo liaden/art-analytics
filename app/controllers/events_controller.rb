@@ -57,7 +57,7 @@ class EventsController < ApplicationController
       group('merchandises.name').
       sum('quantity')
 
-    @totals_by_day = MerchandiseSale.joins(:sale).where(sales: { event_id: params[:id]}).group_by_day('sales.sold_on').sum('merchandise_sales.quantity')
+    @totals_by_day = MerchandiseSale.joins(:sale).where(sales: { event_id: params[:id]}).group_by_day('sales.sold_at').sum('merchandise_sales.quantity')
   end
 
   private

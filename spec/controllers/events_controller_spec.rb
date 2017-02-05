@@ -89,7 +89,7 @@ describe EventsController do
     let(:event) { sale.event }
 
     it "adds quantities for same merch across sales" do
-      create(:sale, :with_merchandise, event: event, quantity: 411, sold_on: event.started_at)
+      create(:sale, :with_merchandise, event: event, quantity: 411, sold_at: event.started_at)
 
       expect(page).to include('436')
     end

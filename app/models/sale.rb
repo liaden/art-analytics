@@ -13,12 +13,11 @@ class Sale < ApplicationRecord
 
   validate :during_event
 
-
   private
 
   def during_event
     if event.present?
-      errors.add(:sold_on, "sold date #{sold_on} not during event: #{event.time_period} ") unless event.time_period.include?(sold_on)
+      errors.add(:sold_at, "sold date #{sold_at} not during event: #{event.time_period} ") unless event.time_period.include?(sold_at.to_date)
     end
   end
 end

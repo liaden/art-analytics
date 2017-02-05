@@ -16,16 +16,16 @@ class PerEventMerchandiseSales
   end
 
   def revenue_per_day
-    raw_data = Sale.joins(:event).where(within_date).group(:full_name).group_by_day_of_week(:sold_on).sum(:sale_price_cents)
+    raw_data = Sale.joins(:event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).sum(:sale_price_cents)
     transform_money(transform_keys(raw_data))
   end
 
   def sold_items_per_day
-    transform_keys(MerchandiseSale.joins(sale: :event).where(within_date).group(:full_name).group_by_day_of_week(:sold_on).sum(:quantity))
+    transform_keys(MerchandiseSale.joins(sale: :event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).sum(:quantity))
   end
 
   def customers_per_day
-    transform_keys(Sale.joins(:event).where(within_date).group(:full_name).group_by_day_of_week(:sold_on).count)
+    transform_keys(Sale.joins(:event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).count)
   end
 
   def run

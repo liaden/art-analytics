@@ -119,7 +119,7 @@ describe PerEventMerchandiseSales do
 
       it 'handles sales over different days' do
         e = create(:event, :with_sale)
-        create(:sale, :with_merchandise, sold_on: Date.today.friday+1.day, event: e, sale_price: 50)
+        create(:sale, :with_merchandise, sold_at: Date.today.friday+1.day, event: e, sale_price: 50)
 
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: "25.0", sat: "50.0"))
       end
@@ -162,7 +162,7 @@ describe PerEventMerchandiseSales do
 
       it 'separates sales over days' do
         e = create(:event, :with_sale)
-        create(:sale, :with_merchandise, event: e, sold_on: Date.today.friday + 1.day)
+        create(:sale, :with_merchandise, event: e, sold_at: Date.today.friday + 1.day)
 
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: 1, sat: 1))
       end
@@ -179,7 +179,7 @@ describe PerEventMerchandiseSales do
 
       it 'handles monday following the weekend is part of the event' do
         e = create(:event, :with_sale, ended_at: Date.today.friday+3.days)
-        create(:sale, event: e, sold_on: Date.today.friday+3.days)
+        create(:sale, event: e, sold_at: Date.today.friday+3.days)
 
         expect(query_results.size).to eq 7
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(mon: 1, fri: 1))

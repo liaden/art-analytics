@@ -1,6 +1,6 @@
 class ImportSales < Mutations::Command
   required do
-    model :spreadsheet, class: SalesSpreadsheet
+    model :spreadsheet, class: EventSalesData
     model :event
     model :import
   end
@@ -16,7 +16,7 @@ class ImportSales < Mutations::Command
     end
 
     if !spreadsheet.valid?
-      add_eror(:spreadsheet, :file_data, 'Bad file data for sales spreadsheet')
+      add_eror(:spreadsheet, :file_data, "Bad file data for #{spreadsheet.data_source} spreadsheet")
     end
   end
 
@@ -26,7 +26,7 @@ class ImportSales < Mutations::Command
       import_missing_artworks = ImportMissingArtworks.new(names: spreadsheet.artwork_names, import: import)
       @new_artworks = import_missing_artworks.run!
 
-      import_missing_merchandise = ImportMissingMerchandises.new(artworks: artworks.values, import: import,  merchandise_by_artwork_name: spreadsheet_merchandise_by_artwork_name)
+      import_missing_merchandise = ImportMissingMerchandises.new(artworks: artworks.values, import: import,  merchandise_by_artwork_name: spreadsheet.merchandise_by_artwork_name)
       @new_merchandises = import_missing_merchandise.run!
 
       @artworks = nil
@@ -51,17 +51,13 @@ class ImportSales < Mutations::Command
     @artworks ||= Artwork.includes(:merchandises).where(name: spreadsheet.artwork_names).index_by(&:name)
   end
 
-  def spreadsheet_merchandise_by_artwork_name
-    spreadsheet.headers.reduce(Hash.new { |h, k| h[k] = [] }) do |hash, header_pair|
-      hash[header_pair[0]] << header_pair[1]
-      hash
-    end
-  end
 
   def build_sale(data)
+    sold_at = data[:sold_at] || (event.started_at + data[:sold_on].days)
+
     Sale.new(
-      sold_on: event.started_at + data[:sold_on].days,
-      sale_price: BigDecimal.new(data[:total]),
+      sold_at: sold_at,
+      sale_price: data[:total].to_d,
       tags: data[:tags],
       event: event
     )

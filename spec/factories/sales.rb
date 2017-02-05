@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :sale do
     sale_price 25
     list_price 2500
-    sold_on { Date.today.friday }
+    sold_at { Date.today.friday }
     note "MyText"
 
     event
@@ -28,13 +28,13 @@ FactoryGirl.define do
     trait :with_event do
       after(:build) do |sale|
         sale.event = create(:event)
-        sale.sold_on = sale.event.started_at.to_date
+        sale.sold_at = sale.event.started_at.to_date
       end
     end
 
     after(:build) do |sale, evaluator|
       if sale.event.present? and evaluator.day_n.present?
-        sale.sold_on = sale.event.started_at + evaluator.day_n.days
+        sale.sold_at = sale.event.started_at + evaluator.day_n.days
       end
 
       if evaluator.of_merchandise.present?
