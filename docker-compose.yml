@@ -10,8 +10,8 @@ services:
       - "3000:3000"
     links:
       - db
-      - graphql
     volumes:
+      - ../analytics-data/:/analytics-data
       - .:/art-analytics
 
   graphql:

@@ -3,6 +3,7 @@ require 'rails_helper'
 describe ImportSalesController do
   render_views
 
+  #before { Merchandise.create_unknown_for(nil) }
   let!(:event) { create(:event) }
 
   def datafile(file = 'testdata')
@@ -76,6 +77,18 @@ describe ImportSalesController do
       it 'redirects to event path' do
         post :create, params: { event_id: event.id, spreadsheet: datafile, confirmed: true }
         expect(response).to redirect_to(events_path(event))
+      end
+    end
+
+    context 'square import' do
+      let(:square_sheet) do
+        Rack::Test::UploadedFile.new("spec/support/square_sheets/ohayocon.csv")
+      end
+
+      let(:event) { create(:event, started_at: Date.new(2017, 1, 13), ended_at: Date.new(2017, 1, 15)) }
+
+      it 'works' do
+        post :create, params: { event_id: event.id, spreadsheet: square_sheet, confirmed: true }
       end
     end
   end

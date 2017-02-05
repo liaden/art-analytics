@@ -8,7 +8,7 @@ class ImportSalesController < ApplicationController
         event: event,
         import: create_import,
         dry_run: dry_run,
-        spreadsheet: SalesSpreadsheet.load(spreadsheet_file))
+        spreadsheet: EventSalesData.load(spreadsheet_file))
     rescue SalesSpreadsheet::ValidationException, Mutations::ValidationException => e
       @errors = [e.message]
       return render 'new'

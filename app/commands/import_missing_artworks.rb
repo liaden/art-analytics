@@ -20,6 +20,9 @@ class ImportMissingArtworks < Mutations::Command
       Artwork.import [:name, :import_id], attr_values
 
       @new_artworks = Artwork.includes(:merchandises).where(import_id: import.id).to_a
+      @new_artworks.each do |artwork|
+        Merchandise.create_unknown_for(artwork)
+      end
 
       raise ActiveRecord::Rollback if dry_run
     end

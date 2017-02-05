@@ -10,4 +10,10 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :unknown_merchandise, class: Merchandise do
+    artwork { create(:artwork) }
+    unknown_item true
+    name ''
+  end
 end
