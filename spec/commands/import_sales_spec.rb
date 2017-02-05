@@ -5,6 +5,10 @@ describe ImportSales do
     ImportSales.run(args)
   end
 
+  def run!(args)
+    ImportSales.run(args)
+  end
+
   let(:args) { { spreadsheet: empty_spreadsheet(['a'], ['canvas']), event: event, import: create(:import) } }
 
   let(:single_sale_spreadsheet) do
@@ -149,6 +153,17 @@ describe ImportSales do
 
       context 'of multiple merchandises' do
       end
+    end
+  end
+
+  describe 'square spreedsheet' do
+    let(:event) { create(:event, started_at: Date.new(2017, 1, 13), ended_at: Date.new(2017, 1, 15)) }
+
+    it "creates artworks, mercahndise, and sales" do
+      args.merge!(spreadsheet: SquareSpreadsheet.load('spec/support/square_sheets/complex.csv'))
+      expect {
+        run(args)
+      }.to change{Artwork.count}
     end
   end
 end
