@@ -25,7 +25,7 @@ class ImportMissingMerchandises < Mutations::Command
         attr_values += missing_merch.map { |name| [artwork.id, name, import.id] }
       end
 
-      Merchandise.import [:artwork_id, :name, :import_id], attr_values
+      Merchandise.import [:artwork_id, :name, :import_id], attr_values.uniq
 
       @new_merchandises = Merchandise.includes(:artwork).where(import_id: import.id).to_a
 

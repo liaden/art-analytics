@@ -54,6 +54,20 @@ describe SquareSpreadsheet do
     end
   end
 
+  describe '.parse_artwork_name' do
+    def run(text)
+      SquareSpreadsheet.parse_artwork_name(text)
+    end
+
+    it 'ignores variant' do
+      expect(run('Name (Large)')).to eq 'Name'
+    end
+
+    it 'handles no variants' do
+      expect(run('Name')).to eq 'Name'
+    end
+  end
+
   describe '.parse_merchandise_name' do
     def run(text)
       SquareSpreadsheet.parse_merchandise_name(text)
@@ -78,5 +92,5 @@ describe SquareSpreadsheet do
     it 'only captures last set of parens' do
       expect(run('artwork (1) (Large)')).to eq 'Large'
     end
-  end
+   end
 end

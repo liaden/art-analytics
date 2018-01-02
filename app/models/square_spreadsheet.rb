@@ -90,6 +90,11 @@ class SquareSpreadsheet < EventSalesData
     matches[1].strip
   end
 
+  def self.parse_artwork_name(item)
+    # if there are no variants, return back item
+    item.rpartition('(').first.strip! || item
+  end
+
   private
 
   def skip?(line)
@@ -112,17 +117,14 @@ class SquareSpreadsheet < EventSalesData
     merchandise.split(',').map do |item|
       {
         quantity: parse_quantity(item),
-        artwork_name: parse_artwork_name(item),
+        artwork_name: SquareSpreadsheet.parse_artwork_name(item),
         merch_name: SquareSpreadsheet.parse_merchandise_name(item)
       }
     end
   end
 
-  def parse_artwork_name(item)
-    item.rpartition('(').first.strip!
-  end
-
   def parse_quantity(item)
+    item.strip! # leading whitespace can  be an artifact
     regex = /^(\d+) x /
     matches = item.scan(regex)
 
