@@ -80,6 +80,11 @@ if Rails.env.development?
         started_at: '7/20/2017',
         duration: 4,
         file: '../analytics-data/state-street-2017.csv',
+      },
+      { name: 'dragoncon',
+        started_at: '9/1/2017',
+        duration: 4,
+        file: '../analytics-data/dragoncon-2017.csv',
       }
     ].each do |data|
       ImportSales.run(
