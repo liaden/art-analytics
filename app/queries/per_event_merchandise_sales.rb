@@ -48,7 +48,7 @@ class PerEventMerchandiseSales
   end
 
   def transform_keys(data)
-    days = [:mon, :tues, :wed, :thurs, :fri, :sat, :sun ]
+    days = [:sun, :mon, :tues, :wed, :thurs, :fri, :sat ]
     data.transform_keys! do |full_name, indexed_day_of_week|
       [full_name, days[indexed_day_of_week]]
     end

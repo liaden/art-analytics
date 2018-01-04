@@ -92,5 +92,78 @@ describe SquareSpreadsheet do
     it 'only captures last set of parens' do
       expect(run('artwork (1) (Large)')).to eq 'Large'
     end
-   end
+  end
+
+  describe '#process' do
+    let(:data) do
+      { total: 1000,
+        discounts: 0,
+        tax: 100,
+        processing_fees: 32,
+        time_zone: 'Central Time (US & Canada)',
+        time: '23:00',
+        date: '1/15/2017',
+        description: sale_description
+      }
+    end
+
+    let(:sale_description) { '2 x art_name (merch_name)' }
+
+    let(:spreadsheet) { SquareSpreadsheet.new(nil) }
+    let(:result) { spreadsheet.process(data) }
+
+    describe ':sold_at' do
+      let(:sold_at) { result[:sold_at] }
+
+      it 'stores time in UTC' do
+        expect(sold_at.zone).to eq '+00:00'
+      end
+
+      it 'does not mangle date' do
+        expect(sold_at.day).to eq 15
+      end
+
+      it 'does not mangle hour' do
+        expect(sold_at.hour).to eq 23
+      end
+    end
+
+    describe ':merchandise_sold' do
+      let(:merch_sold) { result[:merchandise_sold].first }
+
+      it 'has quantity' do
+        expect(merch_sold[:quantity]).to eq 2
+      end
+
+      it 'has the artwork_name' do
+        expect(merch_sold[:artwork_name]).to eq 'art_name'
+      end
+
+      it 'has merch_name' do
+        expect(merch_sold[:merch_name]).to eq 'merch_name'
+      end
+
+      context 'unkown item' do
+        let(:sale_description) { 'Custom Amount' }
+
+        it 'has quantity 1' do
+          expect(merch_sold[:quantity]).to eq 1
+        end
+
+        it 'has Unknown Artwork name' do
+          expect(merch_sold[:artwork_name]).to eq Merchandise.unknown_artwork_item.name
+        end
+
+        it 'does not have merch_name' do
+          expect(merch_sold[:merch_name]).to be_nil
+        end
+      end
+    end
+
+    [:total, :discounts, :tax, :processing_fees].each do |field|
+      it "parses :#{field} as Money" do
+        expect(result[field]).to be_an_instance_of(Money)
+      end
+    end
+  end
 end

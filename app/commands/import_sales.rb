@@ -50,7 +50,6 @@ class ImportSales < Mutations::Command
     @artworks ||= Artwork.includes(:merchandises).where(name: spreadsheet.artwork_names).index_by(&:name)
   end
 
-
   def build_sale(data)
     sold_at = data[:sold_at] || (event.started_at + data[:sold_on].days)
 

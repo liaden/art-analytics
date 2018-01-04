@@ -5,17 +5,21 @@ class SquareSpreadsheet < EventSalesData
   class AmbiguousMerchandiseQuantities < CsvFormatError; end
   class AmbiguousMerchandise < StandardError; end
 
-  attr_reader :errors, :sales_data
+  attr_reader :errors
 
   def initialize(data)
     # start at 1 due to headers
     @csv_line_num = 1
     @errors = []
     @refunded_transactions = Set.new
+    @data = data
+  end
 
-    @sales_data = data.map do |line|
-      process(line) unless skip?(line)
-    end.compact
+  def sales_data
+    @sales_data ||=
+      @data.map do |line|
+        process(line) unless skip?(line)
+      end.compact
   end
 
   def self.load(file = 'dummy_square.csv')
@@ -46,7 +50,6 @@ class SquareSpreadsheet < EventSalesData
       processing_fees: Monetize.parse(sale[:fees]),
       time_zone: sale[:time_zone],
       sold_at: sold_at(sale[:date], sale[:time], sale[:time_zone]),
-      time: ActiveSupport::TimeZone[sale[:time_zone]].parse(sale[:time]),
       merchandise_sold: parse_sale(sale[:description]),
       third_party_transaction_id: "SQUARE::#{sale[:transaction_id]}",
       tags: []
@@ -62,7 +65,7 @@ class SquareSpreadsheet < EventSalesData
   end
 
   def artwork_names
-    @sales_data.flat_map do |sale|
+    sales_data.flat_map do |sale|
       sale[:merchandise_sold].map { |merch| merch[:artwork_name] }
     end.uniq
   end
@@ -70,7 +73,7 @@ class SquareSpreadsheet < EventSalesData
   def merchandise_by_artwork_name
     result = Hash.new { |h, k| h[k] = [] }
 
-    @sales_data.
+    sales_data.
       flat_map { |sale| sale[:merchandise_sold] }.
       map { |merch_sold| result[merch_sold[:artwork_name]] << merch_sold[:merch_name] }
 
@@ -84,7 +87,7 @@ class SquareSpreadsheet < EventSalesData
   end
 
   def self.parse_merchandise_name(item)
-    matches = item.match(/.*[(]([ a-zA-Z0-9]+)\s*[)]$/)
+    matches = item.match(/.*[(]([ a-zA-Z0-9_]+)\s*[)]$/)
     return nil if matches.nil?
 
     matches[1].strip
@@ -136,7 +139,10 @@ class SquareSpreadsheet < EventSalesData
   end
 
   def sold_at(date, time, timezone)
-    ActiveSupport::TimeZone[timezone].parse(time, Date.strptime(date, '%m/%d/%y')).to_datetime
+    datetime = ActiveSupport::TimeZone[timezone].parse(time, Date.strptime(date, '%m/%d/%y'))
+
+    # drop timezone info so we are only considering sold_at as 'localtime'
+    DateTime.new(datetime.year, datetime.month, datetime.day, datetime.hour, datetime.min, datetime.sec)
   end
 end
 
