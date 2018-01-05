@@ -1,4 +1,4 @@
-FROM ruby:2.4.0
+FROM ruby:2.5.0
 
 # destination folder and permissions are unlikely to change
 
@@ -10,7 +10,7 @@ RUN chown -R admin:admin /usr/local/bundle
 RUN apt-get update && apt-get install -y build-essential
 RUN apt-get install -y libpq-dev
 RUN apt-get install -y libxml2-dev libxslt1-dev
-RUN apt-get install -y libqt4-webkit libqt4-dev xvfb
+RUN apt-get install -y libqtwebkit4 libqt4-dev xvfb
 RUN apt-get install -y nodejs
 RUN apt-get install -y graphviz
 
