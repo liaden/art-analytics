@@ -5,6 +5,7 @@ class Merchandise < ApplicationRecord
   # optional to allow for unknown merchandise where
   # the artwork is not known
   belongs_to :artwork, optional: :unknown_item
+  belongs_to :replaced_by, class_name: Merchandise
 
   has_many :merchandise_sales
   has_many :sales, through: :merchandise_sales
@@ -26,6 +27,12 @@ class Merchandise < ApplicationRecord
 
   # allows nil for unknown item for an unknown artwork
   validates_uniqueness_of :artwork_id, if: :unknown_item
+
+  scope :active, -> { where(replaced_by_id: nil) }
+  scope :replaced, -> { where.not(replaced_by_id: nil) }
+
+  scope :known, -> { where(uknown_item: false) }
+  scope :unknown, -> { where(unknown_item: true) }
 
   def self.create_unknown_for(artwork)
     create!(artwork: artwork, unknown_item: true, name: '')
