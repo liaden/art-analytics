@@ -8,7 +8,7 @@ class Artwork < ApplicationRecord
 
   belongs_to :replaced_by, class_name: Artwork
 
-  scope :known, -> { unknown_item: false }
+  scope :known, -> { where(unknown_item: false) }
 
   scope :active, -> { where(replaced_by_id: nil) }
   scope :replaced, -> { where.not(replaced_by_id: nil) }
