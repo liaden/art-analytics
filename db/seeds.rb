@@ -6,10 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+
 Merchandise.create_unknown_for(nil) unless Merchandise.unknown_artwork_item.present?
 
 if Rails.env.development?
-    ActiveRecord::Base.transaction do
+  ActiveRecord::Base.transaction do
     [
       { name: 'ohayocon',
         started_at: '1/15/2016',
@@ -87,6 +88,8 @@ if Rails.env.development?
         file: '../analytics-data/dragoncon-2017.csv',
       }
     ].each do |data|
+      puts "Processing #{data[:file]}"
+
       ImportSales.run(
         event: Event.create(
           name: data[:name],

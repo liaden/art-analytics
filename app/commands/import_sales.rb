@@ -30,9 +30,7 @@ class ImportSales < Mutations::Command
 
       @artworks = nil
 
-      @sales = spreadsheet.sales_data.map do |sale_data|
-        attach_merchandise(build_sale(sale_data), sale_data[:merchandise_sold])
-      end
+      process_sales
 
       Sale.import! @sales, recursive: true
 
@@ -48,6 +46,12 @@ class ImportSales < Mutations::Command
 
   def artworks
     @artworks ||= Artwork.includes(:merchandises).where(name: spreadsheet.artwork_names).index_by(&:name)
+  end
+
+  def process_sales
+    @sales = spreadsheet.sales_data.map! do |sale_data|
+      attach_merchandise(build_sale(sale_data), sale_data[:merchandise_sold])
+    end
   end
 
   def build_sale(data)

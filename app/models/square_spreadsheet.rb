@@ -30,12 +30,11 @@ class SquareSpreadsheet < EventSalesData
 
     if file.is_a? String
       grid = CSV.read(file, options)
-
     else # StringIO or File
       grid = CSV.new(file, options)
     end
 
-    new(grid)
+    new(grid).tap { |sheet| sheet.sales_data }
   end
 
   def process(line)
