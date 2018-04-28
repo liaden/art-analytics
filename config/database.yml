@@ -6,7 +6,7 @@ default: &default
   user: postgres
   pool: 5
   port: 5432
-  host: db
+  host: <%= ENV['DB_HOST'] || 'db' %>
 
 development:
   <<: *default
