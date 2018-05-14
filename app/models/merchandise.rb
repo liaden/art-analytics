@@ -25,8 +25,9 @@ class Merchandise < ApplicationRecord
   # require name for known items
   validates :name, presence: true, if: :known_item?
 
+  # validate uniqueness of the artwork_id for unknown_items
   # allows nil for unknown item for an unknown artwork
-  validates_uniqueness_of :artwork_id, if: :unknown_item
+  validates_uniqueness_of :artwork_id, scope: :unknown_item, if: :unknown_item
 
   scope :active, -> { where(replaced_by_id: nil) }
   scope :replaced, -> { where.not(replaced_by_id: nil) }
