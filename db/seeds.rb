@@ -151,7 +151,18 @@ if Rails.env.development?
       }
     ].each do |data|
       puts "Replacing \"#{data[:replacee_name]}\" with \"#{data[:replacer_name]}\""
-      ReplaceArtwork.run(**data)
+      ReplaceArtwork.run!(**data)
+    end
+
+    merch_mapping = { '8x8' => 'Small', '8x10' => 'Small', '8x12' => 'Small', '11x14' => 'Large', '12x18' => 'Large' }
+    Merchandise.where(name: merch_mapping.keys).each do |merch|
+      new_name = merch_mapping[merch.name]
+      puts "Processing #{merch.name} for #{merch.artwork.name}"
+      if replacer = merch.artwork.merchandises.where(name: new_name).first
+        ReplaceMerchandise.run!(replacee: merch, replacer: replacer)
+      else
+        merch.update!(name: new_name)
+      end
     end
 
     # Detect any invalid data
