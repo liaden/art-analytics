@@ -86,7 +86,22 @@ if Rails.env.development?
         started_at: '9/1/2017',
         duration: 4,
         file: '../analytics-data/dragoncon-2017.csv',
-      }
+      },
+      { name: 'summer pancakes and booze',
+        started_at: '9/22/2017',
+        duration: 2,
+        file: '../analytics-data/summer-pancakes-booze-2017.csv',
+      },
+      { name: 'winter pancakes and booze',
+        started_at: '2/23/2018',
+        duration: 2,
+        file: '../analytics-data/winter-pancakes-booze-2018.csv',
+      },
+      { name: 'shutocon',
+        started_at: '3/23/2018',
+        duration: 3,
+        file: '../analytics-data/shutocon-2018.csv',
+      },
     ].each do |data|
       puts "Processing #{data[:file]}"
 
@@ -99,6 +114,49 @@ if Rails.env.development?
         import: Import.create(import_file_data: File.read(data[:file])),
         spreadsheet: EventSalesData.load(data[:file])
       ) if File.exist?(data[:file])
+    end
+
+    [
+      {
+        replacee_name: 'A fish may love a bird',
+        replacer_name: 'A Fish May Love A Bird'
+      },
+      {
+        replacee_name: 'AfterGlow',
+        replacer_name: 'Afterglow'
+      },
+      {
+        replacee_name: 'Bakku-Shan',
+        replacer_name: 'Bakku-shan'
+      },
+      {
+        replacee_name: 'Familiar Skib',
+        replacer_name: 'Familiar Skin'
+      },
+      {
+        replacee_name: 'Guingin',
+        replacer_name: 'Guingin Of The Rumblestrudt'
+      },
+      {
+        replacee_name: 'Persephone',
+        replacer_name: "Persephone's Mischief"
+      },
+      {
+        replacee_name: 'Quandry',
+        replacer_name: 'Quandary'
+      },
+      {
+        replacee_name: 'StarSong',
+        replacer_name: 'Starsong'
+      }
+    ].each do |data|
+      puts "Replacing \"#{data[:replacee_name]}\" with \"#{data[:replacer_name]}\""
+      ReplaceArtwork.run(**data)
+    end
+
+    # Detect any invalid data
+    [ Artwork, Merchandise, MerchandiseSale, Sale, Event ].each do |table|
+      table.all.each { |i| puts i.errors.inspect unless i.valid?  }
     end
   end
 end

@@ -10,6 +10,9 @@ class Merchandise < ApplicationRecord
   has_many :merchandise_sales
   has_many :sales, through: :merchandise_sales
 
+  has_many :event_inventory_items
+  has_many :events, through: :event_inventory_items
+
   # valid cases:
   # * one unknown item for no artwork, and one uknown item for every artwork
   #     { unknown_item: true, name: '', artwork_id: nil }
