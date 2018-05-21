@@ -2,8 +2,7 @@ describe ReplaceModel do
   let(:params) do
     { replacee: replacee,
       replacer: replacer,
-      related_tables: related_tables,
-      field_name: field_name
+      related_tables: related_tables
     }
   end
 
@@ -23,10 +22,6 @@ describe ReplaceModel do
       params.delete(:replacer)
     end
 
-    it 'requires field_name' do
-      params.delete(:field_name)
-    end
-
     it 'requires related_tables' do
       params.delete(:related_tables)
     end
@@ -37,6 +32,14 @@ describe ReplaceModel do
 
     it 'cannot be replaced twice' do
       replacee.replaced_by = create(:artwork)
+    end
+
+    it 'requires field_name to be a column' do
+      params[:field_name] = 'not_a_column'
+    end
+
+    it 'requires classes to match' do
+      params[:replacee] = create(:merchandise)
     end
   end
 
