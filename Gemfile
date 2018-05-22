@@ -47,7 +47,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-rescue'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
 end
 
 group :test do

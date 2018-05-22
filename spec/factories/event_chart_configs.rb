@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :event_chart_config do
     # by default, use a wisde range in tests to avoid missing data
     date_after { 1.year.ago }

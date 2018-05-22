@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :merchandise do
     name 'canvas_print'
     tags ['12x18', 'canvas']
