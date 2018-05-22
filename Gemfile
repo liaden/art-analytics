@@ -6,10 +6,13 @@ gem 'pg', '~> 0.15'
 gem 'hairtrigger'
 gem 'activerecord-import'
 
-gem 'less-rails-bootstrap'
+gem 'puma'
+
+# https://github.com/metaskills/less-rails-bootstrap/pull/132
+gem 'less-rails-bootstrap', git: 'https://github.com/veelenga/less-rails-bootstrap', :ref => '7c479c2fdff500dc036c15364aa085332a73c642'
 gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails'
-gem 'sprockets', '~> 3.6.0'
+gem 'sprockets', '~> 3.6'
 gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer', platforms: :ruby, github: 'cowboyd/therubyracer'
 
