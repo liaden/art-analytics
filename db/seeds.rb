@@ -152,19 +152,40 @@ if Rails.env.development?
         replacer_name: "Persephone's Mischief"
       },
       {
+        replacee_name: 'Pilgramage',
+        replacer_name: 'Pilgrimage'
+      },
+      {
         replacee_name: 'Quandry',
         replacer_name: 'Quandary'
       },
       {
         replacee_name: 'StarSong',
         replacer_name: 'Starsong'
+      },
+      {
+        replacee_name: 'Thorny Alice',
+        replacer_name: 'Wildflower Alice'
       }
     ].each do |data|
       puts "Replacing \"#{data[:replacee_name]}\" with \"#{data[:replacer_name]}\""
       ReplaceArtwork.run!(**data)
     end
 
-    merch_mapping = { '8x8' => 'Small', '8x10' => 'Small', '8x12' => 'Small', '11x14' => 'Large', '12x18' => 'Large' }
+    merch_mapping = {
+      '8x8' => 'Small',
+      '8x10' => 'Small',
+      '8x12' => 'Small',
+      '11x14' => 'Large',
+      '12x18' => 'Large',
+      'Watercolor' => 'Watercolor Print',
+      '16x20 Camvas' => '16x20 Canvas',
+      '60' => 'Watercolor Print', # Vasalisa
+      'Canvas 8x12' => '8x12 Canvas',
+      'Watercolor Print Large' => 'Large Watercolor Print',
+      '225' => 'Large Watercolor' # Aegis-Hearted Framed Watercolor
+    }
+
     Merchandise.where(name: merch_mapping.keys).each do |merch|
       new_name = merch_mapping[merch.name]
       puts "Processing #{merch.name} for #{merch.artwork.name}"
@@ -179,5 +200,91 @@ if Rails.env.development?
     [ Artwork, Merchandise, MerchandiseSale, Sale, Event ].each do |table|
       table.all.each { |i| puts i.errors.inspect unless i.valid?  }
     end
+
+    square = [
+      "Afterglow",
+      "Alabaster",
+      "Chrysalis",
+      "Kintsugi",
+      "Nikomis",
+      "Sloth",
+      "SourPuss",
+      "Tempest",
+      "Wrath"
+    ]
+
+    squarish = {
+      portrait: [
+        "Aegis-Hearted",
+        "Affirmation",
+        "Aurora",
+        "Consent",
+        "Detonator",
+        "Dowry",
+        "Flying Lessons",
+        "Force Of Hand",
+        "Nesting Box",
+        "Now You See Me",
+        "Page of Pentacles",
+        "Queen Of Swords",
+      ],
+      landscape: [
+        "A Fish May Love A Bird",
+        "Bakku-shan",
+        "Coronation",
+        "Clarice's Echo",
+        "Low Tide",
+        "Quandary",
+        "Ursula's Promise"
+      ]
+    }
+
+    more_rectangle = {
+      portrait: [
+        "Baldr",
+        "Familiar Skin",
+        "Guingin Of The Rumblestrudt",
+        "Pallas Justice",
+        "Starlet",
+        "Wildflower Alice"
+      ],
+      landscape: [
+        "Fernweh",
+        "Fire One",
+        "Luxuria",
+        "Opalescence",
+        "Persephone's Mischief",
+        "Princess",
+        "Starsong",
+        "Windbreak"
+      ]
+    }
+
+    [ [ :Small,  8,  8, square ],
+      [ :Small,  8, 10, squarish[:portrait] ],
+      [ :Small, 10,  8, squarish[:landscape] ],
+      [ :Small,  8, 12, more_rectangle[:portrait] ],
+      [ :Small, 12,  8, more_rectangle[:landscape] ],
+      [ :Large, 11, 14, squarish[:portrait] ],
+      [ :Large, 14, 11, squarish[:landscape] ],
+      [ :Large, 11, 17, more_rectangle[:portrait] ],
+      [ :Large, 17, 11, more_rectangle[:landscape] ],
+      [ 'Watercolor Print', 11, 14, squarish[:portrait] ],
+      [ 'Watercolor Print', 14, 11, squarish[:landscape] ],
+      [ 'Watercolor Print', 11, 17, more_rectangle[:portrait] ],
+      [ 'Watercolor Print', 17, 11, more_rectangle[:landscape] ]
+    ].each do |merch_name, width, height, artwork_names|
+      puts "Processing #{merch_name} with width=#{width} and landscape=#{height}"
+      Merchandise.joins(:artwork).where(
+        name: merch_name,
+        artworks: { name: artwork_names }
+      ).update_all(dimension_id: Dimension.find_or_create_by(width: width, height: height).id)
+    end
+
+    Merchandise.includes(:artwork).where(dimension_id: nil, unknown_item: false, artworks: {replaced_by_id: nil}).each do |m|
+      puts "Artwork #{m.artwork.name} is missing a dimension for merchandise #{m.name}"
+    end
+
+    puts Merchandise.where.not(dimension_id: nil).count
   end
 end
