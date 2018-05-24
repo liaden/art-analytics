@@ -7,6 +7,10 @@ class ReplaceMerchandise < Mutations::Command
   def execute
     handle_collision
 
+    if replacer.dimension.nil? and replacee.dimension.present?
+      replacer.dimension = replacee.dimension
+    end
+
     ReplaceModel.run!(
       replacee: replacee,
       replacer: replacer,

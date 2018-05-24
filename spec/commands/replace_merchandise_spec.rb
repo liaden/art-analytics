@@ -10,11 +10,11 @@ describe ReplaceMerchandise do
     after { expect{ReplaceMerchandise.run!(params)}.to raise_error(Mutations::ValidationException) }
 
     it 'requires replacee' do
-        params.delete(:replacee)
+      params.delete(:replacee)
     end
 
     it 'requires replacer' do
-        params.delete(:replacer)
+      params.delete(:replacer)
     end
   end
 
@@ -51,6 +51,13 @@ describe ReplaceMerchandise do
       ReplaceMerchandise.run!(params)
 
       expect(EventInventoryItem.where(id: replacee_inventory_item.id)).to be_empty
+    end
+
+    it 'migrates dimension if replacee has one and replacer does not' do
+      dimension = create(:dimension)
+      replacee.dimension = dimension
+      ReplaceMerchandise.run!(params)
+      expect(replacer.dimension.id).to eq dimension.id
     end
   end
 end

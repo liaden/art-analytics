@@ -20,6 +20,10 @@ describe Merchandise do
     expect(build(:merchandise, name: 'small')).to be_valid
   end
 
+  it 'can have a dimension' do
+    create(:merchandise, dimension: create(:dimension))
+  end
+
   context 'an unknown_item' do
     it 'is unique for unknown artwork record' do
       item = build(:unknown_merchandise,

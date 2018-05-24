@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105005740) do
+ActiveRecord::Schema.define(version: 20180524005402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,15 @@ ActiveRecord::Schema.define(version: 20180105005740) do
     t.datetime "updated_at", null: false
     t.integer "import_id"
     t.integer "replaced_by_id"
+  end
+
+  create_table "dimensions", force: :cascade do |t|
+    t.decimal "width", null: false
+    t.decimal "height", null: false
+    t.decimal "thickness", default: "0.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["width", "height", "thickness"], name: "index_dimensions_on_width_and_height_and_thickness", unique: true
   end
 
   create_table "event_chart_configs", id: :serial, force: :cascade do |t|
@@ -73,6 +82,7 @@ ActiveRecord::Schema.define(version: 20180105005740) do
     t.integer "import_id"
     t.boolean "unknown_item", default: false
     t.integer "replaced_by_id"
+    t.integer "dimension_id"
   end
 
   create_table "sales", id: :serial, force: :cascade do |t|
