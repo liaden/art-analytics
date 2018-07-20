@@ -5,6 +5,7 @@ FactoryBot.define do
     date_before { 1.year.from_now }
 
     grouping :per_day
+    ordering :name
     metric :sold_items
 
     sequence(:name) { |n| "chart-config-#{n}" }

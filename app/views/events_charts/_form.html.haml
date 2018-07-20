@@ -24,6 +24,16 @@
       = f.label :metric, 'Customers', value: :customers
 
   .form-group
+    %label.control-label
+      Ordering of data points
+    .radio.col-sm-offset-1
+      = f.radio_button 'ordering', 'name'
+      = f.label 'ordering', 'By Event Name', value: 'name'
+    .radio.col-sm-offset-1
+      = f.radio_button 'ordering', 'date'
+      = f.label 'ordering', 'By Event Date', value: 'date'
+
+  .form-group
     = f.label 'Start Date', class: 'control-label'
     = f.text_field :date_after, "value" => @controls.date_after.strftime("%b %d, %Y"), "data-provide" => 'datepicker', "data-date-format" => 'M d, yyyy'
 

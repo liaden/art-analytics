@@ -1,7 +1,7 @@
 class EventsChartsController < ApplicationController
   def new
     @controls = EventChartConfig.new(
-      grouping: :total, metric: :revenue, date_before: DateTime.now, date_after: 1.year.ago
+      grouping: :total, ordering: :date, metric: :revenue, date_before: DateTime.now, date_after: 1.year.ago
     )
 
     data = PerEventMerchandiseSales.new(@controls).run
@@ -62,6 +62,6 @@ class EventsChartsController < ApplicationController
   def chart_params
     params
       .require(:event_chart_config)
-      .permit(:grouping, :metric, :date_after, :date_before)
+      .permit(:grouping, :ordering, :metric, :date_after, :date_before)
   end
 end

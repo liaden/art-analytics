@@ -4,28 +4,28 @@ class PerEventMerchandiseSales
   end
 
   def total_revenue
-    transform_money(Sale.joins(:event).where(within_date).group(:full_name).sum(:sale_price_cents))
+    simplify_total_keys(transform_money(Sale.joins(:event).where(within_date).group(:full_name, ordering).order(ordering).sum(:sale_price_cents)))
   end
 
   def total_sold_items
-    MerchandiseSale.joins(sale: :event).where(within_date).group(:full_name).sum(:quantity)
+    simplify_total_keys(MerchandiseSale.joins(sale: :event).where(within_date).group(:full_name, ordering).order(ordering).sum(:quantity))
   end
 
   def total_customers
-    Sale.joins(:event).where(within_date).group(:full_name).count
+    simplify_total_keys(Sale.joins(:event).where(within_date).group(:full_name, ordering).order(ordering).count)
   end
 
   def revenue_per_day
     raw_data = Sale.joins(:event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).sum(:sale_price_cents)
-    transform_money(transform_keys(raw_data))
+    transform_money(transform_day_keys(raw_data))
   end
 
   def sold_items_per_day
-    transform_keys(MerchandiseSale.joins(sale: :event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).sum(:quantity))
+    transform_day_keys(MerchandiseSale.joins(sale: :event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).sum(:quantity))
   end
 
   def customers_per_day
-    transform_keys(Sale.joins(:event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).count)
+    transform_day_keys(Sale.joins(:event).where(within_date).group(:full_name).group_by_day_of_week(:sold_at).count)
   end
 
   def run
@@ -47,10 +47,26 @@ class PerEventMerchandiseSales
     end
   end
 
-  def transform_keys(data)
+  def transform_day_keys(data)
     days = [:sun, :mon, :tues, :wed, :thurs, :fri, :sat ]
     data.transform_keys! do |full_name, indexed_day_of_week|
       [full_name, days[indexed_day_of_week]]
+    end
+  end
+
+  def simplify_total_keys(data)
+    data.transform_keys! do |event_full_name, _ordering_item|
+      event_full_name
+    end
+  end
+
+  def ordering
+    if options.ordering == 'name'
+      'events.name'
+    elsif options.ordering == 'date'
+      'events.started_at'
+    else
+      'events.id'
     end
   end
 
