@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :artwork do
-    name 'test_artwork'
+    name { Faker::Book.title }
 
     trait :with_merchandise do
       merchandises { [ create(:merchandise) ] }
