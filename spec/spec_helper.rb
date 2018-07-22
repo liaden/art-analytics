@@ -1,3 +1,7 @@
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
+
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
@@ -11,6 +15,10 @@ RSpec.configure do |config|
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
+
+  config.before(:suite) { DatabaseCleaner.clean_with(:truncation) }
+
+  config.after  { DatabaseCleaner.clean }
 
   # rspec-mocks config goes here. You can use an alternate test double
   # library (such as bogus or mocha) by changing the `mock_with` option here.

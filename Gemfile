@@ -55,6 +55,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'simplecov', require: false
   gem 'faker'
+  gem 'database_cleaner'
 end
 
 group :development do
