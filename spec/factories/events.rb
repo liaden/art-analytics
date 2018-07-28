@@ -3,9 +3,14 @@ FactoryBot.define do
     sequence( :name){ |n| "event_#{n}" }
 
     started_at { Date.today.friday }
-    ended_at { Date.today.friday + 2.days}
 
     tags ""
+
+    after(:build) do |event, evaluator|
+      if evaluator.ended_at.nil?
+        event.ended_at = event.started_at + 2.days
+      end
+    end
 
     trait :last_year do
       started_at { 1.year.ago.to_date.friday }
