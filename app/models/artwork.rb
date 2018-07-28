@@ -2,7 +2,7 @@ class Artwork < ApplicationRecord
   include Taggable
   include Importable
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   has_many :merchandises
 
