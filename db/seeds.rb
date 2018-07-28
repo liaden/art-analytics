@@ -112,6 +112,16 @@ if Rails.env.development?
         duration: 3,
         file: '../analytics-data/acen-2018.csv',
       },
+      { name: 'millenium',
+        started_at: '7/6/2018',
+        duration: 3,
+        file: '../analytics-data/millenium-2018.csv',
+      },
+      { name: 'state street',
+        started_at: '7/19/2018',
+        duration: 4,
+        file: '../analytics-data/state-street-2018.csv',
+      },
     ].each do |data|
       puts "Processing #{data[:file]}"
 
