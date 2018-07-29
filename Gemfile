@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.2.0'
 
-gem 'pg', '~> 0.15'
+gem 'pg'
 gem 'hairtrigger'
 gem 'activerecord-import'
 
@@ -11,9 +11,9 @@ gem 'puma'
 # https://github.com/metaskills/less-rails-bootstrap/pull/132
 gem 'less-rails-bootstrap', git: 'https://github.com/veelenga/less-rails-bootstrap', :ref => '7c479c2fdff500dc036c15364aa085332a73c642'
 gem 'bootstrap-datepicker-rails'
-gem 'autoprefixer-rails'
+gem 'autoprefixer-rails', '~> 8.5'
 gem 'sprockets', '~> 3.6'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 gem 'therubyracer', platforms: :ruby, github: 'cowboyd/therubyracer'
 
 # Use jquery as the JavaScript library
@@ -51,7 +51,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'shoulda'
+  gem 'shoulda', '~> 3.5.0'
+  #gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
   gem 'rails-controller-testing'
   gem 'simplecov', require: false
   gem 'faker'
