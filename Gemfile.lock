@@ -7,6 +7,15 @@ GIT
       ref
 
 GIT
+  remote: https://github.com/liaden/hair_trigger
+  revision: f83e348a0554c11effb05064d12458329940825d
+  specs:
+    hairtrigger (0.2.20)
+      activerecord (>= 2.3)
+      ruby2ruby (~> 2.4)
+      ruby_parser (~> 3.10)
+
+GIT
   remote: https://github.com/veelenga/less-rails-bootstrap
   revision: 7c479c2fdff500dc036c15364aa085332a73c642
   ref: 7c479c2fdff500dc036c15364aa085332a73c642
@@ -101,10 +110,6 @@ GEM
     grease (0.3.1)
     groupdate (4.0.1)
       activesupport (>= 4.2)
-    hairtrigger (0.2.20)
-      activerecord (>= 2.3)
-      ruby2ruby (~> 2.4)
-      ruby_parser (~> 3.10)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -294,7 +299,7 @@ DEPENDENCIES
   faker
   gon
   groupdate
-  hairtrigger
+  hairtrigger!
   haml
   jbuilder (~> 2.0)
   jquery-rails

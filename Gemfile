@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.2.0'
 
 gem 'pg'
-gem 'hairtrigger'
+gem 'hairtrigger', git: 'https://github.com/liaden/hair_trigger'
 gem 'activerecord-import'
 
 gem 'puma'
