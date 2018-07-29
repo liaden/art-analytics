@@ -6,7 +6,7 @@ class Artwork < ApplicationRecord
 
   has_many :merchandises
 
-  belongs_to :replaced_by, class_name: 'Artwork'
+  belongs_to :replaced_by, class_name: 'Artwork', optional: true
 
   scope :known, -> { where(unknown_item: false) }
 

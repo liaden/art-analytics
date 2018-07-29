@@ -5,8 +5,8 @@ class Merchandise < ApplicationRecord
   # optional to allow for unknown merchandise where
   # the artwork is not known
   belongs_to :artwork, optional: :unknown_item
-  belongs_to :replaced_by, class_name: 'Merchandise'
-  belongs_to :dimension
+  belongs_to :replaced_by, class_name: 'Merchandise', optional: true
+  belongs_to :dimension, optional: true
 
   has_many :merchandise_sales
   has_many :sales, through: :merchandise_sales
