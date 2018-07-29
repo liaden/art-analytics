@@ -160,6 +160,24 @@ describe SquareSpreadsheet do
       end
     end
 
+    describe '#parse_sale' do
+      def run(merchandise)
+        SquareSpreadsheet.load(minimal_csv).send(:parse_sale, merchandise)
+      end
+
+      it 'parses specified quantity'
+      it 'parses custom amount as uknown artwork item'
+      it 'parses merch name'
+      it 'merges duplicate items' do
+        result = run('Pilgrimage  (Small), A Fish May Love A Bird (Small), Pilgrimage  (Small)')
+
+        expect(result).to include(
+          { quantity: 2, artwork_name: 'Pilgrimage', merch_name: 'Small' },
+          { quantity: 1, artwork_name: 'A Fish May Love A Bird', merch_name: 'Small' }
+        )
+      end
+    end
+
     [:total, :discounts, :tax, :processing_fees].each do |field|
       it "parses :#{field} as Money" do
         expect(result[field]).to be_an_instance_of(Money)

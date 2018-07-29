@@ -6,6 +6,11 @@ class MerchandiseSale < ApplicationRecord
     ->(ms) { where.not(sale: { merchandise_sales: { id: ms.id } }) },
     through: :sale, source: :merchandise_sales
 
-  validates :quantity, presence: true
-  validates_numericality_of :quantity, greater_than: 0
+  validates_numericality_of :quantity, greater_than: 0, if: :quantity_set?
+
+  private
+
+  def quantity_set?
+    attributes['quantity'].present?
+  end
 end

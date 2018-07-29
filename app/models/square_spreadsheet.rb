@@ -116,13 +116,26 @@ class SquareSpreadsheet < EventSalesData
         artwork_name: Merchandise.unknown_artwork_item.name }
     ] if merchandise == 'Custom Amount'
 
-    merchandise.split(',').map do |item|
-      {
-        quantity: parse_quantity(item),
-        artwork_name: SquareSpreadsheet.parse_artwork_name(item),
-        merch_name: SquareSpreadsheet.parse_merchandise_name(item)
-      }
+    default      = { quantity: 0 }
+    merchandises = {}
+
+    merchandise.split(',').each  do |item|
+      quantity      = parse_quantity(item)
+      art_name      = SquareSpreadsheet.parse_artwork_name(item)
+      merch_name    = SquareSpreadsheet.parse_merchandise_name(item)
+
+      key = [art_name, merch_name]
+      prev_quantity = merchandises.fetch(key, default)[:quantity]
+
+      merchandises[key] = \
+        {
+          quantity: prev_quantity + quantity,
+          artwork_name: art_name,
+          merch_name: merch_name
+        }
     end
+
+    merchandises.values
   end
 
   def parse_quantity(item)
