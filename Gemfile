@@ -8,6 +8,8 @@ gem 'activerecord-import'
 
 gem 'puma'
 
+gem 'bootsnap'
+
 # https://github.com/metaskills/less-rails-bootstrap/pull/132
 gem 'less-rails-bootstrap', git: 'https://github.com/veelenga/less-rails-bootstrap', :ref => '7c479c2fdff500dc036c15364aa085332a73c642'
 gem 'bootstrap-datepicker-rails'
@@ -63,6 +65,8 @@ group :development do
   gem 'brakeman', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  gem 'listen'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
