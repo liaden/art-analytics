@@ -54,4 +54,8 @@ class Merchandise < ApplicationRecord
   def self.unknown_artwork_item
     where(artwork_id: nil, name: '', unknown_item: true).first
   end
+
+  def full_name
+    "#{artwork.present? ? artwork.name : 'Missing Artwork'}: #{name}"
+  end
 end
