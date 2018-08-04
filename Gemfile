@@ -33,6 +33,7 @@ gem 'json', '~> 2.0'
 # gem 'unicorn'
 
 gem 'mutations'
+gem 'virtus'
 
 gem 'haml'
 

@@ -11,25 +11,20 @@ class EventsChartsController < ApplicationController
   end
 
   def create
-    @controls = EventChartConfig.create!(chart_params)
-    send_data_to_gon
-    render :edit
-  end
-
-  def update
-    @controls = EventChartConfig.find(params[:id])
-    send_data_to_gon
+    @controls = EventChartConfig.new(chart_params)
+    if @controls.valid?
+      send_data_to_gon(@controls)
+    end
     render :edit
   end
 
   private
 
-  def send_data_to_gon
-    query = PerEventMerchandiseSales.new(@controls)
-    @controls.update!(chart_params)
+  def send_data_to_gon(controls)
+    query = PerEventMerchandiseSales.new(controls)
 
     data = query.run()
-    @chart_data = if @controls.per_day?
+    @chart_data = if controls.per_day?
                     serialize_per_day_streams(data)
                   else
                     serialize_event_stream(data)

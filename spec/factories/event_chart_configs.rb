@@ -7,7 +7,5 @@ FactoryBot.define do
     grouping :per_day
     ordering :name
     metric :sold_items
-
-    sequence(:name) { |n| "chart-config-#{n}" }
   end
 end

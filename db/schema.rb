@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_29_165846) do
+ActiveRecord::Schema.define(version: 2018_08_04_174803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,15 +31,6 @@ ActiveRecord::Schema.define(version: 2018_07_29_165846) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["width", "height", "thickness"], name: "index_dimensions_on_width_and_height_and_thickness", unique: true
-  end
-
-  create_table "event_chart_configs", id: :serial, force: :cascade do |t|
-    t.string "grouping", null: false
-    t.string "metric", null: false
-    t.string "name"
-    t.datetime "date_after", null: false
-    t.datetime "date_before", null: false
-    t.string "ordering"
   end
 
   create_table "event_inventory_items", id: :serial, force: :cascade do |t|

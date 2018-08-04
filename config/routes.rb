@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :confirm_import_sales, only: [:create]
   end
 
-  resources :events_charts, only: [:new, :create, :update]
+  resources :events_charts, only: [:new, :create]
 
   resource :control_panel, only: [:index]
 
