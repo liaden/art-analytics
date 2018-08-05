@@ -1,7 +1,7 @@
 describe ArtworkPairings do
   describe '#run' do
     let(:artwork_pairing_config) { Hash.new }
-    let(:artwork_pairings) { ArtworkPairings.new(artwork_pairing_config) }
+    let(:artwork_pairings) { ArtworkPairings.new(ArtworkPairingControls.new(artwork_pairing_config)) }
 
     let(:result) { artwork_pairings.run }
     let(:tags) { 'tag1,tag2,tag3' }
@@ -125,7 +125,7 @@ describe ArtworkPairings do
     describe  'filtering time periods 'do
       context ' with specific time range' do
         let(:artwork_pairing_config) do
-          { earliest_date: Date.today - 2.weeks, latest_date: Date.today - 1.week }
+          { date_after: Date.today - 2.weeks, date_before: Date.today - 1.week }
         end
         let(:matching_sale) { create(:sale, event: event, sold_at: event_started_at, merchandises: [merch1, merch2]) }
         let(:event) { create(:event, started_at: event_started_at) }
@@ -133,25 +133,25 @@ describe ArtworkPairings do
         let(:subject) { matching_sale; result }
 
         context 'before the time range' do
-          let(:event_started_at) { artwork_pairing_config[:earliest_date] - 1.week }
+          let(:event_started_at) { artwork_pairing_config[:date_after] - 1.week }
 
           it { is_expected.to be_empty }
         end
 
         context 'after the time range' do
-          let(:event_started_at) { artwork_pairing_config[:latest_date] + 1.week }
+          let(:event_started_at) { artwork_pairing_config[:date_before] + 1.week }
 
           it { is_expected.to be_empty }
         end
 
         context 'on the earliest date' do
-          let(:event_started_at) { artwork_pairing_config[:earliest_date] }
+          let(:event_started_at) { artwork_pairing_config[:date_after] }
 
           it { is_expected.to include(expectation(artwork1, artwork2, 1), expectation(artwork2, artwork1, 1)) }
         end
 
         context 'on the latest date' do
-          let(:event_started_at) { artwork_pairing_config[:latest_date] }
+          let(:event_started_at) { artwork_pairing_config[:date_before] }
 
           it { is_expected.to include(expectation(artwork1, artwork2, 1), expectation(artwork2, artwork1, 1)) }
         end

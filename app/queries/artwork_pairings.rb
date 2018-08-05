@@ -1,10 +1,8 @@
 class ArtworkPairings
   attr_accessor :options
 
-  def initialize(options = {})
+  def initialize(options)
     @options = options
-    @options[:latest_date] ||= Date.today if @options[:earliest_date]
-    @options[:minimum_pairing_frequency] ||= 1
   end
 
   def run
@@ -17,7 +15,7 @@ class ArtworkPairings
 
   private
   def bind_variables
-    @options.slice(:minimum_pairing_frequency, :earliest_date, :latest_date)
+    @options.attributes.slice(:minimum_pairing_frequency, :date_after, :date_before)
   end
 
   def parameritized_query
@@ -48,25 +46,25 @@ class ArtworkPairings
     SQL
   end
 
-  def make_tag_filter(key, overloads)
-    TagFilter.new(@options.fetch(key.to_sym, {}).merge(overloads))
+  def make_tag_filter(key)
+    TagFilterFragment.new(@options.tag_filter_for(key))
   end
 
   def where_artwork_tag(name, prepend_with = :and)
-    make_tag_filter("artwork_tag_filter_#{name}", on: name, prepend_with: prepend_with).to_sql
+    make_tag_filter("artwork_tag_filter_#{name}").to_sql(prepend_with)
   end
 
   def where_merchandise_tag(name, prepend_with = :and)
-    make_tag_filter("merchandise_tag_filter_#{name}", on: name, prepend_with: prepend_with).to_sql
+    make_tag_filter("merchandise_tag_filter_#{name}").to_sql(prepend_with)
   end
 
   def where_event_tag(name, prepend_with = :and)
-    make_tag_filter(:event_tag_filter, on: name, prepend_with: prepend_with).to_sql
+    make_tag_filter(:event_tag_filter).to_sql(prepend_with)
   end
 
   def where_within_time_period
-    return unless @options[:earliest_date] and @options[:latest_date]
-    "AND event_sold_at.started_at BETWEEN :earliest_date AND :latest_date"
+    return unless @options.date_after and @options.date_before
+    "AND event_sold_at.started_at BETWEEN :date_after AND :date_before"
   end
 
   def having_minimum_pairing_frequency

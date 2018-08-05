@@ -1,6 +1,6 @@
 class EventChartConfig
-  include Virtus.model
   include ActiveModel::Model
+  include Virtus.model
 
   GROUPING_OPTIONS = %w[per_day total]
   ORDERING_OPTIONS = %w[name date metric_value]
