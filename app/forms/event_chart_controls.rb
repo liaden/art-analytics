@@ -1,4 +1,4 @@
-class EventChartConfig
+class EventChartControls
   include ActiveModel::Model
   include Virtus.model
 

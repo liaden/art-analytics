@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PerEventMerchandiseSales do
-  let(:chart_config) { build(:event_chart_config) }
+  let(:chart_config) { build(:event_chart_controls) }
   let(:query) { PerEventMerchandiseSales.new(chart_config) }
 
   let(:artwork_filter) { nil }

@@ -1,6 +1,6 @@
 class EventsChartsController < ApplicationController
   def new
-    @controls = EventChartConfig.new(
+    @controls = EventChartControls.new(
       grouping: :total, ordering: :date, metric: :revenue, date_before: DateTime.now, date_after: 1.year.ago
     )
 
@@ -11,7 +11,7 @@ class EventsChartsController < ApplicationController
   end
 
   def create
-    @controls = EventChartConfig.new(chart_params)
+    @controls = EventChartControls.new(chart_params)
     if @controls.valid?
       send_data_to_gon(@controls)
     end
@@ -56,7 +56,7 @@ class EventsChartsController < ApplicationController
 
   def chart_params
     params
-      .require(:event_chart_config)
+      .require(:event_chart_control)
       .permit(:grouping, :ordering, :metric, :date_after, :date_before)
   end
 end
