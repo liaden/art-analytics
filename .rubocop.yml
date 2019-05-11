@@ -1,0 +1,49 @@
+inherit_from: .rubocop_todo.yml
+require: rubocop-performance
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/seeds.rb
+    - bin/**/*.rb
+
+Layout/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: when_needed
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Metrics/LineLength:
+  Max: 120
+  AutoCorrect: true
+  AllowHeredoc: true
+  AllowURI: true
+
+# Disabled Cops
+Bundler/OrderedGems:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+# Warnings Only
+Style/IfUnlessModifier:
+  Severity: warning
+  AutoCorrect: false
+
