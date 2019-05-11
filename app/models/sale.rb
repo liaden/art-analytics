@@ -8,7 +8,8 @@ class Sale < ApplicationRecord
 
   scope :unknown_items, -> { joins(:merchandises).where(merchandises: { unknown_item: true }) }
 
-  scope :via_square, -> { where('third_party LIKE "SQUARE%"') }
+  scope :record_by_hand, -> { where(third_party_transaction_id: null) }
+  scope :record_by_square, -> { where('third_party_transaction_id LIKE "SQUARE%"') }
 
   monetize :sale_price_cents
 
