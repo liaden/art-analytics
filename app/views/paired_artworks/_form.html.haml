@@ -1,0 +1,19 @@
+#chartrow.row
+  #chart.with-3d-shadow.with-transitions
+    %svg
+
+:javascript
+
+  var chart;
+
+    nv.addGraph(function() {
+        chart = nv.models.sunburstChart();
+        chart.color(d3.scale.category20c());
+        chart.mode("value");
+        chart.sort(function(d1, d2){console.log(d1.value); return d1.value > d2.value;});
+        d3.select("#chart svg")
+                .datum(gon.data)
+                .call(chart);
+        nv.utils.windowResize(chart.update);
+        return chart;
+    });

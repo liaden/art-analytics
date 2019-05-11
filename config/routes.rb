@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :events_charts, only: [:new, :create]
+  resources :paired_artworks, only: [:new, :create]
 
   resource :control_panel, only: [:index]
 
