@@ -27,6 +27,6 @@ class EventChartControls
   end
 
   def within_date
-    date_after..date_before
+    (date_after.to_date)..(date_before.to_date)
   end
 end
