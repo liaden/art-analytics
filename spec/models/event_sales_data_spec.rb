@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe EventSalesData do
   describe '.load' do
     it 'identifies SalesSpreadsheet' do

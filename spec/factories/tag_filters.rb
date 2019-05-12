@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :tag_filter do
     trait(:matches_all)  { matching_mechanism :all }

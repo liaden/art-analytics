@@ -1,9 +1,16 @@
+# frozen_string_literal: true
+
 describe ImportMissingMerchandises do
   let(:import) { create(:import) }
-  let(:b_art) { create(:artwork, name: 'b')}
-  let(:a_art) { create(:artwork, name: 'a')}
+  let(:b_art) { create(:artwork, name: 'b') }
+  let(:a_art) { create(:artwork, name: 'a') }
 
-  let(:args) { {import: import, merchandise_by_artwork_name: { 'b' => ['1'] }, artworks: [b_art], allow_n_plus_one: true } }
+  let(:args) do
+    {
+      import: import, merchandise_by_artwork_name: { 'b' => ['1'] }, artworks: [b_art],
+  allow_n_plus_one: true
+    }
+  end
 
   def create_merch_for(artwork)
     create(:merchandise, artwork: artwork, name: args[:merchandise_by_artwork_name][artwork.name].first)
@@ -26,7 +33,7 @@ describe ImportMissingMerchandises do
       end
 
       it "requires Artwork models" do
-        args.merge!(:artworks => [Object.new])
+        args[:artworks] = [Object.new]
         expect(error[:artworks]).to_not be_nil
       end
     end
@@ -43,7 +50,7 @@ describe ImportMissingMerchandises do
     end
 
     it "requires artworks to match merchandise_by_artwork_name" do
-      args.merge!(artworks: [a_art])
+      args[:artworks] = [a_art]
       expect(error['artworks_and_merchandises']).to_not be_nil
     end
 
@@ -60,7 +67,7 @@ describe ImportMissingMerchandises do
   describe ".run" do
     it "does not create duplicate merchandise" do
       create_merch_for(b_art)
-      expect { ImportMissingMerchandises.run(args) }.to_not change{Merchandise.count}
+      expect { ImportMissingMerchandises.run(args) }.to_not change{ Merchandise.count }
     end
 
     it "does not mutate existing merchandise" do
@@ -70,7 +77,7 @@ describe ImportMissingMerchandises do
     end
 
     it "creates nothing during dry run" do
-      expect { ImportMissingMerchandises.run(args.merge!(dry_run: true)) }.to_not change{Merchandise.count}
+      expect { ImportMissingMerchandises.run(args.merge!(dry_run: true)) }.to_not change{ Merchandise.count }
     end
   end
 

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class SalesSpreadsheet < EventSalesData
-  LEADING_COLUMNS = ['total', 'sold on']
+  LEADING_COLUMNS  = ['total', 'sold on']
   TRAILING_COLUMNS = ['tags']
 
   class ValidationException < StandardError; end
@@ -11,7 +13,7 @@ class SalesSpreadsheet < EventSalesData
   class UnexpectedColumn < ValidationException; end
   class BadRow < ValidationException; end
 
-  def self.load(file = 'dummy_file.csv')
+  def self.load(file='dummy_file.csv')
     if file.is_a? String
       grid = CSV.read(file)
 
@@ -19,7 +21,7 @@ class SalesSpreadsheet < EventSalesData
       grid = CSV.new(file)
     end
 
-    headers = grid.shift
+    headers    = grid.shift
     subheaders = grid.shift
 
     new(headers, subheaders, grid)
@@ -30,7 +32,7 @@ class SalesSpreadsheet < EventSalesData
   def initialize(headers, subheaders, event_data)
     check_empty_headers(headers,subheaders)
 
-    @errors = []
+    @errors     = []
     @sales_data = []
 
     @artwork_names = headers.compact
@@ -95,17 +97,21 @@ class SalesSpreadsheet < EventSalesData
 
     current_grouping = nil
 
-    @headers = headers.map.with_index do |grouping, index|
-      current_grouping = grouping || current_grouping
+    @headers =
+      headers.map.with_index do |grouping, index|
+        current_grouping = grouping || current_grouping
 
-      [ current_grouping, subheaders[index]]
-    end
+        [current_grouping, subheaders[index]]
+      end
 
     raise DuplicateHeaderSubheader.new if @headers.uniq.size != @headers.size
   end
 
   def transform_sales_data_to_hash!(data)
-    hash = { total: data.shift.to_d, sold_on: data.shift.to_i, merchandise_sold: [], tags: CSV.parse(data.pop || '').flatten }
+    hash = {
+      total: data.shift.to_d, sold_on: data.shift.to_i, merchandise_sold: [],
+tags: CSV.parse(data.pop || '').flatten
+    }
 
     headers.each.with_index do |grouped_header,index|
       header, subheader = *grouped_header

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe TagFilterFragment do
   context 'with defaults' do
     let(:tag_filter) { TagFilterFragment.new(TagFilter.new(tag_filter_params)) }

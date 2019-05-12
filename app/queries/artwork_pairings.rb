@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ArtworkPairings
   attr_accessor :options
 
@@ -14,6 +16,7 @@ class ArtworkPairings
   end
 
   private
+
   def bind_variables
     @options.attributes.slice(:minimum_pairing_frequency, :date_after, :date_before)
   end
@@ -50,15 +53,15 @@ class ArtworkPairings
     TagFilterFragment.new(@options.tag_filter_for(key))
   end
 
-  def where_artwork_tag(name, prepend_with = :and)
+  def where_artwork_tag(name, prepend_with=:and)
     make_tag_filter("artwork_tag_filter_#{name}").to_sql(prepend_with)
   end
 
-  def where_merchandise_tag(name, prepend_with = :and)
+  def where_merchandise_tag(name, prepend_with=:and)
     make_tag_filter("merchandise_tag_filter_#{name}").to_sql(prepend_with)
   end
 
-  def where_event_tag(name, prepend_with = :and)
+  def where_event_tag(_name, prepend_with=:and)
     make_tag_filter(:event_tag_filter).to_sql(prepend_with)
   end
 

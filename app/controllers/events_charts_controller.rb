@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventsChartsController < ApplicationController
   def new
     @controls = EventChartControls.new(
@@ -22,13 +24,14 @@ class EventsChartsController < ApplicationController
 
   def send_data_to_gon(controls)
     query = PerEventMerchandiseSales.new(controls)
+    data  = query.run()
 
-    data = query.run()
-    @chart_data = if controls.per_day?
-                    serialize_per_day_streams(data)
-                  else
-                    serialize_event_stream(data)
-                  end
+    @chart_data =
+      if controls.per_day?
+        serialize_per_day_streams(data)
+      else
+        serialize_event_stream(data)
+      end
 
     gon.push(data: @chart_data)
   end
@@ -38,21 +41,21 @@ class EventsChartsController < ApplicationController
 
     grouped.map do |event, daily_data|
       {
-        key: event,
+        key:    event,
         values: daily_data.map do |label, value|
           { label: label.first, value: value }
-        end
+        end,
       }
     end
   end
 
   def serialize_event_stream(data)
     [{
-      key: params[:metric],
-      values: data.map { |event, value| { label: event, value: value } }
-    }]
+      key:    params[:metric],
+      values: data.map { |event, value| { label: event, value: value } },
+    },
+]
   end
-
 
   def chart_params
     params

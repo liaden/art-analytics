@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe ReplaceMerchandise do
   let(:replacee) { create(:merchandise) }
   let(:replacer) { create(:merchandise) }
@@ -7,7 +9,7 @@ describe ReplaceMerchandise do
   end
 
   describe 'validations' do
-    after { expect{ReplaceMerchandise.run!(params)}.to raise_error(Mutations::ValidationException) }
+    after { expect{ ReplaceMerchandise.run!(params) }.to raise_error(Mutations::ValidationException) }
 
     it 'requires replacee' do
       params.delete(:replacee)
@@ -24,7 +26,7 @@ describe ReplaceMerchandise do
 
       expect {
         ReplaceMerchandise.run!(params)
-      }.to change{MerchandiseSale.count}.by(0)
+      }.to change{ MerchandiseSale.count }.by(0)
 
       expect(replacer.reload.merchandise_sales.size).to eq 1
     end
@@ -34,7 +36,7 @@ describe ReplaceMerchandise do
 
       expect {
         ReplaceMerchandise.run!(params)
-      }.to change{EventInventoryItem.count}.by(0)
+      }.to change{ EventInventoryItem.count }.by(0)
 
       expect(replacer.reload.event_inventory_items.size).to eq 1
     end
@@ -54,7 +56,7 @@ describe ReplaceMerchandise do
     end
 
     it 'migrates dimension if replacee has one and replacer does not' do
-      dimension = create(:dimension)
+      dimension          = create(:dimension)
       replacee.dimension = dimension
       ReplaceMerchandise.run!(params)
       expect(replacer.dimension.id).to eq dimension.id

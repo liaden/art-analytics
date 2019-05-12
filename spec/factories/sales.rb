@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :sale do
     sale_price 25
@@ -17,7 +19,12 @@ FactoryBot.define do
       transient { number_of_merch 1 }
 
       after(:build) do |sale, evaluator|
-        sale.merchandise_sales = create_list :merchandise_sale, evaluator.number_of_merch, sale: sale, quantity: evaluator.quantity
+        sale.merchandise_sales = create_list(
+          :merchandise_sale,
+          evaluator.number_of_merch,
+          sale:     sale,
+          quantity: evaluator.quantity
+        )
 
         if evaluator.number_of_merch > 1
           sale.note = "Created merchandise sale #{evaluator.number_of_merch}"
@@ -27,7 +34,7 @@ FactoryBot.define do
 
     trait :with_event do
       after(:build) do |sale|
-        sale.event = create(:event)
+        sale.event   = create(:event)
         sale.sold_at = sale.event.started_at.to_date
       end
     end
@@ -38,7 +45,10 @@ FactoryBot.define do
       end
 
       if evaluator.of_merchandise.present?
-        sale.merchandise_sales << create(:merchandise_sale, sale: sale, quantity: evaluator.quantity, merchandise: evaluator.of_merchandise)
+        sale.merchandise_sales << create(
+          :merchandise_sale, sale: sale, quantity: evaluator.quantity,
+merchandise: evaluator.of_merchandise
+        )
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEventChartConfig < ActiveRecord::Migration[5.0]
   def change
     create_table :event_chart_configs do |t|

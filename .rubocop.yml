@@ -5,17 +5,63 @@ AllCops:
   Exclude:
     - db/schema.rb
     - db/seeds.rb
-    - bin/**/*.rb
+    - bin/*
 
 Layout/AlignHash:
   EnforcedHashRocketStyle: table
   EnforcedColonStyle: table
 
-Layout/AlignParameters:
-  EnforcedStyle: with_fixed_indentation
-
+# Chunk oneliners together
 Layout/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+  AutoCorrect: true
+
+Layout/ExtraSpacing:
+  AllowBeforeTrailingComments: true
+  ForceEqualSignAlignment: true
+
+Layout/IndentFirstArgument:
+  EnforcedStyle: consistent
+
+#
+# Multline Config:
+# matching C-style for array, hash, method def and call
+#
+
+# stops ugly indent for x = if... and similar
+Layout/MultilineAssignmentLayout:
+  Enabled: true
+
+# similar balance to end and }
+Layout/MultilineArrayBraceLayout:
+  EnforcedStyle: new_line
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/FirstArrayElementLineBreak:
+  Enabled: true
+
+Layout/FirstHashElementLineBreak:
+  Enabled: true
+
+# Compacter to associate parameter and value
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+# make diffs easier when adding new item
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+# make diffs easier when adding new item
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses_when_complex
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: when_needed
@@ -23,26 +69,26 @@ Style/FrozenStringLiteralComment:
 Style/HashSyntax:
   EnforcedStyle: ruby19_no_mixed_keys
 
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: comma
-
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: comma
-
 Metrics/LineLength:
+  Exclude:
+    - Gemfile
   Max: 120
   AutoCorrect: true
   AllowHeredoc: true
   AllowURI: true
 
+#
 # Disabled Cops
+#
 Bundler/OrderedGems:
   Enabled: false
 
 Style/AsciiComments:
   Enabled: false
 
+#
 # Warnings Only
+#
 Style/IfUnlessModifier:
   Severity: warning
   AutoCorrect: false

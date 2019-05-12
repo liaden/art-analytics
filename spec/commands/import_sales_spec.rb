@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe ImportSales do
   let(:event) { create(:event) }
 
@@ -12,25 +14,31 @@ describe ImportSales do
   let(:args) { { spreadsheet: empty_spreadsheet(['a'], ['canvas']), event: event, import: create(:import) } }
 
   let(:single_sale_spreadsheet) do
-    make_spreadsheet(['a', 'a'], ['canvas', 'unsold_option'], # unsold option catches the case of a 0/nil quantity for MerchandiseSale
+    make_spreadsheet(
+      ['a', 'a'], ['canvas', 'unsold_option'], # unsold option catches the case of a 0/nil quantity for MerchandiseSale
       [
-        { ['a', 'canvas'] => 1, 'total' => 10}
-      ])
+        { ['a', 'canvas'] => 1, 'total' => 10 },
+      ]
+    )
   end
 
   let(:double_sale_spreadsheet) do
-    make_spreadsheet(['a', 'a'], ['canvas', 'photopaper'],
+    make_spreadsheet(
+      ['a', 'a'], ['canvas', 'photopaper'],
       [
-        {['a', 'canvas'] => 1, 'total' => 10},
-        {['a', 'photopaper'] => 1, 'total' => 15}
-      ])
+        { ['a', 'canvas'] => 1, 'total' => 10 },
+        { ['a', 'photopaper'] => 1, 'total' => 15 },
+      ]
+    )
   end
 
   let(:complex_sale_spreadsheet) do
-    make_spreadsheet(['a', 'a'], ['canvas', 'photopaper'],
+    make_spreadsheet(
+      ['a', 'a'], ['canvas', 'photopaper'],
       [
-        { ['a', 'canvas'] => 1, ['a', 'photopaper'] => 2, 'total' => 25, 'tags' => 'a,b,c'}
-      ])
+        { ['a', 'canvas'] => 1, ['a', 'photopaper'] => 2, 'total' => 25, 'tags' => 'a,b,c' },
+      ]
+    )
   end
 
   describe "command arguments" do
@@ -51,7 +59,7 @@ describe ImportSales do
         expect(errors[:event]).to_not be_nil
       end
 
-      it  "cannot have associated sales" do
+      it "cannot have associated sales" do
         event.sales.create(attributes_for(:sale))
         expect(errors['event']).to_not be_nil
       end
@@ -80,11 +88,11 @@ describe ImportSales do
 
     context 'with empty spreadsheet' do
       it 'creates no Sales' do
-        expect {run(args)}.to_not change{Sale.count}
+        expect { run(args) }.to_not change{ Sale.count }
       end
 
       it 'creates the event inventory' do
-        expect {run(args)}.to change{EventInventoryItem.count}.by(1)
+        expect { run(args) }.to change{ EventInventoryItem.count }.by(1)
       end
     end
 
@@ -92,7 +100,7 @@ describe ImportSales do
       before { args.merge!(spreadsheet: single_sale_spreadsheet) }
 
       it 'persists the sale' do
-        expect { run(args) }.to change{Sale.count}.by(1)
+        expect { run(args) }.to change{ Sale.count }.by(1)
       end
     end
 
@@ -101,8 +109,8 @@ describe ImportSales do
 
       it 'associates with multiple merchandises' do
         expect {
-          expect { run(args) }.to change{MerchandiseSale.count}.by(2)
-        }.to change{Sale.count}.by(1)
+          expect { run(args) }.to change{ MerchandiseSale.count }.by(2)
+        }.to change{ Sale.count }.by(1)
       end
     end
 
@@ -141,7 +149,7 @@ describe ImportSales do
       context 'of one merchandise' do
         [:sales, :inventory_list].each do |key|
           it "returns a #{key}" do
-            args.merge!(spreadsheet: single_sale_spreadsheet)
+            args[:spreadsheet] = single_sale_spreadsheet
 
             data = result
 
@@ -160,10 +168,10 @@ describe ImportSales do
     let(:event) { create(:event, started_at: Date.new(2017, 1, 13), ended_at: Date.new(2017, 1, 15)) }
 
     it "creates artworks, mercahndise, and sales" do
-      args.merge!(spreadsheet: SquareSpreadsheet.load('spec/support/square_sheets/complex.csv'))
+      args[:spreadsheet] = SquareSpreadsheet.load('spec/support/square_sheets/complex.csv')
       expect {
         run(args)
-      }.to change{Artwork.count}
+      }.to change{ Artwork.count }
     end
   end
 end

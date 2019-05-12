@@ -1,7 +1,6 @@
-# encoding : utf-8
+# frozen_string_literal: true
 
 MoneyRails.configure do |config|
-
   config.default_currency = :usd
 
   # Set default bank object

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Merchandise do
   it { is_expected.to be_kind_of(Importable) }
   it { is_expected.to be_kind_of(Taggable) }
@@ -7,7 +9,7 @@ describe Merchandise do
   end
 
   it 'persists to database' do
-    expect{create(:merchandise)}.to change{Merchandise.count}.by(1)
+    expect{ create(:merchandise) }.to change{ Merchandise.count }.by(1)
   end
 
   it 'allows for multiple with one artwork' do
@@ -26,18 +28,22 @@ describe Merchandise do
 
   context 'an unknown_item' do
     it 'is unique for unknown artwork record' do
-      item = build(:unknown_merchandise,
-        name: 'abcd', # unique name
-        artwork: nil)
+      item = build(
+        :unknown_merchandise,
+        name:    'abcd', # unique name
+        artwork: nil
+      )
 
       expect(item).to_not be_valid
     end
 
     it 'is unique for known artwork record' do
       merch = create(:unknown_merchandise)
-      item = build(:unknown_merchandise,
-                   name: 'abcd', # unique name
-                   artwork: merch.artwork)
+      item  = build(
+        :unknown_merchandise,
+        name:    'abcd', # unique name
+        artwork: merch.artwork
+      )
       expect(item).to_not be_valid
     end
 

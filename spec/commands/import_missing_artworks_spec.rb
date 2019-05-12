@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe ImportMissingArtworks do
   let(:import) { create(:import) }
 
@@ -21,7 +23,7 @@ describe ImportMissingArtworks do
 
       expect {
         ImportMissingArtworks.run(names: ['a', 'b'], import: import)
-      }.to change{Artwork.count}.by(1)
+      }.to change{ Artwork.count }.by(1)
     end
 
     it "does not mutate existing Artworks" do
@@ -35,7 +37,7 @@ describe ImportMissingArtworks do
     it "creates nothing during dry_run" do
       expect {
         ImportMissingArtworks.run(names: ['b'], import: import, dry_run: true)
-      }.to_not change{Artwork.count}
+      }.to_not change{ Artwork.count }
     end
 
     it "associates with an existing import job" do

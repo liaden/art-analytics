@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventInventoryItem < ApplicationRecord
   belongs_to :event
   belongs_to :merchandise

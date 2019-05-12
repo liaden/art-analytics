@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportSalesController < ApplicationController
   def new
   end
@@ -5,9 +7,9 @@ class ImportSalesController < ApplicationController
   def create
     begin
       result = ImportSales.run(
-        event: event,
-        import: create_import,
-        dry_run: dry_run,
+        event:       event,
+        import:      create_import,
+        dry_run:     dry_run,
         spreadsheet: EventSalesData.load(spreadsheet_file))
     rescue SalesSpreadsheet::ValidationException, Mutations::ValidationException => e
       @errors = [e.message]
@@ -19,9 +21,9 @@ class ImportSalesController < ApplicationController
     elsif result.success?
       # dry run
       @new_merchandises = result.result[:new_merchandises]
-      @new_artworks = result.result[:new_artworks]
-      @sales_data = result.result[:sales_data]
-      @inventory_list = result.result[:inventory_list]
+      @new_artworks     = result.result[:new_artworks]
+      @sales_data       = result.result[:sales_data]
+      @inventory_list   = result.result[:inventory_list]
 
       render 'confirm_import_sales/new'
     else
@@ -37,9 +39,10 @@ class ImportSalesController < ApplicationController
   end
 
   def create_import
-    @import ||= Import.create(import_file_data: spreadsheet_file.read).tap do
-      spreadsheet_file.seek(0)
-    end
+    @import ||=
+      Import.create(import_file_data: spreadsheet_file.read).tap do
+        spreadsheet_file.seek(0)
+      end
   end
 
   def spreadsheet_file

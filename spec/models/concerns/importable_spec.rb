@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Importable do
   ActiveRecord::Migration.suppress_messages do
     ActiveRecord::Schema.define do

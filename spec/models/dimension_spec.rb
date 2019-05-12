@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 describe Dimension do
   let(:dimension) { create(:dimension, width: 8, height: 12) }
 
   it 'saves to the db' do
-    expect { create(:dimension) }.to change{Dimension.count}.by(1)
+    expect { create(:dimension) }.to change{ Dimension.count }.by(1)
   end
-
 
   describe 'validations' do
     [:width, :height, :thickness].each do |attr|
@@ -34,9 +35,10 @@ describe Dimension do
 
     it 'raises exception' do
       expect {
-        create(:dimension,
-               width: dimension.width,
-               height: dimension.height
+        create(
+          :dimension,
+          width:  dimension.width,
+          height: dimension.height
         )
       }.to raise_error(ActiveRecord::RecordNotUnique)
     end

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class TagFilterFragment
   def initialize(options)
     @options = options
   end
 
-  def to_sql(prepend_with = nil)
-    #raise self.errors unless valid?
+  def to_sql(prepend_with=nil)
+    # raise self.errors unless valid?
     return '' if @options.tags.empty?
     sanitize_sql(build_sql(prepend_with || @options.prepend_with))
   end
@@ -30,6 +32,6 @@ class TagFilterFragment
   end
 
   def sanitize_sql(sql)
-    ActiveRecord::Base.sanitize_sql([sql, {keys: @options.tags}])
+    ActiveRecord::Base.sanitize_sql([sql, { keys: @options.tags }])
   end
 end

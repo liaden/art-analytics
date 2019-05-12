@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddReplacedByColumnToArtworksAndMerchandises < ActiveRecord::Migration[5.1]
   def change
     add_column :artworks, :replaced_by_id, :integer

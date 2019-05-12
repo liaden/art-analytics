@@ -1,18 +1,21 @@
+# frozen_string_literal: true
+
 describe ReplaceModel do
   let(:params) do
-    { replacee: replacee,
-      replacer: replacer,
-      related_tables: related_tables
+    {
+      replacee:       replacee,
+      replacer:       replacer,
+      related_tables: related_tables,
     }
   end
 
   let(:replacee) { create(:artwork, :with_merchandise) }
   let(:replacer) { create(:artwork) }
-  let(:related_tables) { [ Merchandise ] }
+  let(:related_tables) { [Merchandise] }
   let(:field_name) { :artwork_id }
 
   describe 'validations' do
-    after { expect{ReplaceModel.run!(params)}.to raise_error(Mutations::ValidationException) }
+    after { expect{ ReplaceModel.run!(params) }.to raise_error(Mutations::ValidationException) }
 
     it 'requires replacee' do
       params.delete(:replacee)

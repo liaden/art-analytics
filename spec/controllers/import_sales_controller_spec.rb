@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ImportSalesController do
   render_views
 
-  #before { Merchandise.create_unknown_for(nil) }
+  # before { Merchandise.create_unknown_for(nil) }
   let!(:event) { create(:event) }
 
-  def datafile(file = 'testdata')
+  def datafile(file='testdata')
     Rack::Test::UploadedFile.new("spec/support/sales_sheets/#{file}.csv")
   end
 
   describe '#new' do
     it 'is nested under an event' do
-        get :new, params: { event_id: event.id }
+      get :new, params: { event_id: event.id }
       expect(response.status).to eq 200
     end
   end
@@ -69,7 +71,7 @@ describe ImportSalesController do
       it 'does not create new merchandise sales' do
         expect {
           post :create, params: { event_id: event.id, spreadsheet: datafile }
-        }.to_not change{MerchandiseSale.count}
+        }.to_not change{ MerchandiseSale.count }
       end
     end
 

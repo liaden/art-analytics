@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportMissingArtworks < Mutations::Command
   required do
     array :names, class: String
@@ -14,7 +16,7 @@ class ImportMissingArtworks < Mutations::Command
   def execute
     Artwork.transaction do
       existing_artworks = Artwork.where(name: names).pluck(:name)
-      missing_artworks = names - existing_artworks
+      missing_artworks  = names - existing_artworks
 
       attr_values = missing_artworks.map { |name| [name, import.id] }
       Artwork.import [:name, :import_id], attr_values

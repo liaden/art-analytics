@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe MerchandiseSale do
   let(:merch) { create(:merchandise) }
   let(:sale) { create(:sale) }
@@ -15,7 +17,7 @@ describe MerchandiseSale do
     end
 
     it 'excludes itself' do
-      sale = create(:sale, :with_merchandise, number_of_merch: 2)
+      sale   = create(:sale, :with_merchandise, number_of_merch: 2)
       others = sale.merchandise_sales.first.other_sold_items
       expect(others).to eq [sale.merchandise_sales.second]
     end
@@ -28,7 +30,9 @@ describe MerchandiseSale do
     end
 
     it 'defaults to 1 in postgres' do
-      ActiveRecord::Base.connection.execute("insert into merchandise_sales (merchandise_id, sale_id) values (#{merch.id},#{sale.id})")
+      ActiveRecord::Base.connection.execute(
+        "insert into merchandise_sales (merchandise_id, sale_id) values (#{merch.id},#{sale.id})"
+      )
       expect(MerchandiseSale.last.quantity).to eq 1
     end
 

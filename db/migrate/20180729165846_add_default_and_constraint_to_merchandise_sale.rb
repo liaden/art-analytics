@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDefaultAndConstraintToMerchandiseSale < ActiveRecord::Migration[5.2]
   def change
     add_index :merchandise_sales, [:sale_id, :merchandise_id], unique: true

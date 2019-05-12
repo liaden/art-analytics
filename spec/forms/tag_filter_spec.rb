@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe TagFilter do
   let(:tag_filter) { TagFilter.new({}) }
 

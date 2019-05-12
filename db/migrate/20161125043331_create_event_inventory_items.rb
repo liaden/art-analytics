@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEventInventoryItems < ActiveRecord::Migration
   def change
     create_table :event_inventory_items do |t|

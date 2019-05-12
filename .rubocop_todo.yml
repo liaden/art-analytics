@@ -5,24 +5,6 @@
 # one by one as the offenses are removed from the code base.
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
-#
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: with_first_argument, with_fixed_indentation
-Layout/AlignArguments:
-  Exclude:
-    - 'app/models/concerns/taggable.rb'
-    - 'app/models/merchandise_sale.rb'
-    - 'app/queries/per_event_merchandise_sales.rb'
-    - 'spec/commands/import_sales_spec.rb'
-    - 'spec/models/merchandise_spec.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Layout/AlignArray:
-  Exclude:
-    - 'spec/factories/events.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -31,91 +13,12 @@ Layout/EmptyLineAfterGuardClause:
     - 'app/queries/artwork_pairings.rb'
     - 'app/queries/tag_filter_fragment.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Layout/EmptyLines:
-  Exclude:
-    - 'app/controllers/events_charts_controller.rb'
-    - 'db/seeds.rb'
-    - 'spec/models/dimension_spec.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Exclude:
-    - 'config/initializers/money.rb'
-    - 'db/schema.rb'
-    - 'spec/models/sales_spreadsheet_spec.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
   Exclude:
     - 'app/models/square_spreadsheet.rb'
-
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, AllowBeforeTrailingComments, ForceEqualSignAlignment.
-Layout/ExtraSpacing:
-  Exclude:
-    - 'app/commands/import_sales.rb'
-    - 'app/controllers/paired_artworks_controller.rb'
-    - 'app/forms/artwork_pairing_controls.rb'
-    - 'app/models/square_spreadsheet.rb'
-    - 'app/queries/per_event_merchandise_sales.rb'
-    - 'db/seeds.rb'
-    - 'spec/commands/import_sales_spec.rb'
-    - 'spec/queries/artwork_pairings_spec.rb'
-    - 'spec/spec_helper.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: normal, rails
-Layout/IndentationConsistency:
-  Exclude:
-    - 'spec/controllers/import_sales_controller_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: Width, IgnoredPatterns.
-Layout/IndentationWidth:
-  Exclude:
-    - 'spec/controllers/import_sales_controller_spec.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-Layout/LeadingCommentSpace:
-  Exclude:
-    - 'Gemfile'
-    - 'app/forms/event_chart_controls.rb'
-    - 'app/models/concerns/importable.rb'
-    - 'app/models/sale.rb'
-    - 'app/queries/tag_filter_fragment.rb'
-    - 'spec/controllers/import_sales_controller_spec.rb'
-    - 'spec/models/sale_spec.rb'
-    - 'spec/queries/artwork_pairings_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineArrayBraceLayout:
-  Exclude:
-    - 'db/seeds.rb'
-    - 'spec/factories/events.rb'
-
-# Offense count: 24
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineHashBraceLayout:
-  Exclude:
-    - 'db/seeds.rb'
-    - 'spec/commands/replace_model_spec.rb'
-    - 'spec/models/square_spreadsheet_spec.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -178,86 +81,6 @@ Layout/SpaceBeforeBlockBraces:
     - 'spec/models/sale_spec.rb'
     - 'spec/models/sales_spreadsheet_spec.rb'
 
-# Offense count: 48
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideArrayLiteralBrackets:
-  Exclude:
-    - 'app/controllers/events_controller.rb'
-    - 'app/forms/tag_filter.rb'
-    - 'app/models/sales_spreadsheet.rb'
-    - 'app/queries/per_event_merchandise_sales.rb'
-    - 'config/environments/production.rb'
-    - 'db/seeds.rb'
-    - 'spec/commands/replace_model_spec.rb'
-    - 'spec/factories/artworks.rb'
-    - 'spec/factories/events.rb'
-    - 'spec/queries/artwork_pairings_spec.rb'
-
-# Offense count: 66
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
-# SupportedStyles: space, no_space
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideBlockBraces:
-  Exclude:
-    - 'spec/commands/import_missing_artworks_spec.rb'
-    - 'spec/commands/import_missing_merchandises_spec.rb'
-    - 'spec/commands/import_sales_spec.rb'
-    - 'spec/commands/replace_artwork_spec.rb'
-    - 'spec/commands/replace_merchandise_spec.rb'
-    - 'spec/commands/replace_model_spec.rb'
-    - 'spec/controllers/confirm_import_sales_controller_spec.rb'
-    - 'spec/controllers/events_controller_spec.rb'
-    - 'spec/controllers/import_sales_controller_spec.rb'
-    - 'spec/models/artwork_spec.rb'
-    - 'spec/models/dimension_spec.rb'
-    - 'spec/models/merchandise_spec.rb'
-    - 'spec/models/sale_spec.rb'
-
-# Offense count: 32
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideHashLiteralBraces:
-  Exclude:
-    - 'app/controllers/events_controller.rb'
-    - 'app/queries/per_event_merchandise_sales.rb'
-    - 'app/queries/tag_filter_fragment.rb'
-    - 'db/seeds.rb'
-    - 'spec/commands/import_missing_merchandises_spec.rb'
-    - 'spec/commands/import_sales_spec.rb'
-    - 'spec/controllers/events_controller_spec.rb'
-    - 'spec/models/sales_spreadsheet_spec.rb'
-    - 'spec/models/square_spreadsheet_spec.rb'
-    - 'spec/queries/artwork_pairings_spec.rb'
-    - 'spec/queries/per_event_merchandise_sales_spec.rb'
-    - 'spec/support/sales_spreadsheets.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceInsideParens:
-  Exclude:
-    - 'spec/factories/events.rb'
-    - 'spec/models/sales_spreadsheet_spec.rb'
-    - 'spec/queries/artwork_pairings_spec.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingBlankLines:
-  Exclude:
-    - 'Gemfile'
-    - 'app/models/square_spreadsheet.rb'
-    - 'spec/models/import_spec.rb'
-    - 'spec/support/sales_spreadsheets.rb'
-
 # Offense count: 7
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -281,13 +104,6 @@ Lint/AssignmentInCondition:
 Lint/UnusedBlockArgument:
   Exclude:
     - 'spec/factories/events.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'app/queries/artwork_pairings.rb'
 
 # Offense count: 3
 Lint/UselessAssignment:
@@ -332,12 +148,6 @@ Style/AndOr:
     - 'app/models/event_sales_data.rb'
     - 'app/queries/artwork_pairings.rb'
     - 'spec/factories/sales.rb'
-
-# Offense count: 1
-# Configuration parameters: AllowedChars.
-Style/AsciiComments:
-  Exclude:
-    - 'config/initializers/money.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -411,26 +221,6 @@ Style/EmptyMethod:
     - 'app/controllers/import_sales_controller.rb'
     - 'app/queries/per_artwork.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Encoding:
-  Exclude:
-    - 'config/initializers/money.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'Rakefile'
-    - 'spec/rails_helper.rb'
-
-# Offense count: 142
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: when_needed, always, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 # Offense count: 7
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
@@ -441,18 +231,6 @@ Style/GuardClause:
     - 'app/controllers/events_controller.rb'
     - 'app/models/event.rb'
     - 'app/models/sale.rb'
-
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
-Style/HashSyntax:
-  Exclude:
-    - 'Gemfile'
-    - 'db/migrate/20161231152541_create_triggers_events_insert_or_events_update.rb'
-    - 'db/schema.rb'
-    - 'spec/commands/import_missing_merchandises_spec.rb'
-    - 'spec/commands/replace_artwork_spec.rb'
 
 # Offense count: 15
 # Cop supports --auto-correct.
@@ -618,14 +396,6 @@ Style/SymbolProc:
     - 'app/controllers/events_controller.rb'
     - 'app/models/square_spreadsheet.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArrayLiteral:
-  Exclude:
-    - 'db/seeds.rb'
-
 # Offense count: 18
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline.
@@ -642,10 +412,3 @@ Style/TrailingCommaInHashLiteral:
 Style/WordArray:
   EnforcedStyle: percent
   MinSize: 10
-
-# Offense count: 231
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 178

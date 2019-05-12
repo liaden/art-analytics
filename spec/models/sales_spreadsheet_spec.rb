@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe SalesSpreadsheet do
   def headers(columns)
     SalesSpreadsheet::LEADING_COLUMNS.map() { nil } + columns + SalesSpreadsheet::TRAILING_COLUMNS.map() { nil }
@@ -8,9 +10,8 @@ describe SalesSpreadsheet do
   end
 
   describe '#headers' do
-
     def instantiate(headers,subheaders)
-      SalesSpreadsheet.new(headers, subheaders, [] )
+      SalesSpreadsheet.new(headers, subheaders, [])
     end
 
     context 'no artwork, no merchandise' do
@@ -133,14 +134,14 @@ describe SalesSpreadsheet do
         sales_data = instantiate(['0', '0', nil, nil, "1", nil, "c,s,v"]).sales_data
         expect(
           sales_data.first[:merchandise_sold].first
-        ).to eq({artwork_name: 'h1', merch_name: 's11', quantity: 0})
+        ).to eq({ artwork_name: 'h1', merch_name: 's11', quantity: 0 })
       end
 
       it "converts to integers" do
         sales_data = instantiate(['0', '0', nil, nil, "1", nil, "c,s,v"]).sales_data
         expect(
           sales_data.first[:merchandise_sold][2]
-        ).to eq({artwork_name: 'h2', merch_name: 's21', quantity: 1})
+        ).to eq({ artwork_name: 'h2', merch_name: 's21', quantity: 1 })
       end
     end
 
@@ -172,7 +173,7 @@ describe SalesSpreadsheet do
         ).to eq 0
       end
 
-      it "cannot be negative"do
+      it "cannot be negative" do
         expect {
           instantiate(['0', '-1', nil, nil, "1", nil, "c,s,v"])
         }.to raise_error(SalesSpreadsheet::BadRow)

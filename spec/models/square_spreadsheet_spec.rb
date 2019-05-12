@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SquareSpreadsheet do
@@ -37,7 +39,7 @@ describe SquareSpreadsheet do
     let(:data) { SquareSpreadsheet.load(complex_csv).sales_data }
 
     it "handles quantity of 2" do
-      expect(data.first[:merchandise_sold].first).to eq({artwork_name: 'Detonator', quantity: 2, merch_name: 'Small'})
+      expect(data.first[:merchandise_sold].first).to eq({ artwork_name: 'Detonator', quantity: 2, merch_name: 'Small' })
     end
 
     it "parses all sold merchandises" do
@@ -47,8 +49,8 @@ describe SquareSpreadsheet do
     it "handles two small vs large print" do
       expect(data.last[:merchandise_sold]).to eq(
         [
-          {artwork_name: 'Detonator', quantity: 1, merch_name: 'Large'},
-          {artwork_name: 'Detonator', quantity: 1, merch_name: 'Small'}
+          { artwork_name: 'Detonator', quantity: 1, merch_name: 'Large' },
+          { artwork_name: 'Detonator', quantity: 1, merch_name: 'Small' },
         ]
       )
     end
@@ -96,14 +98,15 @@ describe SquareSpreadsheet do
 
   describe '#process' do
     let(:data) do
-      { total: 1000,
-        discounts: 0,
-        tax: 100,
+      {
+        total:           1000,
+        discounts:       0,
+        tax:             100,
         processing_fees: 32,
-        time_zone: 'Central Time (US & Canada)',
-        time: '23:00',
-        date: '1/15/2017',
-        description: sale_description
+        time_zone:       'Central Time (US & Canada)',
+        time:            '23:00',
+        date:            '1/15/2017',
+        description:     sale_description,
       }
     end
 

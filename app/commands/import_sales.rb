@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportSales < Mutations::Command
   required do
     model :spreadsheet, class: EventSalesData
@@ -23,9 +25,12 @@ class ImportSales < Mutations::Command
   def execute
     Event.transaction do
       import_missing_artworks = ImportMissingArtworks.new(names: spreadsheet.artwork_names, import: import)
-      @new_artworks = import_missing_artworks.run!
+      @new_artworks           = import_missing_artworks.run!
 
-      import_missing_merchandise = ImportMissingMerchandises.new(artworks: artworks.values, import: import,  merchandise_by_artwork_name: spreadsheet.merchandise_by_artwork_name)
+      import_missing_merchandise = ImportMissingMerchandises.new(
+        artworks: artworks.values, import: import,
+        merchandise_by_artwork_name: spreadsheet.merchandise_by_artwork_name
+      )
       @new_merchandises = import_missing_merchandise.run!
 
       @artworks = nil
@@ -49,31 +54,32 @@ class ImportSales < Mutations::Command
   end
 
   def process_sales
-    @sales = spreadsheet.sales_data.map! do |sale_data|
-      attach_merchandise(build_sale(sale_data), sale_data[:merchandise_sold])
-    end
+    @sales =
+      spreadsheet.sales_data.map! do |sale_data|
+        attach_merchandise(build_sale(sale_data), sale_data[:merchandise_sold])
+      end
   end
 
   def build_sale(data)
     sold_at = data[:sold_at] || (event.started_at + data[:sold_on].days)
 
     Sale.new(
-      sold_at: sold_at,
-      sale_price: data[:total].to_d,
-      tags: data[:tags],
+      sold_at:                    sold_at,
+      sale_price:                 data[:total].to_d,
+      tags:                       data[:tags],
       third_party_transaction_id: data[:third_party_transaction_id],
-      event: event
+      event:                      event
     )
   end
 
   def attach_merchandise(record, merchandise_data)
     record.merchandise_sales = merchandise_data.map do |data|
-      merch = merchandise_lookup(data[:artwork_name], data[:merch_name])
+      merch                  = merchandise_lookup(data[:artwork_name], data[:merch_name])
 
       if data[:quantity] > 0
         MerchandiseSale.new(
           merchandise_id: merch.id,
-          quantity: data[:quantity]
+          quantity:       data[:quantity]
         )
       end
     end.compact
@@ -85,7 +91,7 @@ class ImportSales < Mutations::Command
     @merchandise_lookup ||=
       artworks.values
         .each_with_object({}) { |art, hash| hash[art.name] = art.merchandises.index_by(&:name) }
-        .tap { |hash| hash['']  = { '' => Merchandise.unknown_artwork_item } }
+        .tap { |hash| hash['']                             = { '' => Merchandise.unknown_artwork_item } }
 
     # nil merch_name will convert to an unknown_item
     # nil art_name will  convert to the global unknown_item
@@ -93,7 +99,13 @@ class ImportSales < Mutations::Command
   end
 
   def create_event_inventory_list(event, merchandises)
-    @inventory_list = merchandises.select(&:known_item?).map { |merch| EventInventoryItem.new(event: event, merchandise: merch) }
+    @inventory_list =
+      merchandises.select(&:known_item?).map do |merch|
+        EventInventoryItem.new(
+          event:       event,
+          merchandise: merch
+        )
+      end
     EventInventoryItem.import @inventory_list, validate: false
   end
 end

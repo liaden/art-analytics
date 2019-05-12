@@ -1,5 +1,6 @@
-class ReplaceModel < Mutations::Command
+# frozen_string_literal: true
 
+class ReplaceModel < Mutations::Command
   required do
     model :replacee, class: ActiveRecord::Base
     model :replacer, class: ActiveRecord::Base
@@ -13,15 +14,24 @@ class ReplaceModel < Mutations::Command
 
   def validate
     if replacee.class != replacer.class
-      add_error(:replacee, :class_mismatch, "replacee's class (#{replacee.class.name}) mismatches with replacers class (#{replacer.class.name})")
+      add_error(
+        :replacee, :class_mismatch,
+        "replacee's class (#{replacee.class.name}) mismatches with replacers class (#{replacer.class.name})"
+      )
     end
 
     if replacee.replaced_by_id.present?
-      add_error(:replacee, :already_been_replaced, "#{replacee.name} has already been replaced by #{replacee.replaced_by.name}")
+      add_error(
+        :replacee, :already_been_replaced,
+        "#{replacee.name} has already been replaced by #{replacee.replaced_by.name}"
+      )
     end
 
     if related_tables.any? { |t| t.column_names.exclude?(column_name) }
-      add_error(:related_tables, :missing_field_name_as_column, "One of the related_tables #{related_tables.inspect} is missing #{column_name}")
+      add_error(
+        :related_tables, :missing_field_name_as_column,
+        "One of the related_tables #{related_tables.inspect} is missing #{column_name}"
+      )
     end
   end
 

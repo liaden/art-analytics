@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Event do
   it { is_expected.to validate_presence_of(:started_at) }
   it { is_expected.to validate_presence_of(:ended_at) }
@@ -37,7 +39,7 @@ describe Event do
 
       # in case of january, just go opposite direction
       if event2.started_at.year != event.started_at.year
-        event2.ended_at += 1.month
+        event2.ended_at  += 1.month
         event2.started_at = event.started_at + 1.month
       end
 

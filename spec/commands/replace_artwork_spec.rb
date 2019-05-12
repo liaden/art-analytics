@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 describe ReplaceArtwork do
   let(:replacee) { create(:artwork, name: 'a') }
   let(:replacer) { create(:artwork, name: 'b') }
 
-  let!(:params) { { :replacee_name => replacee.name, :replacer_name => replacer.name } }
+  let!(:params) { { replacee_name: replacee.name, replacer_name: replacer.name } }
 
   describe 'validations' do
-    after { expect{ReplaceArtwork.run!(params)}.to raise_error(Mutations::ValidationException) }
+    after { expect{ ReplaceArtwork.run!(params) }.to raise_error(Mutations::ValidationException) }
 
     it 'requires replacee_name' do
       params.delete(:replacee_name)

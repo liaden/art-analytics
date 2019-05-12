@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Taggable
   extend ActiveSupport::Concern
 
@@ -60,9 +62,9 @@ module Taggable
 
   class_methods do
     delegate :tagged_with_sql, :tagged_without_sql,
-      :tagged_with_any_sql, :tagged_without_any_sql,
-      :tagged_sql, :untagged_sql,
-      to: Taggable
+             :tagged_with_any_sql, :tagged_without_any_sql,
+             :tagged_sql, :untagged_sql,
+             to: Taggable
 
     def all_tags
       # should be more effecient in the future

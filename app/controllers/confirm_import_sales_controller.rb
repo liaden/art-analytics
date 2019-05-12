@@ -1,7 +1,12 @@
+# frozen_string_literal: true
+
 class ConfirmImportSalesController < ApplicationController
   def create
     @import = Import.find(params[:import_id])
-    result = ImportSales.run(event: event, import: @import, spreadsheet: EventSalesData.load(spreadsheet_file), dry_run: false)
+    result  = ImportSales.run(
+      event: event, import: @import, spreadsheet: EventSalesData.load(spreadsheet_file),
+      dry_run: false
+    )
 
     if result.success?
       redirect_to event_path(event)

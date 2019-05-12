@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'database_cleaner'
 
 DatabaseCleaner.strategy = :truncation
@@ -18,7 +20,7 @@ RSpec.configure do |config|
 
   config.before(:suite) { DatabaseCleaner.clean_with(:truncation) }
 
-  config.after  { DatabaseCleaner.clean }
+  config.after { DatabaseCleaner.clean }
 
   # rspec-mocks config goes here. You can use an alternate test double
   # library (such as bogus or mocha) by changing the `mock_with` option here.

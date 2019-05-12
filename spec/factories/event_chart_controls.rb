@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :event_chart_controls do
     # by default, use a wide range in tests to avoid missing data

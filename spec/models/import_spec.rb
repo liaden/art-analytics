@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Import do
   it { is_expected.to have_many(:artworks) }
   it { is_expected.to have_many(:merchandises) }

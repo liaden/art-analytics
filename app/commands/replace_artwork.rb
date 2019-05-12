@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReplaceArtwork < Mutations::Command
   required do
     string :replacee_name
@@ -11,8 +13,8 @@ class ReplaceArtwork < Mutations::Command
     handle_collision(replacee, replacer)
 
     ReplaceModel.run!(
-      replacee: replacee,
-      replacer: replacer,
+      replacee:       replacee,
+      replacer:       replacer,
       related_tables: [Merchandise]
     )
   end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :event do
-    sequence( :name){ |n| "event_#{n}" }
+    sequence(:name){ |n| "event_#{n}" }
 
     started_at { Date.today.friday }
 
@@ -19,11 +21,12 @@ FactoryBot.define do
 
     trait :with_complex_sales do
       after(:create) do |event, evaluator|
-        sale = create(:sale, :with_merchandise)
-        event.sales += [ sale,
+        sale         = create(:sale, :with_merchandise)
+        event.sales += [
+          sale,
           create(:sale, :with_merchandise, sale_price: 5),
           create(:sale, :with_merchandise, event: event, day_n: 1),
-          create(:sale, :with_merchandise, number_of_merch: 2)
+          create(:sale, :with_merchandise, number_of_merch: 2),
         ]
         event.sales << create(:sale, of_merchandise: sale.merchandises.first, quantity: 2)
       end

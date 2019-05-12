@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe EventsController do
@@ -11,7 +13,7 @@ describe EventsController do
   end
 
   describe '#create' do
-    let(:params) { {event: attributes_for(:event, ended_at: nil)} }
+    let(:params) { { event: attributes_for(:event, ended_at: nil) } }
 
     context 'without a duration' do
       it 'ended_at == started_at' do
@@ -43,7 +45,7 @@ describe EventsController do
       end
 
       it 'does not save to database' do
-        expect{post :create, params: params}.to_not change{Event.count}
+        expect{ post :create, params: params }.to_not change{ Event.count }
       end
     end
 
@@ -56,7 +58,7 @@ describe EventsController do
       end
 
       it 'saves event to database' do
-        expect{post :create, params: params}.to change{Event.count}.by(1)
+        expect{ post :create, params: params }.to change{ Event.count }.by(1)
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe ArtworkPairings do
   describe '#run' do
     let(:artwork_pairing_config) { Hash.new }
@@ -21,10 +23,10 @@ describe ArtworkPairings do
         expect(result).to be_empty
       end
 
-      it  'shows pairing with self when bought with self' do
+      it 'shows pairing with self when bought with self' do
         create(:sale, :with_event, of_merchandise: merch1, quantity: 2)
 
-        expect(result).to eq [ expectation(artwork1, artwork1, 1) ]
+        expect(result).to eq [expectation(artwork1, artwork1, 1)]
       end
 
       it 'includes both directions' do
@@ -46,10 +48,10 @@ describe ArtworkPairings do
     end
 
     [
-      [ 'artwork', :artwork ],
-      [ 'merchandise', :merch ]
+      ['artwork', :artwork],
+      ['merchandise', :merch],
     ].each do |model_name, item_var_name |
-      describe  "filtering #{model_name} tags" do
+      describe "filtering #{model_name} tags" do
         def merge_tag_filter(name, attrs)
           artwork_pairing_config.merge!("#{resource}_tag_filter_#{name}".to_sym => attrs)
         end
@@ -69,12 +71,15 @@ describe ArtworkPairings do
           before { merge_tag_filter(root_str, attributes_for(:tag_filter, :matches_all, tags: [item2.tags.first])) }
 
           it 'only shows one direction' do
-            expect(result).to eq [{'root_name' => artwork2.name, 'associated_artwork_name' => artwork1.name, 'paired_frequency' => 1}]
+            expect(result).to eq [{
+              'root_name' => artwork2.name, 'associated_artwork_name' => artwork1.name, 'paired_frequency' => 1
+            },
+]
           end
 
           it 'is empty when root does not match' do
             # removes the first tag
-            item2.update(tags: [item2.tags.second, item2.tags.third] )
+            item2.update(tags: [item2.tags.second, item2.tags.third])
             expect(result).to be_empty
           end
 
@@ -88,7 +93,10 @@ describe ArtworkPairings do
             before { merge_tag_filter(other_str, attributes_for(:tag_filter, :matches_all, tags: [item1.tags.first])) }
 
             it 'only shows one direction while matching both sides' do
-              expect(result).to eq [{ 'root_name' => artwork2.name, 'associated_artwork_name' => artwork1.name, 'paired_frequency' => 1 }]
+              expect(result).to eq [{
+                'root_name' => artwork2.name, 'associated_artwork_name' => artwork1.name, 'paired_frequency' => 1
+              },
+]
             end
 
             it 'is empty when associated does not match' do
@@ -98,16 +106,36 @@ describe ArtworkPairings do
           end
 
           context 'with several tags' do
-            before { merge_tag_filter(root_str, attributes_for(:tag_filter, :matches_all, tags: [item2.tags.first, item2.tags.second])) }
+            before do
+              merge_tag_filter(
+                root_str,
+                attributes_for(
+                  :tag_filter, :matches_all,
+                  tags: [item2.tags.first, item2.tags.second]
+                )
+              )
+            end
 
             it 'shows one direction' do
-              expect(result).to eq [{'root_name' => artwork2.name, 'associated_artwork_name' => artwork1.name, 'paired_frequency' => 1}]
+              expect(result).to eq [{
+                'root_name' => artwork2.name, 'associated_artwork_name' => artwork1.name,
+'paired_frequency' => 1
+              },
+]
             end
           end
         end
 
         context 'matching some' do
-          before { merge_tag_filter(other_str, attributes_for(:tag_filter, :matches_some, tags: [item1.tags.first, item2.tags.first])) }
+          before do
+            merge_tag_filter(
+              other_str,
+              attributes_for(
+                :tag_filter, :matches_some,
+                tags: [item1.tags.first, item2.tags.first]
+              )
+            )
+          end
 
           let!(:matching_sale) { create(:sale, merchandises: [merch1, merch2]) }
 
@@ -122,7 +150,7 @@ describe ArtworkPairings do
       end
     end
 
-    describe  'filtering time periods 'do
+    describe  'filtering time periods ' do
       context ' with specific time range' do
         let(:artwork_pairing_config) do
           { date_after: Date.today - 2.weeks, date_before: Date.today - 1.week }
@@ -188,10 +216,18 @@ describe ArtworkPairings do
 
           it 'further filters with tag filters' do
             create(:sale, :with_merchandise) # misses
-            artwork_pairing_config.merge!(artwork_tag_filter_a_root: attributes_for(:tag_filter, :matches_all, tags: ['x']))
+            artwork_pairing_config[:artwork_tag_filter_a_root] = attributes_for(
+              :tag_filter, :matches_all,
+              tags: ['x']
+            )
 
-            expect(result).to eq([{ 'root_name' => artwork2.name, 'associated_artwork_name' => artwork1.name, 'paired_frequency' => 2 }])
-            #expect(result).to eq([ expectation(artwork2, artwork1, 1) ])
+            expect(result).to eq([{
+                                   'root_name'               => artwork2.name,
+                                   'associated_artwork_name' => artwork1.name,
+                                   'paired_frequency'        => 2,
+                                 },
+            ])
+            # expect(result).to eq([ expectation(artwork2, artwork1, 1) ])
           end
         end
       end

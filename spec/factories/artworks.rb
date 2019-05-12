@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :artwork do
     name { Faker::Book.unique.title }
 
     trait :with_merchandise do
-      merchandises { [ create(:merchandise) ] }
+      merchandises { [create(:merchandise)] }
     end
   end
 

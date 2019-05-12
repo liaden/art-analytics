@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventSalesData
   class << self
     def load(data)

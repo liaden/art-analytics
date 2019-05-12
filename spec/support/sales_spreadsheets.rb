@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def headers(columns)
   SalesSpreadsheet::LEADING_COLUMNS.map() { nil } + columns + SalesSpreadsheet::TRAILING_COLUMNS.map() { nil }
 end
@@ -12,15 +14,16 @@ end
 
 def make_spreadsheet(extra_headers, extra_subheaders, sales_transactions)
   subheaders = subheaders(extra_subheaders)
-  headers = headers(extra_headers)
-  zipped = headers.zip(subheaders)
+  headers    = headers(extra_headers)
+  zipped     = headers.zip(subheaders)
 
-  sales = sales_transactions.map do |sale|
-    zipped.map do |pair|
-      sale = {'sold on' => 0 }.merge(sale)
-      sale[pair] || sale[pair.compact.first.to_s]
+  sales =
+    sales_transactions.map do |sale|
+      zipped.map do |pair|
+        sale = { 'sold on' => 0 }.merge(sale)
+        sale[pair] || sale[pair.compact.first.to_s]
+      end
     end
-  end
 
   SalesSpreadsheet.new(headers, subheaders, sales)
 end

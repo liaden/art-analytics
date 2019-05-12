@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Sale < ApplicationRecord
   include Taggable
 
@@ -14,7 +16,7 @@ class Sale < ApplicationRecord
   monetize :sale_price_cents
 
   validates :sale_price_cents, presence: true
-  #validates :merchandise_sales, length: { minimum: 1, too_short: "must have at least one asociated sold item" }
+  # validates :merchandise_sales, length: { minimum: 1, too_short: "must have at least one asociated sold item" }
 
   validate :during_event
 
@@ -22,7 +24,12 @@ class Sale < ApplicationRecord
 
   def during_event
     if event.present?
-      errors.add(:sold_at, "sold date #{sold_at} not during event: #{event.time_period} ") unless event.time_period.include?(sold_at.to_date)
+      unless event.time_period.include?(sold_at.to_date)
+        errors.add(
+          :sold_at,
+          "sold date #{sold_at} not during event: #{event.time_period} "
+        )
+      end
     end
   end
 end

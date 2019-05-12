@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class EventChartControls
   include ActiveModel::Model
   include Virtus.model
 
   GROUPING_OPTIONS = %w[per_day total]
   ORDERING_OPTIONS = %w[name date metric_value]
-  METRIC_OPTIONS = %w[revenue sold_items customers]
+  METRIC_OPTIONS   = %w[revenue sold_items customers]
 
   attribute :grouping,    String
   attribute :ordering,    String
@@ -16,7 +18,7 @@ class EventChartControls
   validates :ordering, inclusion: { in: ORDERING_OPTIONS }, if: :ordering_applicable?
   validates :metric, inclusion: { in: METRIC_OPTIONS }
 
-  #validates :name, presence: true
+  # validates :name, presence: true
 
   def per_day?
     grouping == 'per_day'

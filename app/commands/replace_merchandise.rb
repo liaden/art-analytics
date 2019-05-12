@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReplaceMerchandise < Mutations::Command
   required do
     model :replacee, class: ActiveRecord::Base
@@ -12,10 +14,10 @@ class ReplaceMerchandise < Mutations::Command
     end
 
     ReplaceModel.run!(
-      replacee: replacee,
-      replacer: replacer,
+      replacee:       replacee,
+      replacer:       replacer,
       related_tables: [MerchandiseSale, EventInventoryItem],
-      destroy: true
+      destroy:        true
     )
   end
 

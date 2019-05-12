@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe PerEventMerchandiseSales do
@@ -7,7 +9,7 @@ describe PerEventMerchandiseSales do
   let(:artwork_filter) { nil }
   let(:merchandise_filter) { nil }
   let(:event_filter) { nil }
-  let(:no_sales_per_day) { {mon: 0, tues: 0, wed: 0, thurs: 0, fri: 0, sat: 0, sun: 0} }
+  let(:no_sales_per_day) { { mon: 0, tues: 0, wed: 0, thurs: 0, fri: 0, sat: 0, sun: 0 } }
 
   def result_matches_exactly(events_to_values)
     expect(events_to_values.size).to eq query_results.keys.size
@@ -17,7 +19,7 @@ describe PerEventMerchandiseSales do
     end
   end
 
-  def daily_results_on(event, results = query_results)
+  def daily_results_on(event, results=query_results)
     daily_results(results, event)
   end
 
@@ -54,7 +56,7 @@ describe PerEventMerchandiseSales do
         e1 = create(:event, :with_sale)
         e2 = create(:event, :with_huge_price)
 
-        result_matches_exactly(e1 => "25.0", e2 =>"12345.0")
+        result_matches_exactly(e1 => "25.0", e2 => "12345.0")
       end
 
       it 'adds multiple sales at event' do
@@ -119,7 +121,7 @@ describe PerEventMerchandiseSales do
 
       it 'handles sales over different days' do
         e = create(:event, :with_sale)
-        create(:sale, :with_merchandise, sold_at: Date.today.friday+1.day, event: e, sale_price: 50)
+        create(:sale, :with_merchandise, sold_at: Date.today.friday + 1.day, event: e, sale_price: 50)
 
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(fri: "25.0", sat: "50.0"))
       end
@@ -178,8 +180,8 @@ describe PerEventMerchandiseSales do
       end
 
       it 'handles monday following the weekend is part of the event' do
-        e = create(:event, :with_sale, ended_at: Date.today.friday+3.days)
-        create(:sale, event: e, sold_at: Date.today.friday+3.days)
+        e = create(:event, :with_sale, ended_at: Date.today.friday + 3.days)
+        create(:sale, event: e, sold_at: Date.today.friday + 3.days)
 
         expect(query_results.size).to eq 7
         expect(daily_results_on(e)).to eq(no_sales_per_day.merge(mon: 1, fri: 1))
@@ -198,7 +200,7 @@ describe PerEventMerchandiseSales do
   describe '#run' do
     it 'does not run invalid method' do
       chart_config.grouping = :not
-      chart_config.metric = :real
+      chart_config.metric   = :real
 
       expect(query).to_not receive(:send)
 
@@ -207,7 +209,7 @@ describe PerEventMerchandiseSales do
 
     it 'runs per_day grouping' do
       chart_config.grouping = :per_day
-      chart_config.metric = :sold_items
+      chart_config.metric   = :sold_items
 
       expect(query).to receive(:sold_items_per_day)
       query.run
@@ -215,7 +217,7 @@ describe PerEventMerchandiseSales do
 
     it 'runs total grouping' do
       chart_config.grouping = :total
-      chart_config.metric = :sold_items
+      chart_config.metric   = :sold_items
 
       expect(query).to receive(:total_sold_items)
       query.run

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Merchandise < ApplicationRecord
   include Taggable
   include Importable

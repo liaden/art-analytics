@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class SquareSpreadsheet < EventSalesData
@@ -9,22 +11,20 @@ class SquareSpreadsheet < EventSalesData
 
   def initialize(data)
     # start at 1 due to headers
-    @csv_line_num = 1
-    @errors = []
+    @csv_line_num          = 1
+    @errors                = []
     @refunded_transactions = Set.new
-    @data = data
+    @data                  = data
   end
 
   def sales_data
     @sales_data ||=
-      @data.map do |line|
-        process(line) unless skip?(line)
-      end.compact
+      @data.map { |line| process(line) unless skip?(line) }.compact
   end
 
-  def self.load(file = 'dummy_square.csv')
+  def self.load(file='dummy_square.csv')
     options = {
-      headers: true,
+      headers:           true,
       header_converters: :symbol,
     }
 
@@ -43,15 +43,15 @@ class SquareSpreadsheet < EventSalesData
     sale = line.to_hash
 
     {
-      total: Monetize.parse(sale[:total_collected]),
-      discounts: Monetize.parse(sale[:discounts]),
-      tax: Monetize.parse(sale[:tax]),
-      processing_fees: Monetize.parse(sale[:fees]),
-      time_zone: sale[:time_zone],
-      sold_at: sold_at(sale[:date], sale[:time], sale[:time_zone]),
-      merchandise_sold: parse_sale(sale[:description]),
+      total:                      Monetize.parse(sale[:total_collected]),
+      discounts:                  Monetize.parse(sale[:discounts]),
+      tax:                        Monetize.parse(sale[:tax]),
+      processing_fees:            Monetize.parse(sale[:fees]),
+      time_zone:                  sale[:time_zone],
+      sold_at:                    sold_at(sale[:date], sale[:time], sale[:time_zone]),
+      merchandise_sold:           parse_sale(sale[:description]),
       third_party_transaction_id: "SQUARE::#{sale[:transaction_id]}",
-      tags: []
+      tags:                       []
     }
 
   rescue CsvFormatError => e
@@ -72,11 +72,11 @@ class SquareSpreadsheet < EventSalesData
   def merchandise_by_artwork_name
     result = Hash.new { |h, k| h[k] = [] }
 
-    sales_data.
-      flat_map { |sale| sale[:merchandise_sold] }.
-      map { |merch_sold| result[merch_sold[:artwork_name]] << merch_sold[:merch_name] }
+    sales_data
+      .flat_map { |sale| sale[:merchandise_sold] }
+      .map { |merch_sold| result[merch_sold[:artwork_name]] << merch_sold[:merch_name] }
 
-    result.delete("")
+    result.delete('')
 
     result
   end
@@ -100,7 +100,7 @@ class SquareSpreadsheet < EventSalesData
   private
 
   def skip?(line)
-    if line[:event_type].downcase == 'refund'
+    if line[:event_type].casecmp('refund').zero?
       @refunded_transactions << line[:transaction_id]
       true
     elsif @refunded_transactions.member?(line[:transaction_id])
@@ -112,26 +112,28 @@ class SquareSpreadsheet < EventSalesData
 
   def parse_sale(merchandise)
     return [
-      { quantity: 1,
-        artwork_name: Merchandise.unknown_artwork_item.name }
+      {
+        quantity:     1,
+        artwork_name: Merchandise.unknown_artwork_item.name
+      },
     ] if merchandise == 'Custom Amount'
 
     default      = { quantity: 0 }
     merchandises = {}
 
-    merchandise.split(',').each  do |item|
+    merchandise.split(',').each do |item|
       quantity      = parse_quantity(item)
       art_name      = SquareSpreadsheet.parse_artwork_name(item)
       merch_name    = SquareSpreadsheet.parse_merchandise_name(item)
 
-      key = [art_name, merch_name]
+      key           = [art_name, merch_name]
       prev_quantity = merchandises.fetch(key, default)[:quantity]
 
       merchandises[key] = \
         {
-          quantity: prev_quantity + quantity,
+          quantity:     prev_quantity + quantity,
           artwork_name: art_name,
-          merch_name: merch_name
+          merch_name:   merch_name
         }
     end
 
@@ -140,7 +142,7 @@ class SquareSpreadsheet < EventSalesData
 
   def parse_quantity(item)
     item.strip! # leading whitespace can  be an artifact
-    regex = /^(\d+) x /
+    regex   = /^(\d+) x /
     matches = item.scan(regex)
 
     raise AmbiguousMerchandiseQuantities.new(item) if matches.size > 1
@@ -157,4 +159,3 @@ class SquareSpreadsheet < EventSalesData
     DateTime.new(datetime.year, datetime.month, datetime.day, datetime.hour, datetime.min, datetime.sec)
   end
 end
-

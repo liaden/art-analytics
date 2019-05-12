@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportMissingMerchandises < Mutations::Command
   required do
     array :artworks, class: Artwork
@@ -20,7 +22,7 @@ class ImportMissingMerchandises < Mutations::Command
       attr_values = []
       artworks.each do |artwork|
         existing_merch = artwork.merchandises.map(&:name)
-        missing_merch = merchandise_by_artwork_name[artwork.name] - existing_merch
+        missing_merch  = merchandise_by_artwork_name[artwork.name] - existing_merch
 
         attr_values += missing_merch.map { |name| [artwork.id, name, import.id] }
       end
@@ -41,7 +43,10 @@ class ImportMissingMerchandises < Mutations::Command
     artwork_names = artworks.map(&:name)
 
     if merchandise_by_artwork_name.keys.sort != artwork_names.sort
-      add_error(:artworks_and_merchandises, :mismatched_data, "Mismatch between artworks and merchandise data:\n#{artwork_names}\n#{merchandise_by_artwork_name.keys}")
+      add_error(
+        :artworks_and_merchandises, :mismatched_data,
+        "Mismatch between artworks and merchandise data:\n#{artwork_names}\n#{merchandise_by_artwork_name.keys}"
+      )
     end
   end
 
