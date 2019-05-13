@@ -12,10 +12,17 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require twitter/bootstrap
-//= require bootstrap-datepicker
+//= require popper
+//= require moment
+//= require moment/en-gb.js
+//= require tempusdominus-bootstrap-4
+//= require bootstrap-sprockets
 //= require Chart.bundle
 //= require chartkick
 //= require d3.v3
 //= require nv.d3
 //= require_tree .
+
+$(document).on('ready page:load', function() {
+    $('#event_chart_controls_date_after').datetimepicker({format: 'MMM D, YYYY', locale: 'enGB'});
+});

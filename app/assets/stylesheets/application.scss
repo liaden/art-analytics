@@ -1,8 +1,7 @@
-/*
- *= require custom_bootstrap/custom_bootstrap
- *= require bootstrap-datepicker3
- *= require nv.d3
- */
+@import "bootstrap";
+@import "tempusdominus-bootstrap-4";
+@import "font-awesome";
+@import "nv.d3";
 
 svg {
   display: block;

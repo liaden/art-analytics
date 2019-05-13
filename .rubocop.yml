@@ -6,6 +6,7 @@ AllCops:
     - db/schema.rb
     - db/seeds.rb
     - bin/*
+    - config/initializers/simple_form_bootstrap.rb
 
 Layout/AlignHash:
   EnforcedHashRocketStyle: table
