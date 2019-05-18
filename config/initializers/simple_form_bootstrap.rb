@@ -63,6 +63,13 @@ SimpleForm.setup do |config|
     b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
+  config.wrappers :vertical_toggle_collection, tag: 'div', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
+    b.use :html5
+    b.optional :readonly
+    b.use :label, class: 'w-100'
+    b.use :input
+  end
+
   # vertical input for boolean
   config.wrappers :vertical_boolean, tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
@@ -408,21 +415,22 @@ SimpleForm.setup do |config|
     b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 
-
   # The default wrapper to be used by the FormBuilder.
   config.default_wrapper = :vertical_form
+
 
   # Custom wrappers for input types. This should be a hash containing an input
   # type as key and the wrapper that will be used for all inputs with specified type.
   config.wrapper_mappings = {
-    boolean:       :vertical_boolean,
-    check_boxes:   :vertical_collection,
-    date:          :vertical_multi_select,
-    datetime:      :vertical_multi_select,
-    file:          :vertical_file,
-    radio_buttons: :vertical_collection,
-    range:         :vertical_range,
-    time:          :vertical_multi_select
+    boolean:           :vertical_boolean,
+    check_boxes:       :vertical_collection,
+    date:              :vertical_multi_select,
+    datetime:          :vertical_multi_select,
+    file:              :vertical_file,
+    radio_buttons:     :vertical_collection,
+    range:             :vertical_range,
+    time:              :vertical_multi_select,
+    toggle_collection: :vertical_toggle_collection,
   }
 
   # enable custom form wrappers
