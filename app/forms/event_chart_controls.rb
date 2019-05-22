@@ -4,13 +4,25 @@ class EventChartControls
   include ActiveModel::Model
   include Virtus.model
 
-  GROUPING_OPTIONS = %w[per_day total]
-  ORDERING_OPTIONS = %w[name date metric_value]
-  METRIC_OPTIONS   = %w[revenue sold_items customers]
+  GROUPING_OPTIONS = [
+    :per_day,
+    :total,
+  ].freeze
 
-  attribute :grouping,    String
-  attribute :ordering,    String
-  attribute :metric,      String
+  ORDERING_OPTIONS = [
+    :name,
+    :date,
+  ].freeze
+
+  METRIC_OPTIONS = [
+    :revenue,
+    :sold_items,
+    :customers,
+  ].freeze
+
+  attribute :grouping,    Symbol, default: GROUPING_OPTIONS.first
+  attribute :ordering,    Symbol, default: ORDERING_OPTIONS.first
+  attribute :metric,      Symbol, default: METRIC_OPTIONS.first
   attribute :date_after,  Date
   attribute :date_before, Date
 
@@ -21,11 +33,11 @@ class EventChartControls
   # validates :name, presence: true
 
   def per_day?
-    grouping == 'per_day'
+    grouping == :per_day
   end
 
   def ordering_applicable?
-    grouping == 'total'
+    grouping == :total
   end
 
   def within_date

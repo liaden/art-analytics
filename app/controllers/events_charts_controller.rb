@@ -3,9 +3,8 @@
 class EventsChartsController < ApplicationController
   def new
     @controls = EventChartControls.new(
-      grouping: :total, ordering: :date, metric: :revenue, date_before: DateTime.now, date_after: 1.year.ago
+      grouping: :total, ordering: :date, metric: :revenue, date_before: DateTime.now, date_after: 2.year.ago
     )
-
     data = PerEventMerchandiseSales.new(@controls).run
     gon.push(data: serialize_event_stream(data))
 
@@ -50,16 +49,17 @@ class EventsChartsController < ApplicationController
   end
 
   def serialize_event_stream(data)
-    [{
-      key:    params[:metric],
-      values: data.map { |event, value| { label: event, value: value } },
-    },
-]
+    [
+      {
+        key:    params[:metric],
+        values: data.map { |event, value| { label: event, value: value } },
+      },
+    ]
   end
 
   def chart_params
     params
-      .require(:event_chart_control)
+      .require(:event_chart_controls)
       .permit(:grouping, :ordering, :metric, :date_after, :date_before)
   end
 end

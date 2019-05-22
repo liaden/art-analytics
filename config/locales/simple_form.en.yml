@@ -10,6 +10,24 @@ en:
       # html: '<abbr title="required">*</abbr>'
     error_notification:
       default_message: "Please review the problems below:"
+    labels:
+      event_chart_controls:
+        grouping: 'Group By'
+        ordering: 'Order By'
+        metric:   'Desired Metric'
+    options:
+      event_chart_controls:
+        grouping:
+          per_day: 'Day'
+          total:   'Totals'
+        ordering:
+          name:    'Event Name'
+          date:    'Event Date'
+        metric:
+          revenue:    'Revenue'
+          sold_items: 'Sold Count'
+          customers:  'Customers'
+
     # Examples
     # labels:
     #   defaults:

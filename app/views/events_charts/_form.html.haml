@@ -1,54 +1,35 @@
-%h2 Customize Graph
-= form_for(@controls, url: new_events_chart_path) do |f|
-  .form-group
-    %label.control-label
-      Grouping of Data
-    .radio.col-sm-offset-1
-      = f.radio_button 'grouping', 'per_day'
-      = f.label 'grouping', 'Per Day', value: 'per_day'
-    .radio.col-sm-offset-1
-      = f.radio_button 'grouping', 'total'
-      = f.label 'grouping', 'Totals (no grouping)', value: 'total'
 
-  .form-group
-    %label.control-label
-      Desired Metric
-    .radio.col-sm-offset-1
-      = f.radio_button :metric, :revenue
-      = f.label :metric, 'Revenue', value: :revenue
-    .radio.col-sm-offset-1
-      = f.radio_button :metric, :sold_items
-      = f.label :metric, 'Items Sold Count', value: :sold_items
-    .radio.col-sm-offset-1
-      = f.radio_button :metric, :customers
-      = f.label :metric, 'Customers', value: :customers
+.container-fluid
+  .row
+    %nav#controls.col-sm-3.d-none.d-sm-block.sidebar.bg-light
+      .sidebar-sticky
+        .nav-link
+          %h4 Customize Graph
 
-  .form-group
-    %label.control-label
-      Ordering of data points
-    .radio.col-sm-offset-1
-      = f.radio_button 'ordering', 'name'
-      = f.label 'ordering', 'By Event Name', value: 'name'
-    .radio.col-sm-offset-1
-      = f.radio_button 'ordering', 'date'
-      = f.label 'ordering', 'By Event Date', value: 'date'
+        = simple_form_for(@controls, url: events_charts_path, wrapper: 'vertical_form') do |f|
+          .form-group.nav-link.my-0.py-0.btn-group.btn-group-toggle{"data-toggle" => "buttons"}
+            = f.input :grouping,
+                as: :toggle_collection
 
-  .form-group
-    = f.label 'Start Date', class: 'control-label'
-    = f.text_field :date_after, "value" => @controls.date_after.strftime("%b %d, %Y"), "data-provide" => 'datepicker', "data-date-format" => 'M d, yyyy'
+          .form-group.nav-link.my-0.py-0
+            = f.input :metric,
+                as: :toggle_collection
 
-    = f.label 'End Date', class: 'control-label'
-    = f.text_field :date_before, "value" => @controls.date_before.strftime("%b %d, %Y"), "data-provide" => 'datepicker', "data-date-format" => 'M d, yyyy'
+          .form-group.nav-link.my-0.py-0
+            = f.input :ordering,
+                as: :toggle_collection
 
-  .form-group
-    = f.submit 'View'
+          .form-group.nav-link.my-0.py-0
+            = f.input :date_after, as: :tempus_dominus, label: 'Start Date'
+            = f.input :date_before, as: :tempus_dominus, label: 'End Date'
 
-#chartrow.row
-  #chart.with-3d-shadow.with-transitions
-    %svg
+          .form-group.nav-link.my-0.py-0
+            = f.submit 'View'
+
+    %main#chart.ml-auto.col-sm-9{roll: :main}
+      %svg
 
 :javascript
-
    var chart;
    nv.addGraph(function() {
        chart = nv.models.multiBarChart()
