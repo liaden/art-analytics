@@ -14,7 +14,7 @@ class TempusDominusInput < SimpleForm::Inputs::Base
   def div_button
     tag_attrs = {
       class: 'input-group-append',
-      data: { target: "##{object_name}_#{attribute_name}", toggle: 'datetimepicker' },
+      data:  { target: "##{object_name}_#{attribute_name}", toggle: 'datetimepicker' },
     }
 
     template.content_tag(:div, tag_attrs) do
@@ -33,7 +33,7 @@ class TempusDominusInput < SimpleForm::Inputs::Base
   end
 
   def icon_table
-    "<i class='fa fa-calendar'></i>".html_safe
+    "<i class='fas fa-calendar'></i>".html_safe
   end
 
   def input_group_div

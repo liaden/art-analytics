@@ -14,7 +14,6 @@ gem 'puma'
 gem 'bootsnap'
 
 gem 'jquery-rails'
-gem 'font-awesome-rails'
 gem 'momentjs-rails'
 gem 'bootstrap', '~> 4.3'
 gem 'autoprefixer-rails', '~> 9.1'
