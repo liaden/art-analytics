@@ -20,7 +20,7 @@ gem 'autoprefixer-rails', '~> 9.1'
 # using my fork because setting format through javascript isn't working nicely atm
 gem 'bootstrap4-datetime-picker-rails', git: 'https://github.com/liaden/bootstrap4-datetime-picker-rails'
 
-gem 'haml'
+gem 'hamlit'
 gem 'gon'
 gem 'simple_form'
 gem 'sprockets', '~> 3.6'
