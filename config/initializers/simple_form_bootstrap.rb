@@ -67,6 +67,12 @@ SimpleForm.setup do |config|
     b.use :html5
     b.optional :readonly
     b.use :label, class: 'w-100'
+  end
+
+  config.wrappers :tempus_dominus, tag: 'div', class: 'div', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
+    b.use :html5
+    b.optional :readonly
+    b.use :label
     b.use :input
   end
 
@@ -431,6 +437,7 @@ SimpleForm.setup do |config|
     range:             :vertical_range,
     time:              :vertical_multi_select,
     toggle_collection: :vertical_toggle_collection,
+    tempus_dominus:    :tempus_dominus,
   }
 
   # enable custom form wrappers
