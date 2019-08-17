@@ -1,0 +1,13 @@
+.navbar-dark {
+  .fas {
+    color: $navbar-dark-color;
+
+    &:hover {
+      color: $navbar-dark-hover-color;
+    }
+
+    &.disabled {
+      color: $navbar-dark-disabled-color;
+    }
+  }
+}
