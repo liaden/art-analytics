@@ -10,7 +10,7 @@
 # components.
 # See https://github.com/plataformatec/simple_form#custom-components
 # to know more about custom components.
-# Dir[Rails.root.join('lib/components/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('lib/components/**/*.rb')].each { |f| require f }
 
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
@@ -66,12 +66,15 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_toggle_collection, tag: 'div', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
-    b.use :label, class: 'w-100'
+    b.optional :label_icon
+    b.use :label
+    b.use :input
   end
 
   config.wrappers :tempus_dominus, tag: 'div', class: 'div', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.use :label
     b.use :input
   end
@@ -80,6 +83,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_boolean, tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.wrapper :form_check_wrapper, tag: 'div', class: 'form-check' do |bb|
       bb.use :input, class: 'form-check-input', error_class: 'is-invalid', valid_class: 'is-valid'
       bb.use :label, class: 'form-check-label'
@@ -92,6 +96,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_collection, item_wrapper_class: 'form-check', tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0' do |ba|
       ba.use :label_text
     end
@@ -104,6 +109,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_collection_inline, item_wrapper_class: 'form-check form-check-inline', tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0' do |ba|
       ba.use :label_text
     end
@@ -119,6 +125,7 @@ SimpleForm.setup do |config|
     b.optional :maxlength
     b.optional :minlength
     b.optional :readonly
+    b.optional :label_icon
     b.use :label
     b.use :input, class: 'form-control-file', error_class: 'is-invalid', valid_class: 'is-valid'
     b.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback d-block' }
@@ -129,6 +136,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_multi_select, tag: 'div', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.use :label, class: 'form-control-label'
     b.wrapper tag: 'div', class: 'd-flex flex-row justify-content-between align-items-center' do |ba|
       ba.use :input, class: 'form-control mx-1', error_class: 'is-invalid', valid_class: 'is-valid'
@@ -143,6 +151,7 @@ SimpleForm.setup do |config|
     b.use :placeholder
     b.optional :readonly
     b.optional :step
+    b.optional :label_icon
     b.use :label
     b.use :input, class: 'form-control-range', error_class: 'is-invalid', valid_class: 'is-valid'
     b.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback d-block' }
@@ -173,6 +182,7 @@ SimpleForm.setup do |config|
   config.wrappers :horizontal_boolean, tag: 'div', class: 'form-group row', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.wrapper tag: 'label', class: 'col-sm-3' do |ba|
       ba.use :label_text
     end
@@ -190,6 +200,7 @@ SimpleForm.setup do |config|
   config.wrappers :horizontal_collection, item_wrapper_class: 'form-check', tag: 'div', class: 'form-group row', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.use :label, class: 'col-sm-3 form-control-label'
     b.wrapper :grid_wrapper, tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input, class: 'form-check-input', error_class: 'is-invalid', valid_class: 'is-valid'
@@ -202,6 +213,7 @@ SimpleForm.setup do |config|
   config.wrappers :horizontal_collection_inline, item_wrapper_class: 'form-check form-check-inline', tag: 'div', class: 'form-group row', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.use :label, class: 'col-sm-3 form-control-label'
     b.wrapper :grid_wrapper, tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input, class: 'form-check-input', error_class: 'is-invalid', valid_class: 'is-valid'
@@ -217,6 +229,7 @@ SimpleForm.setup do |config|
     b.optional :maxlength
     b.optional :minlength
     b.optional :readonly
+    b.optional :label_icon
     b.use :label, class: 'col-sm-3 form-control-label'
     b.wrapper :grid_wrapper, tag: 'div', class: 'col-sm-9' do |ba|
       ba.use :input, error_class: 'is-invalid', valid_class: 'is-valid'
@@ -229,6 +242,7 @@ SimpleForm.setup do |config|
   config.wrappers :horizontal_multi_select, tag: 'div', class: 'form-group row', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
+    b.optional :label_icon
     b.use :label, class: 'col-sm-3 control-label'
     b.wrapper :grid_wrapper, tag: 'div', class: 'col-sm-9' do |ba|
       ba.wrapper tag: 'div', class: 'd-flex flex-row justify-content-between align-items-center' do |bb|
@@ -452,3 +466,5 @@ SimpleForm.setup do |config|
   #   time:          :custom_multi_select
   # }
 end
+
+
