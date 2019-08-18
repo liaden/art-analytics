@@ -1,0 +1,30 @@
+!!!
+%html
+  %head
+    %title ArtAnalytics
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1, shrink-to-fit=no"}
+    = csrf_meta_tags
+    = Gon::Base.render_data
+    = stylesheet_link_tag    'application', media: 'all'
+    = stylesheet_link_tag    'https://use.fontawesome.com/releases/v5.8.2/css/all.css', media: 'all'
+    = javascript_include_tag 'application'
+  %body
+    = render 'shared/navbar'
+
+    - if content_for?(:sidebar)
+      .container-fluid.p-l-0.p-r-0
+        .row.navbar-offset
+
+          #controls.col-xl-2.col-md-3.col-4.px-0.bg-light
+            %nav.navbar.flex-column
+              #chart-controls
+                .d-block{style: 'margin-top: 2rem'}
+                  = yield :sidebar
+
+          %main#chart.ml-auto.col-8.col-md-9.col-xl-10{roll: :main}
+            = render 'shared/flashes'
+            = yield
+    - else
+      = render 'shared/flashes'
+      = yield

@@ -1,0 +1,15 @@
+- if flash.keys.any?
+  .container-fluid
+    .row
+      .col-md-12
+        - if flash[:notice]
+          .alert.alert-info{role: "alert"}
+            = flash[:notice]
+
+        - if flash[:error]
+          .alert.alert-success{role: "alert"}
+            = flash[:error]
+
+        - if flash[:alert]
+          .alert.alert-warning{role: "alert"}
+            = flash[:alert]
