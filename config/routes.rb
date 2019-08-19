@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :events_charts, only: [:new, :create]
   resources :paired_artworks, only: [:new, :create]
 
+  resources :tags, only: [:index]
+
   resource :control_panel, only: [:index]
 
   root to: 'control_panel#index'
