@@ -1,0 +1,27 @@
+@import '~bootstrap/scss/bootstrap';
+@import '~tempusdominus-bootstrap-4/src/sass/tempusdominus-bootstrap-4-build';
+@import '~nvd3/build/nv.d3';
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import 'font-awesome-customizations';
+
+$navbar-height: $nav-link-height + 2 * $navbar-padding-y;
+
+#chart, svg {
+  margin: 0px;
+  width: 100%;
+}
+
+.row > #chart {
+  height: 500px;
+}
+
+.navbar-offset  {
+  margin-top: $navbar-height;
+}
+
+#controls {
+  height: calc(100vh - #{$navbar-height});
+}
+

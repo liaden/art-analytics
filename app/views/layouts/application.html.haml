@@ -6,9 +6,8 @@
     %meta{name: "viewport", content: "width=device-width, initial-scale=1, shrink-to-fit=no"}
     = csrf_meta_tags
     = Gon::Base.render_data
-    = stylesheet_link_tag    'application', media: 'all'
-    = stylesheet_link_tag    'https://use.fontawesome.com/releases/v5.8.2/css/all.css', media: 'all'
-    = javascript_include_tag 'application'
+    = stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload', media: 'all'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   %body
     = render 'shared/navbar'
 

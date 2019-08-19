@@ -23,7 +23,8 @@ gem 'bootstrap4-datetime-picker-rails', git: 'https://github.com/liaden/bootstra
 gem 'hamlit'
 gem 'gon'
 gem 'simple_form'
-gem 'sprockets', '~> 3.6'
+gem 'webpacker', '~> 4.0'
+gem 'sprockets', '~> 3.6', require: false
 gem 'uglifier'
 gem 'mini_racer'
 
