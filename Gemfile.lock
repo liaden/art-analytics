@@ -170,6 +170,7 @@ GEM
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     novus-nvd3-rails (1.8.6)
+    oj (3.9.0)
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
@@ -340,13 +341,13 @@ DEPENDENCIES
   hamlit
   jbuilder (~> 2.0)
   jquery-rails
-  json (~> 2.0)
   listen
   mini_racer
   momentjs-rails
   money-rails
   mutations
   novus-nvd3-rails
+  oj
   pg
   pry
   pry-nav
