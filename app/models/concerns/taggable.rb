@@ -66,11 +66,30 @@ module Taggable
              :tagged_sql, :untagged_sql,
              to: Taggable
 
+    # TODO: refactor such that it can work as a scope? merge with all_tags?
+    def tags_with_prefix(prefix)
+      bind_variables = { tag_prefix: "\"#{prefix}%" }
+
+      parameritized_query = <<~SQL
+        SELECT json_agg(tag) AS matching_tags
+        FROM
+          (SELECT distinct jsonb_array_elements(tags) AS tag FROM #{table_name}) tags
+        WHERE tag::text like :tag_prefix
+      SQL
+
+      query   = ActiveRecord::Base.sanitize_sql([parameritized_query, bind_variables])
+      results = ActiveRecord::Base.connection.exec_query(query).to_a.first.try(:[], 'matching_tags')
+
+      JSON.parse(results || '[]')
+    end
+
     def all_tags
-      # should be more effecient in the future
-      self.select(:tags).reduce(Set.new) do |result, record|
-        result.union(record.tags)
-      end.to_a
+      result = ActiveRecord::Base.connection.execute(<<~SQL).to_a.first['tags']
+        SELECT json_agg(tag) AS tags
+        FROM (SELECT distinct jsonb_array_elements(tags) AS tag FROM #{table_name}) tag_set
+      SQL
+
+      JSON.parse(result || '[]')
     end
   end
 end

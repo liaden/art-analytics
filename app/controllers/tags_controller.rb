@@ -9,7 +9,7 @@ class TagsController < ApplicationController
 
   def index
     tags_per_resource = resources.map do |r|
-      [r.name.downcase, r.all_tags]
+      [r.name.downcase, r.tags_with_prefix(tag_prefix || '')]
     end.to_h
 
     render json: tags_per_resource
@@ -21,6 +21,10 @@ class TagsController < ApplicationController
     return TAGGABLE_CLASSES.values if specified_resources.blank?
 
     TAGGABLE_CLASSES.values_at(*specified_resources.map(&:downcase))
+  end
+
+  def tag_prefix
+    params[:tag_prefix]
   end
 
   def specified_resources

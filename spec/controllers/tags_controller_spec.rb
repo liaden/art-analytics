@@ -17,6 +17,15 @@ RSpec.describe TagsController, type: :controller do
         let!(:mercahndise) { create(:merchandise, tags: ['tag1']) }
 
         it { is_expected.to eq(artwork: [], event: [], merchandise: ['tag1']) }
+
+        context 'with prefix' do
+          before { params.merge!(tag_prefix: 'ta') }
+
+          let!(:more_merch) { create(:merchandise, tags: ['tag2']) }
+          let!(:merch_no_match) { create(:merchandise, tags: ['zzzzzz']) }
+
+          it { is_expected.to eq(artwork: [], event: [], merchandise: ['tag1', 'tag2']) }
+        end
       end
     end
 

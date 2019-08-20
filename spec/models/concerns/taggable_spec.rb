@@ -104,8 +104,40 @@ describe Taggable do
     it "returns unique tags" do
       TaggableClass.create(tags: "a,b")
       TaggableClass.create(tags: "b,c")
+      TaggableClass.create(tags: "b,c")
 
-      expect(TaggableClass.all_tags.size).to eq 3
+      puts TaggableClass.all_tags
+      expect(TaggableClass.all_tags).to include('a', 'b', 'c')
+    end
+
+    it 'handles no TaggableClass instances' do
+      expect(TaggableClass.all_tags).to be_empty
+    end
+  end
+
+  describe '.tags_with_prefix' do
+    it 'handles no tagged items existing' do
+      expect(TaggableClass.tags_with_prefix('has no match')).to be_empty
+    end
+
+    context 'with tagged rows' do
+      before do
+        TaggableClass.create(tags: '5 stars,tasty,fast')
+        TaggableClass.create(tags: '4 stars,tasty,bad service')
+        TaggableClass.create(tags: '1 stars,bad')
+      end
+
+      it 'matches number prefix' do
+        expect(TaggableClass.tags_with_prefix('5')).to include('5 stars')
+      end
+
+      it 'matches prefix as whole tag' do
+        expect(TaggableClass.tags_with_prefix('bad')).to include('bad', 'bad service')
+      end
+
+      it 'with no matches, it is empty' do
+        expect(TaggableClass.tags_with_prefix('has no match')).to be_empty
+      end
     end
   end
 end
