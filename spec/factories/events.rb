@@ -8,6 +8,11 @@ FactoryBot.define do
 
     tags ""
 
+    # should only be used for controller via attributes_for
+    trait :with_tagify_tags do
+      tags "[{\"value\":\"festival\"}]"
+    end
+
     after(:build) do |event, evaluator|
       if evaluator.ended_at.nil?
         event.ended_at = event.started_at + 2.days

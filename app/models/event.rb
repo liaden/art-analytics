@@ -27,6 +27,20 @@ class Event < ApplicationRecord
     started_at..ended_at
   end
 
+  def duration
+    return nil if started_at.nil? || ended_at.nil?
+  end
+
+  def duration=(value)
+    raise "Setting duration when Event#started_at is not set." if started_at.nil? && ended_at.present?
+
+    # 1 day event starts and ends on the same day
+    days = value.to_i - 1
+    raise "Bad value #{value}"  if days < 0
+
+    ended_at = started_at + days
+  end
+
   private
 
   def starts_before_ends

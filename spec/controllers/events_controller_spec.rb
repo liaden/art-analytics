@@ -13,7 +13,12 @@ describe EventsController do
   end
 
   describe '#create' do
-    let(:params) { { event: attributes_for(:event, ended_at: nil) } }
+    let(:params) { { event: attributes_for(:event, :with_tagify_tags, ended_at: nil) } }
+
+    it 'sets tags' do
+      post :create, params: params
+      expect(Event.last.tags).to eq(['festival'])
+    end
 
     context 'without a duration' do
       it 'ended_at == started_at' do

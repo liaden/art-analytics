@@ -3,15 +3,18 @@
 class EventsController < ApplicationController
   def index
     @events = Event.all
+    @event  = Event.new(started_at: Date.today, duration: 1)
   end
 
   def new
-    @event = Event.new
+    @event = Event.new(started_at: Date.today, duration: 1)
   end
 
   def create
     params[:event][:ended_at]   = ended_at
     params[:event][:started_at] = started_at_date
+
+    params[:event][:tags] = TagifyCleaner.process(params[:event][:tags])
 
     @event = Event.new(event_params)
 
@@ -55,7 +58,7 @@ class EventsController < ApplicationController
   def event_params
     params
       .require(:event)
-      .permit(:name, :started_at, :ended_at, :tags)
+      .permit(:name, :started_at, :ended_at, :duration, tags: [])
   end
 
   def ended_at
