@@ -12,7 +12,7 @@ class TagsController < ApplicationController
       [r.name.downcase, r.tags_with_prefix(tag_prefix || '')]
     end.to_h
 
-    render json: tags_per_resource
+    render json: tags_per_resource.to_json
   end
 
   private
@@ -28,6 +28,6 @@ class TagsController < ApplicationController
   end
 
   def specified_resources
-    params[:resources] || []
+    Array(params[:resources])
   end
 end

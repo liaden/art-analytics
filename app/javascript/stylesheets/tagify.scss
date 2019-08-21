@@ -1,0 +1,10 @@
+$tag-bg: $info;
+$invalid-input-color: $danger;
+
+@import '@yaireo/tagify/src/tagify';
+
+.tagify {
+  // override bootstrap value that is inherited from body
+  // causes clear streak through bg color
+  line-height: 1rem;
+}

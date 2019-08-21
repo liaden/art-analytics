@@ -914,6 +914,11 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+"@yaireo/tagify@^2.24.0":
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-2.24.0.tgz#d003db5f06a0ddfe2d73aae26b9ca7943f13a2b6"
+  integrity sha512-qED3w5KqslcIWblXgpixAI5r8CRvZun8Rr7cBaBCfFaNnObIPd58RGgNpPzE3gxLSxg6rGIkSgPfOo0rjyxBWQ==
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"

@@ -28,6 +28,7 @@ import * as nvd3 from 'nvd3';
 require('chartkick');
 require('chart.js');
 
+require('./tagify');
 
 Rails.start();
 Turbolinks.start();
