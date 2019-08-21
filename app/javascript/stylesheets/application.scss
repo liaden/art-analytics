@@ -2,11 +2,8 @@
 @import '~tempusdominus-bootstrap-4/src/sass/tempusdominus-bootstrap-4-build';
 @import '~nvd3/build/nv.d3';
 
-@import 'tagify';
-
-$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import 'font-awesome-customizations';
+@import './tagify';
+@import './font-awesome';
 
 $navbar-height: $nav-link-height + 2 * $navbar-padding-y;
 
