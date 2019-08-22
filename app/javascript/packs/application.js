@@ -32,3 +32,7 @@ require('./tagify');
 
 Rails.start();
 Turbolinks.start();
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
