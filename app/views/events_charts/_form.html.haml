@@ -1,33 +1,40 @@
+%svg
 
-.container-fluid
-  .row
-    %nav#controls.col-sm-3.d-none.d-sm-block.sidebar.bg-light
-      .sidebar-sticky
-        .nav-link
-          %h4 Customize Graph
+- content_for :sidebar do
+  .nav-item
+    %h4 Customize Graph
 
-        = simple_form_for(@controls, url: events_charts_path, wrapper: 'vertical_form') do |f|
-          .form-group.nav-link.my-0.py-0.btn-group.btn-group-toggle{"data-toggle" => "buttons"}
-            = f.input :grouping,
-                as: :toggle_collection
+  = simple_form_for(@controls, url: events_charts_path, wrapper: 'vertical_form', html: {novalidate: true}) do |f|
+    .form-group.nav-item.my-0.py-0
+      -# TODO: label_icon isn't working on select
 
-          .form-group.nav-link.my-0.py-0
-            = f.input :metric,
-                as: :toggle_collection
+      = f.input :metric,
+          label_icon: 'ruler',
+          include_blank: false,
+          collection: EventChartControls::METRIC_OPTIONS
 
-          .form-group.nav-link.my-0.py-0
-            = f.input :ordering,
-                as: :toggle_collection
+    .form-group.nav-item.my-0.py-0
+      = f.input :grouping,
+          label_icon: 'layer-group',
+          as: :toggle_collection
 
-          .form-group.nav-link.my-0.py-0
-            = f.input :date_after, as: :tempus_dominus, label: 'Start Date'
-            = f.input :date_before, as: :tempus_dominus, label: 'End Date'
+    .form-group.nav-item.my-0.py-0
+      = f.input :ordering,
+          label_icon: 'sort',
+          as: :toggle_collection
 
-          .form-group.nav-link.my-0.py-0
-            = f.submit 'View'
+    .form-group.nav-item.my-0.py-0
+      = f.input :date_after,
+        label_icon: 'step-backward',
+        as: :tempus_dominus
 
-    %main#chart.ml-auto.col-sm-9{roll: :main}
-      %svg
+      = f.input :date_before,
+        label_icon: 'step-forward',
+        as: :tempus_dominus
+
+    .form-group.nav-item.my-0.py-0
+      = f.submit 'Refresh', class: 'btn btn-primary'
+
 
 :javascript
    var chart;
