@@ -1,14 +1,21 @@
 %nav.navbar.fixed-top.navbar-expand-md.navbar-dark.bg-dark
+  -#%a#toggle-chart-controls.d-md-none{data: { toggle: 'collapse', target: '#controls'}}
+  -#  %i.fas.fa-tools
   =link_to 'artalytics', root_path, class: 'navbar-brand'
   %button.navbar-toggler{"data-target" => "#navbar-contents", "data-toggle" => "collapse", type: "button", "aria-controls" => "navbar-contents", "aria-expanded" => "false", "aria-label" => "expand navigation" }
     %span.navbar-toggler-icon
   #navbar-contents.collapse.navbar-collapse
     %ul.navbar-nav
-      %li{class: navbar_activity_class('event')}
-        =link_to 'Events', events_path, class: 'nav-link'
-      %li{class: navbar_activity_class('chart')}
-        %a.nav-link{href: "#"} Charts
-      %li{class: navbar_activity_class('artwork')}
+      %li.nav-item.dropdown{class: navbar_activity_class('chart')}
+        %a#charts-dropdown-menu.nav-link.dropdown-toggle{href: '#', role: :button, aria: { haspopup: true, expanded: false }, data: { toggle: :dropdown }  } Charts
+        .dropdown-menu{aria: { labelledby: :navbar } }
+          = link_to 'Events',          new_events_chart_path,   class: 'dropdown-item'
+          = link_to 'Paired Artworks', new_paired_artwork_path, class: 'dropdown-item'
+      %li.nav-item{class: navbar_activity_class('event')}
+        = link_to 'Events', events_path, class: 'nav-link'
+      %li.nav-item.disabled{class: navbar_activity_class('artwork')}
         %a.nav-link{href: "#"} Artworks
-      %li{class: navbar_activity_class('merchandise')}
+      %li.nav-item.disabled{class: navbar_activity_class('merchandise')}
         %a.nav-link{href: "#"} Merchandise
+      %li.nav-item.disabled{class: navbar_activity_class('tag')}
+        %a.nav-link{href: '#'} Tags
