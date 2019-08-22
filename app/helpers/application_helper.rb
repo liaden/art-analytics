@@ -9,6 +9,10 @@ module ApplicationHelper
     end
   end
 
+  def date_range(range)
+    "#{range.first.strftime('%b %d, %Y')} - #{range.last.strftime('%b %d, %Y')}"
+  end
+
   # TODO: this should go in simple_form as a component, probably
   def sf_tooltip_hash(placement: 'right', text: nil, i18n: nil)
     tooltip_text =
