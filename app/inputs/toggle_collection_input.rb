@@ -5,7 +5,7 @@ class ToggleCollectionInput < SimpleForm::Inputs::CollectionInput
     @merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
 
     translate_collection
-    template.content_tag(:div, class: 'btn-group btn-group-toggle', data: { toggle: 'buttons' }) do
+    template.content_tag(:div, class: button_group_classes, data: { toggle: 'buttons' }) do
       template.concat all_buttons
     end
   end
@@ -34,5 +34,15 @@ class ToggleCollectionInput < SimpleForm::Inputs::CollectionInput
 
   def toggle_label_classes(value)
     "btn btn-secondary #{'active' if value == attribute_value.to_s} #{@merged_input_options[:toggle_class]}"
+  end
+
+  def button_group_classes
+    classes = []
+    classes << "btn-group#{'-vertical' if @merged_input_options[:vertical]}"
+    classes << 'btn-group-toggle'
+    classes << 'btn-group-sm'
+    classes << 'w-100'
+    classes << @merged_input_options.dig(:input_html, :class)
+    classes.join(' ')
   end
 end
