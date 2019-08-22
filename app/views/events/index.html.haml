@@ -1,16 +1,26 @@
-.page-header
-  %h1
-    Events
-    %small
-      =link_to 'Import New Event', new_event_path, class: 'btn btn-primary pull-right'
-
 %table.table.table-bordered.table-hover
   %tr
-    %th Event Name
-    %th Start Date
+    %th Name
+    %th Dates
   - @events.each do |event|
     %tr
       %td
         = link_to event.name, event_path(event)
       %td
-        = event.started_at
+        = "#{l(event.started_at)} - #{event.ended_at}"
+
+
+#new-event-modal.modal{tabindex: -1, role: :dialog, aria: {hidden: true, labelledby: 'new-event-modal-title'}}
+  .modal-dialog{role: :document}
+    .modal-content
+      .modal-header
+        %h5#new-event-modal-title.modal-title New Event
+        %button.close{data: {dismiss: :modal}, aria: {label: 'Cancel'}}
+          %span{aria: {hidden: true}} &times;
+      .modal-body
+        = render 'form', cancel_button: :modal
+
+- content_for :sidebar do
+  %h4 Events
+  %button.btn.btn-primary{data: {toggle: :modal, target: '#new-event-modal'}} New Event
+

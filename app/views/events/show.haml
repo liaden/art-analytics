@@ -1,29 +1,30 @@
-.row
-  .col-xs-12
-    %h1= @event.name
-    %h3= @event.time_period
+.container-fluid
+  .row
+    .col-xs-12
+      %h1= @event.name
+      %h3= @event.time_period
 
-.row
-  .col-xs-5
-    %table.table.table-bordered.table-hover.table-condensed
-      %tr
-        %th
-        - @merchandise_names.each do |merch_name|
-          %th= merch_name
-      - @artwork_names.each do |artwork_name|
+  .row
+    .col-xs-5
+      %table.table.table-bordered.table-hover.table-condensed
         %tr
-          %th= artwork_name
-
+          %th
           - @merchandise_names.each do |merch_name|
-            %td= @art_merch_to_sold_count[[merch_name, artwork_name]]
+            %th= merch_name
+        - @artwork_names.each do |artwork_name|
+          %tr
+            %th= artwork_name
 
-.row
-  #all-items-chart
-    = column_chart @merch_quantities
+            - @merchandise_names.each do |merch_name|
+              %td= @art_merch_to_sold_count[[merch_name, artwork_name]]
 
-.row
-  #totals-by-merch-type.col-xs-6
-    = column_chart @totals_by_merch_type
+  .row
+    #all-items-chart
+      = column_chart @merch_quantities
 
-  #totals-by-day.col-xs-6
-    = column_chart @totals_by_day
+  .row
+    #totals-by-merch-type.col-xs-6
+      = column_chart @totals_by_merch_type
+
+    #totals-by-day.col-xs-6
+      = column_chart @totals_by_day
