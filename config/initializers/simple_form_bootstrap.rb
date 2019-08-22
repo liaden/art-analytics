@@ -79,6 +79,14 @@ SimpleForm.setup do |config|
     b.use :input
   end
 
+  config.wrappers :tag_filter, tag: 'div', class: 'div', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
+    b.use :html5
+    b.optional :readonly
+    b.optional :label_icon
+    b.use :lael
+    b.use :input
+  end
+
   # vertical input for boolean
   config.wrappers :vertical_boolean, tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5

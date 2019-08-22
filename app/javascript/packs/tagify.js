@@ -4,8 +4,8 @@ $(function initialize_tagify() {
   var inputs = document.querySelectorAll('input[name*=tag]');
   Array.prototype.forEach.call(inputs, function(input, index) {
     // use rails naming convention to get resource name
-    var resource = input.name.replace(/\[.*\]/, ''),
-        tagify = new Tagify(input, {
+    var resource = input.dataset.resource,
+        tagify   = new Tagify(input, {
             enforceWhitelist: true,
             keepInvalidTags: true
         });

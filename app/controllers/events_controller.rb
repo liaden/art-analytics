@@ -14,7 +14,7 @@ class EventsController < ApplicationController
     params[:event][:ended_at]   = ended_at
     params[:event][:started_at] = started_at_date
 
-    params[:event][:tags] = TagifyCleaner.process(params[:event][:tags])
+    TagifyCleaner.new(params).process!(:event, :tags)
 
     @event = Event.new(event_params)
 
