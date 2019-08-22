@@ -318,5 +318,65 @@ if Rails.env.development?
     end
 
     puts Merchandise.where.not(dimension_id: nil).count
+
+    artwork_tags = {
+      'Aegis-Hearted'               => 'mythology,space,moon,person',
+      'Alabaster'                   => 'critter,person',
+      'Chrysalis'                   => 'person',
+      'Clarice\'s Echo'             => 'critter,moon,clouds,animal rescue,person',
+      'Consent'                     => 'series:pistals-and-powder-kegs,bomb,flowers,person',
+      'Detonator'                   => 'series:pistals-and-powder-kegs,bomb,person',
+      'Dowry'                       => 'series:pistals-and-powder-kegs,bees,fairy princess,person',
+      'Flying Lessons'              => 'critter,pug,dragons,fantasy critter',
+      'Fire One'                    => 'phoenix,fantasy critter,space,nebulae,aviator,steampunk,person',
+      'Magic Lanterns'              => 'ball joint doll,jelly fish,aquatic,person',
+      'Mary 2.0'                    => 'person',
+      'Munchkins'                   => 'critter,cat,dragon,sphinx',
+      'SourPuss'                    => 'aviator,person,dragon,steampunk,fantasy critter',
+      'Starlet'                     => 'series:pistals-and-powder-kegs,person,bees,flowers',
+      'Sybian'                      => 'series:pistals-and-powder_kegs,person,robot',
+      'Kintsugi'                    => 'person',
+      'Fernweh'                     => 'person,critter,aquatic',
+      'Mimicry'                     => 'person,critter,jelly fish',
+      'Persephone\'s Mischief'      => 'person,critter,rat',
+      'Pilgrimage'                  => 'critter',
+      'Now You See Me'              => 'fanart,alice,person',
+      'Guingin Of The Rumblestrudt' => 'critter',
+      'A Fish May Love A Bird'      => 'skull,mask,fish',
+      'Bakku-shan'                  => 'mermaid,fish,critter,aquatic,person',
+      'Quandary'                    => 'pug,dragon,fantasy critter',
+      'Starsong'                    => 'person,fish,nebulae,space',
+      'Coronation'                  => 'person,moon,clouds',
+      'Low Tide'                    => 'person,tentacles,aquatic',
+      'Aurora'                      => 'space,nebulae,person,tarot,tarot:ace-of-wands,78 tarot',
+      'Page of Pentacles'           => 'critter,tarot,tarot:page-of-pentacles',
+      'Queen Of Swords'             => 'bee,critter,tarrot,tarot:queen-of-swords',
+      'Familiar Skin'               => 'mermaid,person,flexible hanging',
+      'Vasalisa'                    => 'fantasy,skull,fire,person',
+      'Ursula\'s Promise'           => 'bear,skull,person',
+      'Affirmation'                 => 'tentacles,aquatic,person,oval',
+      'Nikomis'                     => 'unicorn,fantasy critter,critter',
+      'Luxuria'                     => 'series:sins-and-virtues,person,flowers',
+      'Baldr'                       => 'tarot,mythology,norse',
+      'Wildflower Alice'            => 'fanart,alice,person',
+      'Opalescence'                 => 'person,jelly fish,aquatic',
+      'Nesting Box'                 => '',
+      'Omniscience'                 => '',
+      'Force Of Hand'               => '',
+      'Pallas Justice'              => '',
+      'Afterglow'                   => '',
+      'Windbreak'                   => '',
+      'Nami'                        => '',
+      'Tempest'                     => '',
+      'Sloth'                       => '',
+      'Wrath'                       => '',
+      }
+
+    artwork_tags.each do |art_name, tags|
+      puts "Tagging #{art_name}"
+      a = Artwork.find_by(name: art_name)
+      a.tags = tags
+      a.save!
+    end
   end
 end
