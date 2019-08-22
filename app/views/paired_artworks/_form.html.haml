@@ -1,19 +1,59 @@
+- content_for :sidebar do
+  .nav-item
+    %h4 Customize Graph
+
+    = simple_form_for(@controls, url: paired_artworks_path, wrapper: 'vertical_form') do |f|
+      .form-group
+        %label.control-label
+        .form-group
+          = f.input :artwork_tag_filter_a_root,
+            as: :tag_filter,
+            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.artwork_tag_filter_a_root')
+
+        .form-group
+          = f.input :artwork_tag_filter_a_other,
+            as: :tag_filter,
+            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.artwork_tag_filter_a_other')
+
+        .form-group
+          = f.input :event_tag_filter,
+            as: :tag_filter,
+            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.event_tag_filter')
+
+        -# TODO: Fix calendar widget to handle nil dates for optional dates
+        -#.form-group
+        -#  = f.input :date_after,
+        -#    label_icon: 'step-backward',
+        -#    as: :tempus_dominus
+
+        -#.form-group
+        -#  = f.input :date_before,
+        -#    label_icon: 'step-forward',
+        -#    as: :tempus_dominus
+
+        .form-group
+          = f.input :minimum_pairing_frequency,
+            input_html: { type: :number },
+            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.minimum_pairing_frequency')
+
+      .form-group
+        = f.submit 'Refresh', class: 'btn btn-primary'
+
 #chartrow.row
   #chart.with-3d-shadow.with-transitions
     %svg
 
 :javascript
 
-  var chart;
-
+    var chart;
     nv.addGraph(function() {
         chart = nv.models.sunburstChart();
         chart.color(d3.scale.category20c());
         chart.mode("value");
         chart.sort(function(d1, d2){console.log(d1.value); return d1.value > d2.value;});
+        nv.utils.windowResize(chart.update);
         d3.select("#chart svg")
                 .datum(gon.data)
                 .call(chart);
-        nv.utils.windowResize(chart.update);
         return chart;
     });

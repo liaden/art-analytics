@@ -13,6 +13,8 @@ class ArtworkPairingControls
   attribute :date_after,  Date
   attribute :date_before, Date
 
+  attribute :filter_all, Boolean, default: false
+
   attribute :minimum_pairing_frequency, Integer, default: 1
 
   def initialize(params={})
@@ -28,9 +30,31 @@ class ArtworkPairingControls
   private
 
   def merge_on_name!(params)
+    # TODO: I should just set :event here and let query handle its table name alias
+    params[:event_tag_filter] = hashify(params.delete(:event_tag_filter), :event_sold_at)
+
     tag_filter_params = params.keys.select { |k| k =~ /tag_filter_/ }
+
     tag_filter_params.each do |k|
-      params[k][:on] ||= k.to_s.partition('tag_filter_').last.to_sym
+      on = k.to_s.partition('tag_filter_').last.to_sym
+      if params[k].is_a?(Hash)
+        params[k][:on] ||= on
+      else
+        params[k] = hashify(params[k], on)
+      end
     end
+  end
+
+  # TODO: delete me after updating views to use nested attrs
+  # and expose more of the tag filtering options
+  def hashify(tags, on)
+    return unless tags
+
+    {
+      tags:               tags,
+      on:                 on,
+      matching_mechanism: :all,
+      prepend_with:       :and,
+    }
   end
 end
