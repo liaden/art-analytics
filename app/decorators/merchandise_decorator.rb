@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MerchandiseDecorator
-  include Haml::Helpers
+  # include Haml::Helpers
 
   def initialize(merchandise)
     @merchandise = merchandise

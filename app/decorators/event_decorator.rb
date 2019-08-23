@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class EventDecorator
-  include Haml::Helpers
-
   def initialize(event)
     @event = event
   end
