@@ -20,4 +20,5 @@ production:
   <<: *default
   database: art_analytics_production
   username: art-analytics
-  password: <%= ENV['ART-ANALYTICS_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+  password: <%= ENV['ARTALYTICS_DATABASE_PASSWORD'] %>
