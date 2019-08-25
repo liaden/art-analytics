@@ -1,6 +1,6 @@
 @import '~bootstrap/scss/bootstrap';
-@import '~tempusdominus-bootstrap-4/src/sass/tempusdominus-bootstrap-4-build';
 @import '~nvd3/build/nv.d3';
+@import '~flatpickr/dist/flatpickr';
 
 @import './tagify';
 @import './font-awesome';
@@ -23,4 +23,3 @@ $navbar-height: $nav-link-height + 2 * $navbar-padding-y;
 #controls {
   height: calc(100vh - #{$navbar-height});
 }
-

@@ -2,8 +2,8 @@
 
 class TempusDominusInput < SimpleForm::Inputs::Base
   def input(_wrapper_options)
-    input_html_options[:class]   = 'form-control datetimepicker-input'
-    input_html_options[:value] ||= object.send(attribute_name).try(:strftime, '%b %d, %Y')
+    input_html_options[:class]   = 'form-control datepicker-input'
+    input_html_options[:value] ||= object.send(attribute_name).try(:strftime, '%Y-%m-%d')
 
     input_group_div do
       template.concat @builder.text_field(attribute_name, input_html_options)
@@ -13,8 +13,7 @@ class TempusDominusInput < SimpleForm::Inputs::Base
 
   def div_button
     tag_attrs = {
-      class: 'input-group-append',
-      data:  { target: "##{object_name}_#{attribute_name}", toggle: 'datetimepicker' },
+      class: 'input-group-append'
     }
 
     template.content_tag(:div, tag_attrs) do
@@ -24,23 +23,27 @@ class TempusDominusInput < SimpleForm::Inputs::Base
 
   def span_table
     template.content_tag(:div, class: 'input-group-text') do
-      template.concat icon_table
+      template.concat calendar_button
     end
   end
 
-  def icon_remove
-    "<i class='glyphicon glyphicon-remove'></i>".html_safe
+  def calendar_button
+    tag_attrs = {
+      class: 'input-button flatpickr-toggle'
+    }
+
+    template.content_tag('a', tag_attrs) do
+      calendar_icon
+    end
   end
 
-  def icon_table
+  def calendar_icon
     "<i class='fas fa-calendar'></i>".html_safe
   end
 
   def input_group_div
     tag_attrs = {
-      class: 'input-group date',
-      data:  { target_input: 'nearest' },
-      id:    "#{object_name}_#{attribute_name}",
+      class: 'input-group date flatpickr',
     }
 
     template.content_tag(:div, tag_attrs) do

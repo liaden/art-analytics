@@ -13,12 +13,8 @@ gem 'puma'
 
 gem 'bootsnap'
 
-gem 'jquery-rails'
-gem 'momentjs-rails'
 gem 'bootstrap', '~> 4.3'
 gem 'autoprefixer-rails', '~> 9.1'
-# using my fork because setting format through javascript isn't working nicely atm
-gem 'bootstrap4-datetime-picker-rails', git: 'https://github.com/liaden/bootstrap4-datetime-picker-rails'
 
 gem 'hamlit'
 gem 'gon'
