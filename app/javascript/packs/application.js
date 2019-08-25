@@ -3,7 +3,7 @@
 
 import Rails from 'rails-ujs';
 import Turbolinks from 'turbolinks';
-import 'bootstrap/dist/js/bootstrap';
+import './bootstrap';
 
 import '../stylesheets/application.scss'
 
