@@ -22,7 +22,10 @@ $(function initialize_tagify() {
       controller && controller.abort();
       controller = new AbortController();
 
-      fetch('http://localhost:3000/tags?resources='+resource+'&tag_prefix='+prefix, {signal:controller.signal})
+      fetch('/tags?resources='+resource+'&tag_prefix='+prefix, {
+          signal: controller.signal,
+          credentials: 'same-origin',
+      })
         .then(RES => RES.json())
         .then(function(json){
           tagify.settings.whitelist = json[resource];
