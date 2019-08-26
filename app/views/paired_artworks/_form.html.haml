@@ -50,6 +50,8 @@
         chart = nv.models.sunburstChart();
         chart.color(d3.scale.category20c());
         chart.mode("value");
+        chart.showLabels(true);
+        chart.labelThreshold(0.05);
         chart.sort(function(d1, d2){console.log(d1.value); return d1.value > d2.value;});
         nv.utils.windowResize(chart.update);
         d3.select("#chart svg")
