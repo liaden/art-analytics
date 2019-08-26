@@ -12,6 +12,7 @@ $(window).on('load', function () {
       dateFormat: 'Y-m-d',
       altInput: true,
       altFormat: 'M j, Y',
+      allowInput: true
     });
 
     // associate toggle button if declared
