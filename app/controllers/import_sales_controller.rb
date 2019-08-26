@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+#
+# TODO: DELETE AND REPLACE
+# Use my square-lite gem to hit Square's API instead of importing via a CSV file
+#   Square's API exposes a cleaner interface into the data rather than having to split strings all over
+#
 class ImportSalesController < ApplicationController
   def new
   end

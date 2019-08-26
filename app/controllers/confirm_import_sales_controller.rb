@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+#
+# TODO: DELETE AND REPLACE
+# As with ImportSalesController, this should be redone when using Square's API
+#
 class ConfirmImportSalesController < ApplicationController
   def create
     @import = Import.find(params[:import_id])

@@ -26,6 +26,7 @@ class ImportMissingArtworks < Mutations::Command
         Merchandise.create_unknown_for(artwork)
       end
 
+      # TODO: extract DryRun as a concern
       raise ActiveRecord::Rollback if dry_run
     end
 

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# TODO: REFACTOR
+# Use Square's API to fetch data in a cleaner fashion
+# * remove spreadsheet validations
+# * use ActiveRecord's Bulk Import with Rails 6
 class ImportSales < Mutations::Command
   required do
     model :spreadsheet, class: EventSalesData

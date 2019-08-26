@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+#
+# TODO: REFACTOR
+#  * Use bulk import from Rails 6
+#  * Handle renamed merchandise better?
 class ImportMissingMerchandises < Mutations::Command
   required do
     array :artworks, class: Artwork
