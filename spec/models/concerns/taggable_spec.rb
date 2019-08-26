@@ -106,7 +106,6 @@ describe Taggable do
       TaggableClass.create(tags: "b,c")
       TaggableClass.create(tags: "b,c")
 
-      puts TaggableClass.all_tags
       expect(TaggableClass.all_tags).to include('a', 'b', 'c')
     end
 
