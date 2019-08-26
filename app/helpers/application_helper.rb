@@ -2,11 +2,16 @@
 
 module ApplicationHelper
   def navbar_activity_class(nav_item)
-    if controller.class.name.downcase.match?(nav_item.downcase)
-      'nav-item active'
-    else
-      'nav-item'
-    end
+    active_map = {
+      EventsChartsController   => 'chart',
+      PairedArtworksController => 'chart',
+      EventsController         => 'event',
+      TagsController           => 'tag',
+    }
+
+    active_class = ' active' if active_map[controller.class] == nav_item.downcase
+
+    "nav-item#{active_class}"
   end
 
   def date_range(range)
