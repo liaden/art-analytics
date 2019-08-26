@@ -29,14 +29,16 @@ class ArtworkPairings
       FROM merchandise_sales ms_root
         JOIN sales s                    ON ms_root.sale_id = s.id
         JOIN merchandise_sales ms_other ON ms_other.sale_id = s.id
-        JOIN merchandises m_other       ON m_other.id = ms_other.merchandise_id
-        JOIN merchandises m_root        ON m_root.id = ms_root.merchandise_id
+        JOIN merchandises m_other       ON m_other.id = ms_other.merchandise_id AND m_other.replaced_by_id IS NULL
+        JOIN merchandises m_root        ON m_root.id = ms_root.merchandise_id   AND M_root.replaced_by_id  IS NULL
         JOIN artworks a_root            ON a_root.id = m_root.artwork_id
         JOIN artworks a_other           ON a_other.id = m_other.artwork_id
         JOIN events event_sold_at       ON event_sold_at.id = s.event_id
       WHERE
         -- prevent sales of single items from being paired with themselves
         NOT (ms_root.id = ms_other.id AND ms_root.quantity = 1)
+        AND (a_root.replaced_by_id  IS NULL)
+        AND (a_other.replaced_by_id IS NULL)
         #{where_artwork_tag(:a_root)}
         #{where_artwork_tag(:a_other)}
         #{where_merchandise_tag(:m_root)}
