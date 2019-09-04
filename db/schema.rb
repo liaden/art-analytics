@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_04_174803) do
+ActiveRecord::Schema.define(version: 2019_09_04_153837) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "artworks", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.jsonb "tags"
+    t.jsonb "tags", default: [], null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "import_id"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2018_08_04_174803) do
     t.string "name"
     t.date "started_at"
     t.date "ended_at"
-    t.jsonb "tags"
+    t.jsonb "tags", default: [], null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "import_id"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 2018_08_04_174803) do
   create_table "merchandises", id: :serial, force: :cascade do |t|
     t.integer "artwork_id"
     t.string "name"
-    t.jsonb "tags"
+    t.jsonb "tags", default: [], null: false
     t.date "released_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2018_08_04_174803) do
 
   create_table "sales", id: :serial, force: :cascade do |t|
     t.integer "list_price"
-    t.jsonb "tags"
+    t.jsonb "tags", default: [], null: false
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

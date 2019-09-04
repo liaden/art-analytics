@@ -28,21 +28,32 @@ module Taggable
       "#{quoted_on(on)}tags != NULL and #{quoted_on(on)}tags != '[]'::jsonb"
     end
 
+    def make_tag_scope(query, tags, with_specified_tags)
+      tags.flatten!
+
+      if tags.compact.empty?
+        query
+      else
+        query.where(with_specified_tags, keys: tags)
+      end
+    end
+
     private
 
     def quoted_on(name)
       name.nil? ? '' : "\"#{name}\"."
     end
+
   end
 
   included do
     # logical AND over tags
-    scope :tagged_with,    ->(*tags) { where(tagged_with_sql,    keys: tags.flatten) }
-    scope :tagged_without, ->(*tags) { where(tagged_without_sql, keys: tags.flatten) }
+    scope :tagged_with,    ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_with_sql) }
+    scope :tagged_without, ->(*tags) { Tagggable.make_tag_scope(self, tags, tagged_without_sql) }
 
     # logical OR over tags
-    scope :tagged_with_any,    ->(*tags) { where(tagged_with_any_sql,    keys: tags.flatten) }
-    scope :tagged_without_any, ->(*tags) { where(tagged_without_any_sql, keys: tags.flatten) }
+    scope :tagged_with_any,    ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_with_any_sql) }
+    scope :tagged_without_any, ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_without_any_sql) }
 
     scope :untagged, ->() { where(untagged_sql) }
   end
@@ -91,5 +102,6 @@ module Taggable
 
       JSON.parse(result || '[]')
     end
+
   end
 end

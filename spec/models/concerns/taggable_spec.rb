@@ -67,9 +67,22 @@ describe Taggable do
       TaggableClass.create
       expect(TaggableClass.tagged_with_any('a', 'b')).to be_empty
     end
+
+    describe 'atypical arguments' do
+      let(:untagged) { TaggableClass.create }
+      let(:tagged)   { TaggableClass.create(tags: 'a') }
+
+      it "handles nil as input" do
+        expect(TaggableClass.tagged_with_any(nil)).to include(untagged, tagged)
+      end
+
+      it "handles no arguments" do
+        expect(TaggableClass.tagged_with_any()).to include(untagged, tagged)
+      end
+    end
   end
 
-  describe '.tagged_with_all' do
+  describe '.tagged_with' do
     it "finds exact matches" do
       TaggableClass.create
       tagged_item = TaggableClass.create(tags: ['a', 'b'])
@@ -85,6 +98,19 @@ describe Taggable do
     it "does not find partial match" do
       TaggableClass.create(tags: 'a')
       expect(TaggableClass.tagged_with('a', 'b')).to be_empty
+    end
+
+    describe 'atypical arguments' do
+      let(:untagged) { TaggableClass.create }
+      let(:tagged)   { TaggableClass.create(tags: 'a') }
+
+      it "handles nil as input" do
+        expect(TaggableClass.tagged_with(nil)).to include(untagged, tagged)
+      end
+
+      it "handles no arguments" do
+        expect(TaggableClass.tagged_with()).to include(untagged, tagged)
+      end
     end
   end
 
