@@ -2,11 +2,11 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 6.0.0'
 
 gem 'pg'
 gem 'groupdate'
-gem 'hairtrigger', git: 'https://github.com/liaden/hair_trigger'
+gem 'hairtrigger'
 gem 'activerecord-import'
 
 gem 'puma'
