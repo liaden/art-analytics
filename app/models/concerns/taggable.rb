@@ -43,7 +43,6 @@ module Taggable
     def quoted_on(name)
       name.nil? ? '' : "\"#{name}\"."
     end
-
   end
 
   included do
@@ -63,12 +62,7 @@ module Taggable
   def tags=(value)
     value = value.split(',') if value.is_a?(String)
 
-    write_attribute(:tags, Array(value))
-  end
-
-  # convert nil back to empty array
-  def tags
-    Array(read_attribute(:tags))
+    write_attribute(:tags, Array(value).map(&:strip).uniq)
   end
 
   class_methods do

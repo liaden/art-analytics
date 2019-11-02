@@ -6,6 +6,10 @@ describe Taggable do
       create_table :taggable_classes, force: true do |t|
         t.jsonb 'tags'
       end
+
+      create_table :default_taggables, force: true do |t|
+        t.jsonb 'tags', default: [], null: false
+      end
     end
   end
 
@@ -13,7 +17,12 @@ describe Taggable do
     include Taggable
   end
 
-  let(:taggable_item) { TaggableClass.new }
+  class DefaultTaggable < ActiveRecord::Base
+    include Taggable
+  end
+
+  let(:taggable_item)    { TaggableClass.new }
+  let(:default_taggable) { DefaultTaggable.new }
 
   describe '#tags=' do
     it 'assigns array' do
@@ -37,18 +46,37 @@ describe Taggable do
 
       expect(taggable_item.tags).to contain_exactly('a','b')
     end
+
+    it 'strips whitespace' do
+      taggable_item.tags = 'x ,y '
+      expect(taggable_item.tags).to contain_exactly('x','y')
+    end
+
+    it 'enforces uniqueness' do
+      taggable_item.tags = 'x ,x'
+      expect(taggable_item.tags).to eq ['x']
+    end
   end
 
   describe '#tags' do
-    it 'returns [] when column is nil' do
-      expect(TaggableClass.new.tags).to be_empty
+    describe 'with default value in the schema' do
+      it 'returns [] when column is nil' do
+        expect(default_taggable.tags).to be_empty
+      end
+
+      it 'allows appending to tags' do
+        default_taggable.tags << 'x'
+        default_taggable.tags << 'a'
+        default_taggable.save!
+
+        expect(default_taggable.reload.tags).to contain_exactly('x', 'a')
+      end
     end
 
-    it 'allows appending to tags' do
-      taggable_item.tags = 'x'
-      taggable_item.tags << 'a'
-
-      expect(taggable_item.tags).to contain_exactly('x', 'a')
+    context 'without a default value' do
+      it 'returns nil' do
+        expect(taggable_item.tags).to eq(nil)
+      end
     end
   end
 
