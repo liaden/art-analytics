@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# encoding : utf-8
 
 MoneyRails.configure do |config|
   config.default_currency = :usd
@@ -44,15 +44,15 @@ MoneyRails.configure do |config|
   #
   # Example:
   # config.register_currency = {
-  #   :priority            => 1,
-  #   :iso_code            => "EU4",
-  #   :name                => "Euro with subunit of 4 digits",
-  #   :symbol              => "€",
-  #   :symbol_first        => true,
-  #   :subunit             => "Subcent",
-  #   :subunit_to_unit     => 10000,
-  #   :thousands_separator => ".",
-  #   :decimal_mark        => ","
+  #   priority:            1,
+  #   iso_code:            "EU4",
+  #   name:                "Euro with subunit of 4 digits",
+  #   symbol:              "€",
+  #   symbol_first:        true,
+  #   subunit:             "Subcent",
+  #   subunit_to_unit:     10000,
+  #   thousands_separator: ".",
+  #   decimal_mark:        ","
   # }
 
   # Specify a rounding mode
@@ -75,10 +75,33 @@ MoneyRails.configure do |config|
   # Example:
   #
   # config.default_format = {
-  #   :no_cents_if_whole => nil,
-  #   :symbol => nil,
-  #   :sign_before_symbol => nil
+  #   no_cents_if_whole: nil,
+  #   symbol: nil,
+  #   sign_before_symbol: nil
   # }
+
+  # If you would like to use I18n localization (formatting depends on the
+  # locale):
+  config.locale_backend = :i18n
+  #
+  # Example (using default localization from rails-i18n):
+  #
+  # I18n.locale = :en
+  # Money.new(10_000_00, 'USD').format # => $10,000.00
+  # I18n.locale = :es
+  # Money.new(10_000_00, 'USD').format # => $10.000,00
+  #
+  # For the legacy behaviour of "per currency" localization (formatting depends
+  # only on currency):
+  # config.locale_backend = :currency
+  #
+  # Example:
+  # Money.new(10_000_00, 'USD').format # => $10,000.00
+  # Money.new(10_000_00, 'EUR').format # => €10.000,00
+  #
+  # In case you don't need localization and would like to use default values
+  # (can be redefined using config.default_format):
+  # config.locale_backend = nil
 
   # Set default raise_error_on_money_parsing option
   # It will be raise error if assigned different currency
