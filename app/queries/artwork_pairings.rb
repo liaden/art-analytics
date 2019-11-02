@@ -8,7 +8,7 @@ class ArtworkPairings
   end
 
   def run
-    ActiveRecord::Base.connection.exec_query(to_sql).to_hash
+    ActiveRecord::Base.connection.exec_query(to_sql).to_a
   end
 
   def to_sql
