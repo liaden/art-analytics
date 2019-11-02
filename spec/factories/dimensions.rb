@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :dimension do
-    width "8"
-    height "8"
+    width  { "8" }
+    height { "8" }
   end
 end

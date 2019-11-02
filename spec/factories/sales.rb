@@ -2,21 +2,23 @@
 
 FactoryBot.define do
   factory :sale do
-    sale_price 25
-    list_price 2500
+    sale_price { 25 }
+    list_price { 2500 }
     sold_at { Date.today.friday }
-    note "MyText"
+    note    { 'MyText' }
 
     event
 
     transient do
-      quantity 1
-      day_n nil
-      of_merchandise nil
+      quantity { 1 }
+      day_n    { nil }
+      of_merchandise { nil }
     end
 
     trait :with_merchandise do
-      transient { number_of_merch 1 }
+      transient do
+        number_of_merch { 1 }
+      end
 
       after(:build) do |sale, evaluator|
         sale.merchandise_sales = create_list(

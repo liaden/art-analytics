@@ -6,11 +6,11 @@ FactoryBot.define do
 
     started_at { Date.today.friday }
 
-    tags ""
+    tags { '' }
 
     # should only be used for controller via attributes_for
     trait :with_tagify_tags do
-      tags "[{\"value\":\"festival\"}]"
+      tags { "[{\"value\":\"festival\"}]" }
     end
 
     after(:build) do |event, evaluator|
@@ -21,7 +21,7 @@ FactoryBot.define do
 
     trait :last_year do
       started_at { 1.year.ago.to_date.friday }
-      ended_at { 1.year.ago.to_date.friday + 2.days }
+      ended_at   { 1.year.ago.to_date.friday + 2.days }
     end
 
     trait :with_complex_sales do
@@ -39,7 +39,7 @@ FactoryBot.define do
 
     trait :with_sale do
       transient do
-        day_n nil
+        day_n { nil }
       end
 
       after(:create) do |event, evaluator|

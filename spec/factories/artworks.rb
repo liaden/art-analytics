@@ -10,7 +10,7 @@ FactoryBot.define do
   end
 
   factory :unknown_artwork, class: Artwork do
-    name "doesn't matter"
+    name { "doesn't matter" }
 
     after(:create) do |artwork|
       create(:unknown_merchandise, artwork: artwork)
