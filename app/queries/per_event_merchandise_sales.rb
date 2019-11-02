@@ -8,6 +8,7 @@ class PerEventMerchandiseSales
   def total_revenue
     raw_data = Sale.joins(:event)
       .where(within_date)
+      .where(event_tags)
       .group(:full_name, ordering).order(ordering)
       .sum(:sale_price_cents)
 
@@ -104,6 +105,10 @@ class PerEventMerchandiseSales
     else
       'events.id'
     end
+  end
+
+  def event_tags
+    { event: Event.tagged_with(@options.event_tag_filter.try(:tags)) }
   end
 
   def within_date

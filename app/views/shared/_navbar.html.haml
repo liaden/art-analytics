@@ -6,16 +6,16 @@
     %span.navbar-toggler-icon
   #navbar-contents.collapse.navbar-collapse
     %ul.navbar-nav
-      %li.nav-item.dropdown{class: navbar_activity_class('chart')}
+      %li.dropdown{class: navbar_activity_class('chart')}
         %a#charts-dropdown-menu.nav-link.dropdown-toggle{href: '#', role: :button, aria: { haspopup: true, expanded: false }, data: { toggle: :dropdown }  } Charts
         .dropdown-menu{aria: { labelledby: :navbar } }
           = link_to 'Events',          new_events_chart_path,   class: 'dropdown-item'
           = link_to 'Paired Artworks', new_paired_artwork_path, class: 'dropdown-item'
-      %li.nav-item{class: navbar_activity_class('event')}
+      %li{class: navbar_activity_class('event')}
         = link_to 'Events', events_path, class: 'nav-link'
-      %li.nav-item.disabled{class: navbar_activity_class('artwork')}
+      %li.disabled{class: navbar_activity_class('artwork')}
         %a.nav-link{href: "#"} Artworks
-      %li.nav-item.disabled{class: navbar_activity_class('merchandise')}
+      %li.disabled{class: navbar_activity_class('merchandise')}
         %a.nav-link{href: "#"} Merchandise
-      %li.nav-item.disabled{class: navbar_activity_class('tag')}
+      %li.disabled{class: navbar_activity_class('tag')}
         %a.nav-link{href: '#'} Tags

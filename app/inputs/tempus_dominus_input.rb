@@ -5,6 +5,8 @@ class TempusDominusInput < SimpleForm::Inputs::Base
     input_html_options[:class]   = 'form-control datepicker-input'
     input_html_options[:value] ||= object.send(attribute_name).try(:strftime, '%Y-%m-%d')
 
+    # input_html_options[:data] = { mode: 'range' }
+
     input_group_div do
       template.concat @builder.text_field(attribute_name, input_html_options)
       template.concat div_button

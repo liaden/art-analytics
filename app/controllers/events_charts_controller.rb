@@ -12,6 +12,8 @@ class EventsChartsController < ApplicationController
   end
 
   def create
+    tagify_cleaner.process!(:event_chart_controls, :event_tag_filter)
+
     @controls = EventChartControls.new(chart_params)
     if @controls.valid?
       send_data_to_gon(@controls)
@@ -60,6 +62,6 @@ class EventsChartsController < ApplicationController
   def chart_params
     params
       .require(:event_chart_controls)
-      .permit(:grouping, :ordering, :metric, :date_after, :date_before)
+      .permit(:grouping, :ordering, :metric, :date_after, :date_before, event_tag_filter: [])
   end
 end

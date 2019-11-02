@@ -25,6 +25,16 @@
           as: :toggle_collection
 
     .form-group.nav-item.my-0.py-0
+      = f.input :event_tag_filter,
+        as: :tag_filter,
+        **sf_tooltip_hash(i18n: 'event_chart_controls.events_tag_filter')
+
+    .form-group.nav-item.my-0.py-0
+      = f.input :merchandise_tag_filter,
+        as: :tag_filter,
+        **sf_tooltip_hash(i18n: 'event_chart_controls.merchandise_stag_filter')
+
+    .form-group.nav-item.my-0.py-0
       = f.input :date_after,
         label_icon: 'step-backward',
         as: :tempus_dominus

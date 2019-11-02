@@ -26,11 +26,26 @@ class EventChartControls
   attribute :date_after,  Date
   attribute :date_before, Date
 
+  attribute :event_tag_filter,       TagFilter
+  attribute :merchandise_tag_filter, TagFilter
+
   validates :grouping, inclusion: { in: GROUPING_OPTIONS }
   validates :ordering, inclusion: { in: ORDERING_OPTIONS }, if: :ordering_applicable?
   validates :metric, inclusion: { in: METRIC_OPTIONS }
 
   # validates :name, presence: true
+
+  def initialize(params = {})
+    if params.key?(:event_tag_filter)
+      params[:event_tag_filter] = { tags: params[:event_tag_filter] }
+    end
+
+    if params.key?(:merchandise_tag_filter)
+      params[:merchandise_tag_filter] = { tags: params[:merchandise_tag_filter] }
+    end
+
+    super(params)
+  end
 
   def per_day?
     grouping == :per_day

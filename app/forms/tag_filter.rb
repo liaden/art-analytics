@@ -8,8 +8,8 @@ class TagFilter
   MATCHING_MECHANISM_OPTIONS = %w[all some none]
 
   attribute :on,                 String
-  attribute :matching_mechanism, String
-  attribute :tags
+  attribute :matching_mechanism, String,        default: MATCHING_MECHANISM_OPTIONS.first
+  attribute :tags,               Array[String], default: []
   attribute :prepend_with,       String
 
   validates :on, presence: true, unless: -> { tags.empty? }

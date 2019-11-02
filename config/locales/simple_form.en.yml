@@ -33,6 +33,9 @@ en:
         artwork_tag_filter_a_other: 'Filter artworks, based on matching all tags, that shown in outer donut'
         event_tag_filter: 'Restrict to events that include all tags'
         minimum_pairing_frequency: 'Infrequently paired items below this threshold are hidden.'
+      event_chart_controls:
+        events_tag_filter: 'Restrict to events that include all tags'
+        merchandise_tag_filter: 'Restrict sales that include all tags'
     options:
       event_chart_controls:
         grouping:
