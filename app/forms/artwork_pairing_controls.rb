@@ -27,6 +27,14 @@ class ArtworkPairingControls
     self.send(name) || TagFilter.new
   end
 
+  def date_after=(value)
+    super(value) unless value.blank?
+  end
+
+  def date_before=(value)
+    super(value) unless value.blank?
+  end
+
   private
 
   def merge_on_name!(params)

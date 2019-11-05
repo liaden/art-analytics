@@ -10,11 +10,11 @@
 
       = f.tag_filter_field :event_tag_filter # **sf_tooltip_hash(i18n: 'artwork_pairing_controls.event_tag_filter')
 
-      -# = f.calendar_field :date_after,
-      -#   label_icon: 'step-backward'
+      = f.calendar_field :date_after,
+        label_icon: 'step-backward'
 
-      -# = f.calendar_field :date_before,
-      -#   label_icon: 'step-forward'
+      = f.calendar_field :date_before,
+        label_icon: 'step-forward'
 
       = f.number_field :minimum_pairing_frequency # **sf_tooltip_hash(i18n: 'artwork_pairing_controls.minimum_pairing_frequency')
 
