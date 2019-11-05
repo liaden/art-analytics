@@ -1,16 +1,11 @@
 - if @event.errors.any?
   %p
     = @event.errors.inspect
-= simple_form_for(@event, wrapper: 'vertical_form') do |f|
-  .form-group
-    = f.input :name
-  .form-group
-    = f.input :started_at, as: :tempus_dominus
-
-  .form-group
-    = f.input :duration, input_html: { type: :number }
-  .form-group
-    = f.input :tags, as: :tag_filter
+= form_for(@event) do |f|
+  = f.text_field :name
+  = f.calendar_field :started_at
+  = f.number_field :duration
+  = f.tag_filter_field :tags
 
   .form-group
     - if local_assigns[:cancel_button]

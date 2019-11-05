@@ -2,42 +2,23 @@
   .nav-item
     %h4 Customize Graph
 
-    = simple_form_for(@controls, url: paired_artworks_path, wrapper: 'vertical_form') do |f|
-      .form-group
-        %label.control-label
-        .form-group
-          = f.input :artwork_tag_filter_a_root,
-            as: :tag_filter,
-            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.artwork_tag_filter_a_root')
+    = form_for(@controls, url: paired_artworks_path) do |f|
+      %label.control-label
+      = f.tag_filter_field :artwork_tag_filter_a_root # **sf_tooltip_hash(i18n: 'artwork_pairing_controls.artwork_tag_filter_a_root')
 
-        .form-group
-          = f.input :artwork_tag_filter_a_other,
-            as: :tag_filter,
-            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.artwork_tag_filter_a_other')
+      = f.tag_filter_field :artwork_tag_filter_a_other # **sf_tooltip_hash(i18n: 'artwork_pairing_controls.artwork_tag_filter_a_other')
 
-        .form-group
-          = f.input :event_tag_filter,
-            as: :tag_filter,
-            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.event_tag_filter')
+      = f.tag_filter_field :event_tag_filter # **sf_tooltip_hash(i18n: 'artwork_pairing_controls.event_tag_filter')
 
-        -# TODO: Fix calendar widget to handle nil dates for optional dates
-        -#.form-group
-        -#  = f.input :date_after,
-        -#    label_icon: 'step-backward',
-        -#    as: :tempus_dominus
+      -# = f.calendar_field :date_after,
+      -#   label_icon: 'step-backward'
 
-        -#.form-group
-        -#  = f.input :date_before,
-        -#    label_icon: 'step-forward',
-        -#    as: :tempus_dominus
+      -# = f.calendar_field :date_before,
+      -#   label_icon: 'step-forward'
 
-        .form-group
-          = f.input :minimum_pairing_frequency,
-            input_html: { type: :number },
-            **sf_tooltip_hash(i18n: 'artwork_pairing_controls.minimum_pairing_frequency')
+      = f.number_field :minimum_pairing_frequency # **sf_tooltip_hash(i18n: 'artwork_pairing_controls.minimum_pairing_frequency')
 
-      .form-group
-        = f.submit 'Refresh', class: 'btn btn-primary'
+      = f.submit 'Refresh', class: 'btn btn-primary'
 
 #chartrow.row
   #chart.with-3d-shadow.with-transitions

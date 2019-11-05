@@ -1,0 +1,45 @@
+---
+en:
+  activemodel:
+    attributes:
+      artwork_pairing_controls:
+        artwork_tag_filter_a_root: 'Inner Donut Filter'
+        artwork_tag_filter_a_other: 'Outer Donut Filter'
+        filter_all: 'Apply Inner Filter to Outer?'
+        event_tag_filter: 'Filter By Event Tags'
+        date_after: 'Start Date'
+        date_before: 'End Date'
+        minimum_pairing_frequency: 'Sold Together At Least'
+      event_chart_controls:
+        grouping: 'Group By'
+        ordering: 'Order By'
+        metric:   'Desired Metric'
+        date_after: 'Start Date'
+        date_before: 'End Date'
+      event_chart_controls/grouping:
+        per_day: 'Day'
+        total:   'Totals'
+      event_chart_controls/ordering:
+        name:    'Event Name'
+        date:    'Event Date'
+      event_chart_controls/metric:
+        revenue:    'Revenue'
+        sold_items: 'Sold Count'
+        customers:  'Customers'
+
+
+  simple_form:
+    "yes": 'Yes'
+    "no": 'No'
+    required:
+      text: 'required'
+      html: '<span title="required">*</abbr>'
+    error_notification:
+      default_message: "Please review the problems below:"
+    hints:
+      artwork_pairing_controls:
+        artwork_tag_filter_a_root: 'Filter artworks, based on matching all tags, that are shown in the interior donut'
+        artwork_tag_filter_a_other: 'Filter artworks, based on matching all tags, that shown in outer donut'
+        event_tag_filter: 'Restrict to events that include all tags'
+        minimum_pairing_frequency: 'Infrequently paired items below this threshold are hidden.'
+

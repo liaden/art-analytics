@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  ActionView::Base.default_form_builder = BootstrapFormBuilder
+
+  # bypass BootstrapFormBuilder to Rails default
+  def rails_form_for(object, options = {}, &block)
+    options = { builder: RailsFormBuilder }.merge(options)
+    form_for(object, options, &block)
+  end
+
+  def rails_form_with(object, options = {}, &block)
+    options = { builder: RailsFormBuilder }.merge(options)
+    form_with(object, options, &block)
+  end
+
   def navbar_activity_class(nav_item)
     active_map = {
       EventsChartsController   => 'chart',

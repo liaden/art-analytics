@@ -1,34 +1,39 @@
 # frozen_string_literal: true
 
-class TagFilterInput < SimpleForm::Inputs::Base
-  def input(wrapper_options)
-    attribute_value
-
-    input_html_options[:'data-resource'] = tagging_resource
-    input_html_options[:value]           = attribute_value
-
-    wrapper_options[:as] = 'string'
-
-    @builder.text_field(attribute_name, input_html_options)
+class TagFilterInput
+  def initialize(builder, template)
+    @builder  = builder
+    @template = template
   end
 
-  # untagged items will by default show '[]'
-  def attribute_value
-    return @attribute_value if @attribute_value
+  def tag_filter_field(method, options = {})
+    data = {
+      'data-resource': tagging_resource(method),
+      value: value_for(method),
+    }
 
-    value = object.send(attribute_name)
-    value = value.tags if value.is_a?(TagFilter)
-
-    @attribute_value = (value == []) ? '' : Array(value).join(',')
+    @builder.text_field(method, data.merge!(options))
   end
 
   private
 
-  def tagging_resource
-    resource, = attribute_name.to_s.rpartition('_tag_filter')
+  def value_for(method)
+    return @attribute_value if @attribute_value
+
+    val = @builder.object.send(method)
+    val = val.tags if val.is_a?(TagFilter)
+
+    @attribute_value = (val == []) ? '' : Array(val).join(',')
+  end
+
+
+  def tagging_resource(method)
+    # TODO: if assigned value is a TagFilter,
+    # it should know what resource
+    resource, = method.to_s.rpartition('_tag_filter')
 
     if resource.empty?
-      object.class.name.downcase
+      @builder.object.class.name.downcase
     else
       resource
     end

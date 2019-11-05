@@ -1,0 +1,9 @@
+---
+en:
+  activerecord:
+    attributes:
+      event:
+        name: Name
+        duration: Duration in Days
+        tags: Tags
+        started_at: Start Day

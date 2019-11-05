@@ -1,48 +1,56 @@
 # frozen_string_literal: true
 
-class ToggleCollectionInput < SimpleForm::Inputs::CollectionInput
-  def input(wrapper_options)
-    @merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
+class ToggleCollectionInput
+  def initialize(builder, template)
+    @builder  = builder
+    @template = template
+  end
 
-    translate_collection
-    template.content_tag(:div, class: button_group_classes, data: { toggle: 'buttons' }) do
-      template.concat all_buttons
+  def toggle_field(method, collection, options = {})
+    @builder.group do
+      @builder.label(method, options) +
+      @template.content_tag(:div, class: button_group_classes, data: { toggle: 'buttons' }) do
+        @template.concat all_buttons(method, collection)
+      end
     end
   end
 
-  def collection
-    @collection ||= object.class.const_get("#{attribute_name.upcase}_OPTIONS").map(&:to_sym)
-  rescue NameError
-    super
+  private
+
+  def object
+    @builder.object
   end
 
-  def all_buttons
-    collection.map do |label_text, value|
-      toggle_button_tag(label_text, value)
+  def human_attribute_name(method, value)
+    object.class.human_attribute_name("#{method}.#{value}")
+  end
+
+  def all_buttons(method, collection)
+    collection.map do |value|
+      label_text = human_attribute_name(method, value)
+
+      button_group(method, value) do
+        @template.concat(@builder.radio_button(method, value) + label_text)
+      end
     end.join.html_safe
   end
 
-  def toggle_button_tag(radio_label_text, radio_button_value)
-    template.content_tag(:label, class: toggle_label_classes(radio_button_value)) do
-      template.concat(@builder.radio_button(attribute_name, radio_button_value) + radio_label_text.html_safe)
-    end
+  def toggle_label_classes(value, attribute_value)
+    "btn btn-secondary #{'active' if value.to_s == attribute_value.to_s}"
   end
 
-  def attribute_value
-    @attribute_value ||= object.send(attribute_name)
-  end
+  def button_group(method, value, &block)
+    css = "btn btn-secondary #{'active' if value.to_s == object.send(method).to_s}"
 
-  def toggle_label_classes(value)
-    "btn btn-secondary #{'active' if value == attribute_value.to_s} #{@merged_input_options[:toggle_class]}"
+    @template.content_tag(:label, class: css, &block)
   end
 
   def button_group_classes
     classes = []
-    classes << "btn-group#{'-vertical' if @merged_input_options[:vertical]}"
+    classes << "btn-group#{'-vertical' if @vertical}"
     classes << 'btn-group-toggle'
     classes << 'btn-group-sm'
     classes << 'w-100'
-    classes << @merged_input_options.dig(:input_html, :class)
     classes.join(' ')
   end
 end

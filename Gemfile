@@ -18,7 +18,6 @@ gem 'autoprefixer-rails', '~> 9.1'
 
 gem 'hamlit'
 gem 'gon'
-gem 'simple_form'
 gem 'webpacker', '~> 4.0'
 gem 'sprockets', '~> 3.6', require: false
 gem 'uglifier'
@@ -53,17 +52,20 @@ end
 
 group :test do
   gem 'shoulda', '~> 3.5.0'
-  # gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
   gem 'rails-controller-testing'
   gem 'simplecov', require: false
   gem 'faker'
   gem 'database_cleaner'
+  gem 'rspec-html-matchers'
 end
 
 group :development do
   gem 'brakeman', require: false
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  gem 'better_errors'
+  gem 'binding_of_caller'
 
   gem 'listen'
 

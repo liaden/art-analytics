@@ -65,6 +65,10 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    better_errors (2.5.1)
+      coderay (>= 1.0.0)
+      erubi (>= 1.0.0)
+      rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     bootsnap (1.4.5)
@@ -222,11 +226,18 @@ GEM
       ffi (~> 1.0)
     request_store (1.4.1)
       rack (>= 1.4)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
     rspec-core (3.9.0)
       rspec-support (~> 3.9.0)
     rspec-expectations (3.9.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
+    rspec-html-matchers (0.9.1)
+      nokogiri (~> 1)
+      rspec (>= 3.0.0.a, < 4)
     rspec-mocks (3.9.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
@@ -270,9 +281,6 @@ GEM
     shoulda-context (1.2.2)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
-    simple_form (5.0.1)
-      actionpack (>= 5.0)
-      activemodel (>= 5.0)
     simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -320,6 +328,8 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   autoprefixer-rails (~> 9.1)
+  better_errors
+  binding_of_caller
   bootsnap
   bootstrap (~> 4.3)
   brakeman
@@ -347,11 +357,11 @@ DEPENDENCIES
   rails (~> 6.0.0)
   rails-controller-testing
   rails-erd
+  rspec-html-matchers
   rspec-rails
   rubocop
   rubocop-performance
   shoulda (~> 3.5.0)
-  simple_form
   simplecov
   spring
   sprockets (~> 3.6)
