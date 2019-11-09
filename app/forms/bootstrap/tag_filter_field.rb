@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class TagFilterInput
+class Bootstrap::TagFilterField
   def initialize(builder, template)
     @builder  = builder
     @template = template
   end
 
-  def tag_filter_field(method, options = {})
+  def render(method, options = {})
     data = {
       'data-resource': tagging_resource(method),
       value: value_for(method),

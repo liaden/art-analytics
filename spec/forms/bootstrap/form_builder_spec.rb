@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe BootstrapFormBuilder do
+describe Bootstrap::FormBuilder do
   ActiveRecord::Migration.suppress_messages do
     ActiveRecord::Schema.define do
       create_table :test_resources, force: true do |t|
@@ -20,7 +20,7 @@ describe BootstrapFormBuilder do
   let(:options) { {} }
 
   let(:builder) do
-    BootstrapFormBuilder.new(TestResource.name, TestResource.new, action_view, builder_options)
+    Bootstrap::FormBuilder.new(TestResource.name, TestResource.new, action_view, builder_options)
   end
 
   describe '#group' do

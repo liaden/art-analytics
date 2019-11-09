@@ -1,4 +1,4 @@
-RSpec.describe CalendarInput, type: :view do
+RSpec.describe Bootstrap::CalendarField, type: :view do
   class FakeControls
     include ActiveModel::Model
     include Virtus.model

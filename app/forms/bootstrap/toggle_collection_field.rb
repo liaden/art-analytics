@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class ToggleCollectionInput
+class Bootstrap::ToggleCollectionField < Bootstrap::Base
   def initialize(builder, template)
     @builder  = builder
     @template = template
   end
 
-  def toggle_field(method, collection, options = {})
+  def render(method, collection, options = {})
     @builder.group do
       @builder.label(method, options) +
       @template.content_tag(:div, class: button_group_classes, data: { toggle: 'buttons' }) do
@@ -16,14 +16,6 @@ class ToggleCollectionInput
   end
 
   private
-
-  def object
-    @builder.object
-  end
-
-  def human_attribute_name(method, value)
-    object.class.human_attribute_name("#{method}.#{value}")
-  end
 
   def all_buttons(method, collection)
     collection.map do |value|

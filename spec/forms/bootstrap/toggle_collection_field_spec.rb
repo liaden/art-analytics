@@ -1,4 +1,4 @@
-RSpec.describe ToggleCollectionInput, type: :view do
+RSpec.describe Bootstrap::ToggleCollectionField, type: :view do
   class FakeControls
     include ActiveModel::Model
     include Virtus.model

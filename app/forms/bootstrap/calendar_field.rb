@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-class CalendarInput
-  def initialize(builder, template)
-    @builder  = builder
-    @template = template
-  end
-
-  def calendar_field(method, options = {})
+class Bootstrap::CalendarField < Bootstrap::Base
+  def render(method, options = {})
     data = {
       class: 'datepicker-input',
       value: date_string(method),

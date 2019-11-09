@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  ActionView::Base.default_form_builder = BootstrapFormBuilder
+  ActionView::Base.default_form_builder = Bootstrap::FormBuilder
 
   # bypass BootstrapFormBuilder to Rails default
   def rails_form_for(object, options = {}, &block)

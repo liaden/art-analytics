@@ -1,4 +1,4 @@
-RSpec.describe TagFilterInput, type: :view do
+RSpec.describe Bootstrap::TagFilterField, type: :view do
   class FakeControls
     include ActiveModel::Model
     include Virtus.model
