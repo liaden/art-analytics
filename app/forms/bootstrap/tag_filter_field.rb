@@ -8,7 +8,11 @@ class Bootstrap::TagFilterField
 
   def render(method, options = {})
     data = {
-      'data-resource': tagging_resource(method),
+      data: {
+        resource: tagging_resource(method),
+        # lastpass is annoying
+        lpignore: true,
+      },
       value: value_for(method),
     }
 

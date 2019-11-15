@@ -2,7 +2,7 @@
   %p
     = @event.errors.inspect
 = form_for(@event) do |f|
-  = f.text_field :name
+  = f.text_field :name, data: { lpignore: true }
   = f.calendar_field :started_at
   = f.number_field :duration
   = f.tag_filter_field :tags
