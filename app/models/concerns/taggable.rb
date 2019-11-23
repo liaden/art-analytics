@@ -3,9 +3,37 @@
 module Taggable
   extend ActiveSupport::Concern
 
+  def self.resources
+    @resources||= Set.new
+  end
+  resources
+
+  def self.resources_by_name
+    resources.index_by { |c| c.name.downcase }.with_indifferent_access
+  end
+
+  def self.resource_names
+    resources.map(&:name)
+  end
+
+  def self.resource(name)
+    resources_by_name[name]
+  end
+
+  # [['t1', 't2']] -> ['t1', 't2']
+  # ['t1', 't1']   -> ['t1']
+  # [' t1 ']       -> ['t1']
+  def self.sanitize_tag_list(tags)
+    tags = tags.flatten
+    tags.compact!
+    tags.map!(&:strip)
+    tags.uniq!
+    tags
+  end
+
   class << self
     def tagged_with_sql(on: nil, interpolate_name: :keys)
-      "#{quoted_on(on)}tags ?& array[:#{interpolate_name}]"
+      "coalesce(#{quoted_on(on)}tags, '[]'::jsonb) ?& array[:#{interpolate_name}]"
     end
 
     def tagged_without_sql(on: nil, interpolate_name: :keys)
@@ -13,7 +41,7 @@ module Taggable
     end
 
     def tagged_with_any_sql(on: nil, interpolate_name: :keys)
-      "#{quoted_on(on)}tags ?| array[:#{interpolate_name}]"
+      "coalesce(#{quoted_on(on)}tags, '[]'::jsonb) ?| array[:#{interpolate_name}]"
     end
 
     def tagged_without_any_sql(on: nil, interpolate_name: :keys)
@@ -29,9 +57,9 @@ module Taggable
     end
 
     def make_tag_scope(query, tags, with_specified_tags)
-      tags.flatten!
+      tags = Taggable.sanitize_tag_list(tags)
 
-      if tags.compact.empty?
+      if tags.empty?
         query
       else
         query.where(with_specified_tags, keys: tags)
@@ -45,10 +73,11 @@ module Taggable
     end
   end
 
-  included do
+  included do |base|
+    Taggable.resources << base
     # logical AND over tags
     scope :tagged_with,    ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_with_sql) }
-    scope :tagged_without, ->(*tags) { Tagggable.make_tag_scope(self, tags, tagged_without_sql) }
+    scope :tagged_without, ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_without_sql) }
 
     # logical OR over tags
     scope :tagged_with_any,    ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_with_any_sql) }
@@ -62,7 +91,13 @@ module Taggable
   def tags=(value)
     value = value.split(',') if value.is_a?(String)
 
-    write_attribute(:tags, Array(value).map(&:strip).uniq)
+    write_attribute(:tags, Taggable.sanitize_tag_list(Array(value)))
+  end
+
+  def delete_tags(*values)
+    return if values.empty?
+
+    self.tags -= values
   end
 
   class_methods do
@@ -73,6 +108,8 @@ module Taggable
 
     # TODO: refactor such that it can work as a scope? merge with all_tags?
     def tags_with_prefix(prefix)
+      prefix = prefix.strip
+
       bind_variables = { tag_prefix: "\"#{prefix}%" }
 
       parameritized_query = <<~SQL
@@ -88,6 +125,47 @@ module Taggable
       JSON.parse(results || '[]')
     end
 
+    # TODO: handle multiples with a reduce
+    def updating_all_timestamp_sql
+      update_col = timestamp_attributes_for_update_in_model.first
+
+      ", #{update_col} = ?" if update_col
+    end
+
+    def delete_tags(*values)
+      values = Taggable.sanitize_tag_list(values)
+
+      return if values.empty?
+
+      delete_tags_sql = "tags = coalesce(tags, '[]'::jsonb) - array[?]#{updating_all_timestamp_sql}"
+
+      query_parts = [delete_tags_sql, values]
+      query_parts << Time.now if timestamp_attributes_for_update_in_model.any?
+
+      tagged_with_any(*values).update_all(query_parts)
+    end
+
+    def insert_tags(*values)
+      values = Taggable.sanitize_tag_list(values)
+
+      return if values.empty?
+
+      insert_tags_sql = <<~SQL
+        tags = (
+            select json_agg(tag) from (
+                select distinct jsonb_array_elements(
+                    coalesce(e2.tags, '[]'::jsonb) || ?::jsonb) as tag
+                 from "#{table_name}" e2
+                where id = e2.id) new_tags
+            )#{updating_all_timestamp_sql}
+      SQL
+
+      query_parts = [insert_tags_sql, values.to_json]
+      query_parts << Time.now if timestamp_attributes_for_update_in_model.any?
+
+      tagged_without(*values).update_all(query_parts)
+    end
+
     def all_tags
       result = ActiveRecord::Base.connection.execute(<<~SQL).to_a.first['tags']
         SELECT json_agg(tag) AS tags
@@ -96,6 +174,5 @@ module Taggable
 
       JSON.parse(result || '[]')
     end
-
   end
 end

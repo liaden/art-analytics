@@ -1,24 +1,36 @@
 # frozen_string_literal: true
 
 describe Taggable do
-  ActiveRecord::Migration.suppress_messages do
-    ActiveRecord::Schema.define do
-      create_table :taggable_classes, force: true do |t|
-        t.jsonb 'tags'
-      end
 
-      create_table :default_taggables, force: true do |t|
-        t.jsonb 'tags', default: [], null: false
+  before(:all) do
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Schema.define do
+        create_table :taggable_classes, force: true do |t|
+          t.jsonb 'tags'
+          t.datetime 'created_at'
+          t.datetime 'updated_at'
+        end
+
+        create_table :default_taggables, force: true do |t|
+          t.jsonb 'tags', default: [], null: false
+          t.datetime 'created_at'
+          t.datetime 'updated_at'
+        end
       end
+    end
+
+    class TaggableClass < ActiveRecord::Base
+      include Taggable
+    end
+
+    class DefaultTaggable < ActiveRecord::Base
+      include Taggable
     end
   end
 
-  class TaggableClass < ActiveRecord::Base
-    include Taggable
-  end
-
-  class DefaultTaggable < ActiveRecord::Base
-    include Taggable
+  after(:all) do
+    Taggable.resources.delete(TaggableClass)
+    Taggable.resources.delete(DefaultTaggable)
   end
 
   let(:taggable_item)    { TaggableClass.new }
@@ -151,6 +163,137 @@ describe Taggable do
     it "includes record with tags == []" do
       item = TaggableClass.create(tags: [])
       expect(TaggableClass.untagged).to eq [item]
+    end
+  end
+
+  describe '.delete_tags' do
+    let!(:item) { TaggableClass.create(tags: ['a', 'b', 'c']) }
+
+    it 'removes a tag' do
+      TaggableClass.delete_tags('a')
+      expect(item.reload.tags).to eq(['b', 'c'])
+    end
+
+    it 'handles nil' do
+      untagged = TaggableClass.create()
+      TaggableClass.delete_tags('a')
+      expect(item.reload.tags).to eq(['b', 'c'])
+      expect(untagged.reload.tags).to be_nil
+    end
+
+    it 'removes several tags' do
+      TaggableClass.delete_tags('a', 'b')
+      expect(item.reload.tags).to eq(['c'])
+    end
+
+    it 'removes several but one is missing' do
+      TaggableClass.delete_tags('a', 'd')
+      expect(item.reload.tags).to eq(['b', 'c'])
+    end
+
+    it 'updated multiple records' do
+      item2 = TaggableClass.create(tags: ['a', 'b', 'c'])
+      TaggableClass.delete_tags('a', 'b')
+
+      expect(item.reload.tags).to eq(['c'])
+      expect(item2.reload.tags).to eq(['c'])
+    end
+
+    it 'updates updated_at' do
+      TaggableClass.delete_tags('a')
+      expect(item.updated_at).to be < item.reload.updated_at
+    end
+
+    context 'with additional filtering' do
+      let!(:item2) { TaggableClass.create(tags: ['b', 'c']) }
+
+      it 'does not delete the tag' do
+        TaggableClass.tagged_with('a').delete_tags('a', 'b')
+        expect(item.reload.tags).to eq(['c'])
+        expect(item2.reload.tags).to eq(['b', 'c'])
+      end
+    end
+
+    context 'nothing to delete' do
+      it 'keeps the same tags' do
+        TaggableClass.delete_tags('d')
+        expect(item.reload.tags).to eq(['a', 'b', 'c'])
+      end
+
+      it 'does not change updated_at' do
+        TaggableClass.delete_tags('d')
+        expect(item.updated_at).to eq(item.reload.updated_at)
+      end
+    end
+
+    context 'uncommon arguments' do
+      it 'array of arrays' do
+        TaggableClass.delete_tags(['a', 'b'])
+        expect(item.reload.tags).to eq(['c'])
+      end
+
+      it 'ignores nil' do
+        TaggableClass.delete_tags('a', 'b', nil)
+        expect(item.reload.tags).to eq(['c'])
+      end
+
+      it 'strips whitespace from tags' do
+        TaggableClass.delete_tags(' a', 'b ')
+        expect(item.reload.tags).to eq(['c'])
+      end
+
+      it 'does nothing on empty array' do
+        expect {
+          TaggableClass.delete_tags()
+        }.to_not change { item.reload }
+      end
+    end
+  end
+
+  describe '.insert_tags' do
+    let!(:item) { DefaultTaggable.create(tags: initial_tags) }
+
+    let(:initial_tags) { nil }
+
+    it 'creates a tag' do
+      DefaultTaggable.insert_tags('a')
+      expect(item.reload.tags).to eq(['a'])
+    end
+
+    it 'handles nil' do
+      untagged = TaggableClass.create
+      TaggableClass.insert_tags('a')
+      expect(untagged.reload.tags).to eq(['a'])
+    end
+
+    it 'creates many tags' do
+      DefaultTaggable.insert_tags('a', 'b')
+      expect(item.reload.tags).to eq(['a', 'b'])
+    end
+
+    it 'updates updated_at' do
+      DefaultTaggable.insert_tags('a')
+      expect(item.updated_at).to be < item.reload.updated_at
+    end
+
+    it 'adds tags on two items' do
+      item2 = DefaultTaggable.create
+      DefaultTaggable.insert_tags('a')
+      expect(item2.reload.tags).to eq(['a'])
+    end
+
+    context 'already has tag' do
+      let(:initial_tags) { ['a', 'b'] }
+
+      it 'has same tags' do
+        DefaultTaggable.insert_tags('a')
+        expect(item.reload.tags).to eq(['a', 'b'])
+      end
+
+      it 'does not change updated_at' do
+        DefaultTaggable.insert_tags('a')
+        expect(item.updated_at).to eq(item.reload.updated_at)
+      end
     end
   end
 

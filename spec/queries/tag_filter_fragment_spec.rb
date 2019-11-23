@@ -12,7 +12,7 @@ describe TagFilterFragment do
 
   describe '#to_sql' do
     let(:prepend_with) { nil }
-    let(:on) { 'name' }
+    let(:on) { 'table_name' }
     let(:matching_mechanism) { 'all' }
     let(:tags) { ['x'] }
 
@@ -24,7 +24,7 @@ describe TagFilterFragment do
 
     context 'without prepend_with' do
       it 'starts with quoted name' do
-        expect(tag_filter.to_sql).to start_with('"name".')
+        expect(tag_filter.to_sql).to start_with('coalesce("table_name".')
       end
     end
 
