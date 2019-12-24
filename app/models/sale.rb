@@ -2,6 +2,7 @@
 
 class Sale < ApplicationRecord
   include Taggable
+  include Unnameable
 
   has_many :merchandise_sales
   has_many :merchandises, through: :merchandise_sales

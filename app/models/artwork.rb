@@ -3,6 +3,7 @@
 class Artwork < ApplicationRecord
   include Taggable
   include Importable
+  include Nameable
 
   validates :name, presence: true, uniqueness: true
 

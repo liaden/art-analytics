@@ -3,6 +3,7 @@
 class Merchandise < ApplicationRecord
   include Taggable
   include Importable
+  include Nameable
 
   # optional to allow for unknown merchandise where
   # the artwork is not known

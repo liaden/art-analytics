@@ -3,6 +3,7 @@
 class Event < ApplicationRecord
   include Taggable
   include Importable
+  include Nameable
 
   trigger.before(:insert) do
     "NEW.full_name :=  NEW.name || '-' || EXTRACT(year from NEW.started_at);"
