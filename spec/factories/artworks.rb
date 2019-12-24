@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :artwork do
-    name { Faker::Book.unique.title }
+    sequence(:name) { |n| "#{Faker::Book.title} (#{n})" }
 
     trait :with_merchandise do
       merchandises { [create(:merchandise)] }
