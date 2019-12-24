@@ -7,3 +7,9 @@ en:
         duration: Duration in Days
         tags: Tags
         started_at: Start Day
+    tag_table:
+      tag_filter: Search tags
+      event:
+        footer:
+          name: Search Name
+          year: Year

@@ -42,6 +42,10 @@ class Event < ApplicationRecord
     ended_at = started_at + days
   end
 
+  def year
+    started_at.year
+  end
+
   private
 
   def starts_before_ends

@@ -120,9 +120,17 @@ module Taggable
   end
 
   def delete_tags(*values)
-    return if values.empty?
+    values = Taggable.sanitize_tag_list(values)
 
-    self.tags -= values
+    return if values.empty? || tags.blank?
+
+    self.tags = tags.to_set - values
+  end
+
+  def insert_tags(*values)
+    values = Taggable.sanitize_tag_list(values)
+
+    self.tags = tags.to_set + values
   end
 
   class_methods do
@@ -150,7 +158,7 @@ module Taggable
       JSON.parse(results || '[]')
     end
 
-    # TODO: handle multiples with a reduce
+    # TODO: handle multiples attributes_for_update with a reduce
     def updating_all_timestamp_sql
       update_col = timestamp_attributes_for_update_in_model.first
 
@@ -167,6 +175,8 @@ module Taggable
       query_parts = [delete_tags_sql, values]
       query_parts << Time.now if timestamp_attributes_for_update_in_model.any?
 
+      # TODO: rework so rubocop doesn't complain about the _weak_ sql injection here
+      # this is related to injecting the updated_at query logic bit above
       tagged_with_any(*values).update_all(query_parts)
     end
 
@@ -188,6 +198,8 @@ module Taggable
       query_parts = [insert_tags_sql, values.to_json]
       query_parts << Time.now if timestamp_attributes_for_update_in_model.any?
 
+      # TODO: rework so rubocop doesn't complain about the _weak_ sql injection here
+      # this is related to injecting the updated_at query logic bit above
       tagged_without(*values).update_all(query_parts)
     end
 

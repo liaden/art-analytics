@@ -1,0 +1,23 @@
+.tag-col-header {
+  writing-mode: vertical-lr;
+  transform-origin: bottom;
+  transform: rotate(225deg) translate(50%, 100%);
+}
+
+.tag-table {
+  @extend .text-center;
+
+  th, td {
+    &:first-child, &:nth-child(2) {
+      @extend .text-left;
+    }
+
+    &:first-child {
+      min-width: 9rem;
+    }
+
+    &:last-child {
+      @extend .text-left;
+    }
+  }
+}

@@ -37,6 +37,8 @@ gem 'virtus'
 gem 'novus-nvd3-rails'
 gem 'chartkick'
 
+# gem 'fast_jsonapi', '~> 1.6.0', git: 'https://github.com/fast-jsonapi/fast_jsonapi'
+
 gem 'money-rails'
 
 group :development, :test do
@@ -47,6 +49,7 @@ group :development, :test do
   gem 'pry-rescue'
   gem 'factory_bot_rails'
   gem 'rubocop'
+  gem 'rubocop-rails'
   gem 'rubocop-performance'
 end
 

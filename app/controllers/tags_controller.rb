@@ -1,33 +1,45 @@
 # frozen_string_literal: true
 
 class TagsController < ApplicationController
-  TAGGABLE_CLASSES = {
-    event:       Event,
-    artwork:     Artwork,
-    merchandise: Merchandise,
-  }.with_indifferent_access.freeze
-
   def index
-    tags_per_resource = resources.map do |r|
-      [r.name.downcase, r.tags_with_prefix(tag_prefix || '')]
-    end.to_h
+    search = SearchTags.on(*requested_resources)
+    @tag_results = search.with_prefix(tag_prefix).transform_keys!{ |r| Taggable.resource(r) }
 
-    render json: tags_per_resource.to_json
+    respond_to do |format|
+      format.html
+      format.json { render json: search.with_prefix(tag_prefix).to_json }
+    end
+  end
+
+  def show
+    @tag = Tag.new(params.permit(:id, :resource, :resources))
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @tag.to_json }
+    end
+  end
+
+  def create
+  end
+
+  def update
+  end
+
+  def destroy
   end
 
   private
 
-  def resources
-    return TAGGABLE_CLASSES.values if specified_resources.blank?
+  def requested_resources
+    (params.fetch(:resources, []) + Array(params[:resource])).uniq
+  end
 
-    TAGGABLE_CLASSES.values_at(*specified_resources.map(&:downcase))
+  def tag_params
+    params.permit(:resource, :resources, :tag_prefix)
   end
 
   def tag_prefix
-    params[:tag_prefix]
-  end
-
-  def specified_resources
-    Array(params[:resources])
+    tag_params.fetch(:tag_prefix, '')
   end
 end

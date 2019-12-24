@@ -1,0 +1,40 @@
+%table.datatable.tag-table.table.table-sm.table-hover.text-center{style: 'overflow-x: auto'}
+
+  -# thead is two rows to insert tag filter above context column(s)
+  %thead.thead-light.sticky-top.sticky-offset
+    %tr
+      %th{colspan: table.context_columns.size}
+        = table.tag_filter
+
+      - table.tags.each do |tag|
+        %th{ data: { orderable: false }, rowspan: 2 }
+          = table.header_for(tag)
+
+      %th{ style: "min-width: #{table.offset_right_size}", rowspan: 2}
+        &nbsp;
+    %tr
+      - table.context_columns.each do |attr|
+        = table.context_header(attr)
+
+  %tbody
+    - table.each_taggable do |taggable|
+      %tr{ data: { tagpath: taggable.tags_path } }
+
+        - table.context_columns.each do |attr|
+          = taggable.context_cell(attr)
+
+        - table.tags.each do |tag|
+          %td= taggable.checkbox(tag)
+
+        %td= taggable.clear_tags_link
+
+  %tfoot.thead-light.position-sticky.sticky-bottom
+    - table.context_columns.each do |attr|
+      %th= table.column_filter(attr)
+
+    - table.tags.each do |tags|
+      %th= table.delete_tag_link(tag)
+
+    %th.text-left
+      = table.new_tag_link
+

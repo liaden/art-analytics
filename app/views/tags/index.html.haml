@@ -1,0 +1,7 @@
+.container-fluid.px-0
+  .navbar-offset
+  - @tag_results.each do |resource_class, tags|
+    .row.no-gutters
+      .col-12
+        - tagged = TaggedResourceDecorator.wrap(resource_class.all.order(:full_name))
+        = render partial: 'tag_table', locals: { table: TagTableDecorator.new(tagged, tags) }

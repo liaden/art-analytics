@@ -5,6 +5,9 @@
 @import './tagify';
 @import './font-awesome';
 
+@import './datatables';
+@import './tags';
+
 $navbar-height: $nav-link-height + 2 * $navbar-padding-y;
 
 #chart, svg {
@@ -18,6 +21,14 @@ $navbar-height: $nav-link-height + 2 * $navbar-padding-y;
 
 .navbar-offset  {
   margin-top: $navbar-height;
+}
+
+.sticky-offset {
+  top: $navbar-height;
+}
+
+.sticky-bottom {
+  bottom: 0px;
 }
 
 #controls {
