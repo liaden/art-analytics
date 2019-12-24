@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
-class EventDecorator
-  def initialize(event)
-    @event = event
-  end
-
+class EventDecorator < BaseDecorator
   def name
-    @event.name
+    @object.name
   end
 
   def time_period
-    "#{@event.started_at} - #{@event.ended_at}"
+    "#{@object.started_at} - #{@object.ended_at}"
   end
 end

@@ -1,17 +1,11 @@
 # frozen_string_literal: true
 
-class MerchandiseDecorator
-  # include Haml::Helpers
-
-  def initialize(merchandise)
-    @merchandise = merchandise
-  end
-
+class MerchandiseDecorator < BaseDecorator
   def edit_link(text)
-    link_to @merchandise.persisted?, text, edit_merchandise_path(@merchandise)
+    link_to @object.persisted?, text, edit_merchandise_path(@object)
   end
 
   def full_name
-    "#{@merchandise.artwork.name} #{@merchandise.name}"
+    "#{@object.artwork.name} #{@object.name}"
   end
 end
