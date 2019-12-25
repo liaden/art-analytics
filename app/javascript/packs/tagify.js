@@ -3,6 +3,10 @@ import Tagify from '@yaireo/tagify';
 $(function initialize_tagify() {
   var inputs = document.querySelectorAll('input[name*=tag]');
   Array.prototype.forEach.call(inputs, function(input, index) {
+    if(input.dataset.tagifySkip === "true") {
+      return;
+    }
+
     // use rails naming convention to get resource name
     var resource = input.dataset.resource,
         tagify   = new Tagify(input, {
