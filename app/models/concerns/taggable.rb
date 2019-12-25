@@ -4,20 +4,41 @@ module Taggable
   extend ActiveSupport::Concern
 
   def self.resources
-    @resources||= Set.new
+    @resources ||=
+      resource_names.map do |name|
+        name.camelize.constantize
+      end
   end
-  resources
 
   def self.resources_by_name
     resources.index_by { |c| c.name.downcase }.with_indifferent_access
   end
 
+  # Use DB schema to find all possible candidate tables:
+  #  * has a tags:jsonb column
+  #
+  # We then try to load the constant that is defined. If
+  # it exists, we are leave the name in the list.
   def self.resource_names
-    resources.map(&:name)
+    @resource_names ||=
+      begin
+        query = <<~SQL
+          select table_name
+          from information_schema.columns
+          where column_name = 'tags'
+            and data_type = 'jsonb';
+        SQL
+
+        ActiveRecord::Base.connection.execute(query).to_a.map do |data|
+          data['table_name'].singularize
+        end.select do |name|
+          name.camelize.constantize rescue nil
+        end
+      end
   end
 
   def self.resource(name)
-    resources_by_name[name]
+    resources_by_name[name.downcase]
   end
 
   # [['t1', 't2']] -> ['t1', 't2']
@@ -74,7 +95,11 @@ module Taggable
   end
 
   included do |base|
+    # In dev/test, we have code reloading, so delete the old version by name when we have reloaded ourselves
+    # If we don't do this, we will end up using old versions of the class that fail to load Taggable related methods
+    Taggable.resources.delete_if { |klass| klass.name == base.name }
     Taggable.resources << base
+
     # logical AND over tags
     scope :tagged_with,    ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_with_sql) }
     scope :tagged_without, ->(*tags) { Taggable.make_tag_scope(self, tags, tagged_without_sql) }

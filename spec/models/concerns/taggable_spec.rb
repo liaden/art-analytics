@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 describe Taggable do
+  before(:all) do
+    Taggable.instance_variable_set(:@resource_names, nil)
+  end
 
   before(:all) do
     ActiveRecord::Migration.suppress_messages do
@@ -29,8 +32,9 @@ describe Taggable do
   end
 
   after(:all) do
-    Taggable.resources.delete(TaggableClass)
-    Taggable.resources.delete(DefaultTaggable)
+    Taggable.instance_variable_set(:@resource_names, nil)
+    Object.send(:remove_const, :TaggableClass)
+    Object.send(:remove_const, :DefaultTaggable)
   end
 
   let(:taggable_item)    { TaggableClass.new }

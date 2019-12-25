@@ -1,18 +1,30 @@
 require 'rails_helper'
 
 describe Bootstrap::FormBuilder do
-  ActiveRecord::Migration.suppress_messages do
-    ActiveRecord::Schema.define do
-      create_table :test_resources, force: true do |t|
-        t.string 'name'
-        t.datetime 'started_at'
-        t.integer 'counter'
-        t.jsonb 'tags'
+  before(:all) do
+    Taggable.instance_variable_set(:@resource_names, nil)
+  end
+
+  before(:all) do
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Schema.define do
+        create_table :test_resources, force: true do |t|
+          t.string 'name'
+          t.datetime 'started_at'
+          t.integer 'counter'
+          t.jsonb 'tags'
+        end
       end
+    end
+
+    class TestResource < ActiveRecord::Base
+      include Taggable
     end
   end
 
-  class TestResource < ActiveRecord::Base
+  after(:all) do
+    Taggable.instance_variable_set(:@resource_names, nil)
+    Object.send(:remove_const, :TestResource)
   end
 
   let(:builder_options) { {} }
