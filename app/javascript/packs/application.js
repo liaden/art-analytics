@@ -16,6 +16,8 @@ require('chart.js');
 require('./tagify');
 require('./flatpickr');
 
+require('imports-loader?define=>false!datatables.net')(window, $);
+
 Rails.start();
 Turbolinks.start();
 
