@@ -19,6 +19,26 @@ $navbar-height: $nav-link-height + 2 * $navbar-padding-y;
   height: 500px;
 }
 
+.navbar-nav {
+  #when-collapsed {
+    display: none;
+  }
+  #when-open {
+    display: block;
+  }
+}
+
+.navbar-nav.collapsed {
+  #when-collapsed {
+    display: block;
+  }
+
+  #when-open {
+    display: none;
+  }
+}
+
+
 .navbar-offset  {
   margin-top: $navbar-height;
 }

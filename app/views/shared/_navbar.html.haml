@@ -19,3 +19,12 @@
         %a.nav-link{href: "#"} Merchandise
       %li.nav-item.disabled{class: navbar_activity_class('tag')}
         %a.nav-link{href: '#'} Tags
+
+  - if content_for?(:subnav)
+    %a.navbar-nav.collapsed{ data: { toggle: 'collapse', target: '#subnavbar' }, aria: {expanded: false, label: 'Toggle subnavbar', controls: 'subnavbar' }}
+      %i#when-collapsed.fas.fa-chevron-circle-down
+      %i#when-open.fas.fa-chevron-circle-up
+
+- if content_for?(:subnav)
+  %nav#subnavbar.navbar.sticky-top.navbar-expand-md.navbar-light.bg-light.collapse
+    = yield :subnav
