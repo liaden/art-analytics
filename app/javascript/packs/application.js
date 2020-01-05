@@ -11,6 +11,7 @@ import * as d3 from 'd3';
 import * as nvd3 from 'nvd3';
 
 import * as Tags from 'packs/tags';
+import * as Navbar from  'packs/navbar';
 
 require('chartkick');
 require('chart.js');
@@ -49,6 +50,8 @@ $(function () {
     console.log(datatables);
     Tags.init_table(datatables.tables(), tbl);
   });
+
+  Navbar.init_subnav();
 })
 
 

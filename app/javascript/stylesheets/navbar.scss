@@ -1,0 +1,34 @@
+// javascript adds to .sticky-bottom whenever subnav is shown
+// otherwise subnav will push the thing that is stickied off screen
+.navbar-offset  {
+  margin-top: $navbar-height;
+}
+
+.sticky-offset {
+  top: $navbar-height;
+}
+
+.handle-subnav {
+  bottom: $navbar-height;
+}
+
+.navbar-nav {
+  #when-collapsed {
+    display: none;
+  }
+  #when-open {
+    display: block;
+  }
+}
+
+.navbar-nav.collapsed {
+  #when-collapsed {
+    display: block;
+  }
+
+  #when-open {
+    display: none;
+  }
+}
+
+

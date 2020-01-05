@@ -36,6 +36,13 @@
 @import '~bootstrap/scss/_transitions';
 @import '~bootstrap/scss/_utilities';
 
+$navbar-height: $nav-link-height + 2 * $navbar-padding-y;
+
 .no-anim {
   transition: none !important;
+}
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
 }

@@ -1,4 +1,4 @@
-%nav.navbar.fixed-top.navbar-expand-md.navbar-dark.bg-dark
+%nav.navbar.sticky-top.navbar-expand-md.navbar-dark.bg-dark
   -#%a#toggle-chart-controls.d-md-none{data: { toggle: 'collapse', target: '#controls'}}
   -#  %i.fas.fa-tools
   =link_to 'artalytics', root_path, class: 'navbar-brand'
@@ -21,7 +21,7 @@
         %a.nav-link{href: '#'} Tags
 
   - if content_for?(:subnav)
-    %a.navbar-nav.collapsed{ data: { toggle: 'collapse', target: '#subnavbar' }, aria: {expanded: false, label: 'Toggle subnavbar', controls: 'subnavbar' }}
+    %a#toggle-subnav.navbar-nav.collapsed{ data: { toggle: 'collapse', target: '#subnavbar' }, aria: {expanded: false, label: 'Toggle subnavbar', controls: 'subnavbar' }}
       %i#when-collapsed.fas.fa-chevron-circle-down
       %i#when-open.fas.fa-chevron-circle-up
 

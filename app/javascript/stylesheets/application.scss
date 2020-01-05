@@ -8,7 +8,7 @@
 @import './datatables';
 @import './tags';
 
-$navbar-height: $nav-link-height + 2 * $navbar-padding-y;
+@import './navbar';
 
 #chart, svg {
   margin: 0px;
@@ -17,38 +17,6 @@ $navbar-height: $nav-link-height + 2 * $navbar-padding-y;
 
 .row > #chart {
   height: 500px;
-}
-
-.navbar-nav {
-  #when-collapsed {
-    display: none;
-  }
-  #when-open {
-    display: block;
-  }
-}
-
-.navbar-nav.collapsed {
-  #when-collapsed {
-    display: block;
-  }
-
-  #when-open {
-    display: none;
-  }
-}
-
-
-.navbar-offset  {
-  margin-top: $navbar-height;
-}
-
-.sticky-offset {
-  top: $navbar-height;
-}
-
-.sticky-bottom {
-  bottom: 0px;
 }
 
 #controls {
