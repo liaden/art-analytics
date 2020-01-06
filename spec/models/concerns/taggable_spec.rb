@@ -313,6 +313,13 @@ describe Taggable do
     it 'handles no TaggableClass instances' do
       expect(TaggableClass.all_tags).to be_empty
     end
+
+    it 'returns tags in alphabetical order' do
+      TaggableClass.create(tags: "b,c")
+      TaggableClass.create(tags: "a,b")
+
+      expect(TaggableClass.all_tags).to eq(['a', 'b', 'c'])
+    end
   end
 
   describe '.tags_with_prefix' do
@@ -337,6 +344,13 @@ describe Taggable do
 
       it 'with no matches, it is empty' do
         expect(TaggableClass.tags_with_prefix('has no match')).to be_empty
+      end
+
+      it 'is in alphabetical order' do
+        TaggableClass.create(tags: 'alpha2,alpha1')
+        TaggableClass.create(tags: 'alpha3,alpha2')
+
+        expect(TaggableClass.tags_with_prefix('alph')).to eq(['alpha1', 'alpha2', 'alpha3'])
       end
     end
   end

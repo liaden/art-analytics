@@ -140,7 +140,7 @@ module Taggable
       parameritized_query = <<~SQL
         SELECT json_agg(tag) AS matching_tags
         FROM
-          (SELECT distinct jsonb_array_elements(tags) AS tag FROM #{table_name}) tags
+          (SELECT distinct jsonb_array_elements(tags) AS tag FROM #{table_name} ORDER BY tag) tags
         WHERE tag::text like :tag_prefix
       SQL
 
@@ -194,7 +194,7 @@ module Taggable
     def all_tags
       result = ActiveRecord::Base.connection.execute(<<~SQL).to_a.first['tags']
         SELECT json_agg(tag) AS tags
-        FROM (SELECT distinct jsonb_array_elements(tags) AS tag FROM #{table_name}) tag_set
+        FROM (SELECT distinct jsonb_array_elements(tags) AS tag FROM #{table_name} ORDER BY tag) tag_set
       SQL
 
       JSON.parse(result || '[]')
