@@ -17,7 +17,7 @@
     "popper.js": "^1.15.0",
     "rails-ujs": "^5.2.3",
     "turbolinks": "^5.2.0",
-    "yarn": "^1.17.3"
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.8.0"
