@@ -161,7 +161,7 @@ GEM
     mutations (0.9.0)
       activesupport
     nio4r (2.5.2)
-    nokogiri (1.10.5)
+    nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     novus-nvd3-rails (1.8.6)
     oj (3.9.2)
