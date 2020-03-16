@@ -225,8 +225,9 @@ describe Taggable do
       end
 
       it 'does not change updated_at' do
-        TaggableClass.delete_tags('d')
-        expect(item.updated_at).to eq(item.reload.updated_at)
+        expect {
+          TaggableClass.delete_tags('d')
+        }.to_not change { item.reload.updated_at }
       end
     end
 
@@ -295,8 +296,9 @@ describe Taggable do
       end
 
       it 'does not change updated_at' do
-        DefaultTaggable.insert_tags('a')
-        expect(item.updated_at).to eq(item.reload.updated_at)
+        expect {
+          DefaultTaggable.insert_tags('a')
+        }.to_not change { item.reload.updated_at }
       end
     end
   end
